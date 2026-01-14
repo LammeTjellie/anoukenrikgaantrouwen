@@ -37,68 +37,87 @@
     btnNo.textContent = cfg.noText || "NEE";
   }
 
-    // Intro countdown + typewriter
-  const lines = [
-    "SVI wint altie instellen…",
-    "Alle vakanties laden…",
-    "ERROR: Te veel hoogtepunten…",
-    "ALLES 500…",
-    "The Hulk is Unleashed in…"
-  ];
+    // Intro countdown + typewriter (sync: wait for both)
+const lines = [
+  "SVI wint altie instellen…",
+  "Alle vakanties laden…",
+  "ERROR: Te veel hoogtepunten…",
+  "ALLES 500…",
+  "The Hulk is Unleashed in…"
+];
 
-  let countdown = 5;
-  let currentLine = 0;
+let countdown = 5;
+let currentLine = 0;
 
-  function setCountdown() {
-    countdownEl.textContent = String(countdown);
+let typingDone = false;
+let countdownDone = false;
+
+function setCountdown() {
+  countdownEl.textContent = String(countdown);
+}
+
+function maybeReveal() {
+  if (typingDone && countdownDone) {
+    setTimeout(() => {
+      intro.style.display = "none";
+      main.classList.remove("hidden");
+      // (optioneel) kleine fade-in: kan via CSS, maar zo is ook oké
+    }, 350);
   }
+}
 
-  function typeLine(text, done) {
-    let i = 0;
-    const prefix = "> ";
-    termBody.textContent += (termBody.textContent ? "\n" : "") + prefix;
+function typeLine(text, done) {
+  let i = 0;
+  const prefix = "> ";
+  termBody.textContent += (termBody.textContent ? "\n" : "") + prefix;
 
-    const iv = setInterval(() => {
-      termBody.textContent += text[i] || "";
-      i++;
-      if (i >= text.length) {
-        clearInterval(iv);
-        done && done();
-      }
-    }, 18); // typing speed
-  }
-
-  function runIntro() {
-    termBody.textContent = "";
-    setCountdown();
-
-    const countdownTimer = setInterval(() => {
-      countdown--;
-      setCountdown();
-      if (countdown <= 0) clearInterval(countdownTimer);
-    }, 1000);
-
-    function next() {
-      if (currentLine >= lines.length) {
-        // small dramatic pause before reveal
-        setTimeout(() => {
-          intro.style.display = "none";
-          main.classList.remove("hidden");
-        }, 350);
-        return;
-      }
-
-      typeLine(lines[currentLine], () => {
-        currentLine++;
-        // small pause between lines
-        setTimeout(next, 180);
-      });
+  const charDelay = 35; // <-- LANGZAMER typen (was 18). Zet bijv. 45-60 voor nog langzamer.
+  const iv = setInterval(() => {
+    termBody.textContent += text[i] || "";
+    i++;
+    if (i >= text.length) {
+      clearInterval(iv);
+      done && done();
     }
+  }, charDelay);
+}
 
-    next();
+function runIntro() {
+  termBody.textContent = "";
+  setCountdown();
+
+  // Countdown timer
+  const countdownTimer = setInterval(() => {
+    countdown--;
+    if (countdown <= 0) {
+      countdown = 0;
+      countdownDone = true;
+      clearInterval(countdownTimer);
+      setCountdown();
+      maybeReveal();
+      return;
+    }
+    setCountdown();
+  }, 1000);
+
+  // Typewriter sequence
+  function next() {
+    if (currentLine >= lines.length) {
+      typingDone = true;
+      maybeReveal();
+      return;
+    }
+    typeLine(lines[currentLine], () => {
+      currentLine++;
+      setTimeout(next, 220); // <-- pauze tussen regels (was 180). Verhoog voor meer drama.
+    });
   }
 
-  runIntro();
+  next();
+}
+
+runIntro();
+
 
 
   // MS-DOS popup flow for NEE
