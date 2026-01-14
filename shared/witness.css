@@ -213,8 +213,9 @@ h1{
 /* DOS popups */
 #popLayer{
   position:fixed; inset:0;
-  pointer-events:none;
+  pointer-events:auto; /* allow clicking popups reliably */
 }
+
 .popup{
   pointer-events:auto;
   position:absolute;
