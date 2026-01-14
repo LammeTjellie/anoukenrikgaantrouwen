@@ -232,6 +232,7 @@
     }
 
     popLayer.appendChild(pop);
+    popLayer.style.zIndex = "9999";
 
     // position within viewport
     const margin = 12;
