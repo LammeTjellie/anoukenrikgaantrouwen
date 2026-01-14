@@ -47,6 +47,8 @@ function startMemoriesThenIntro() {
   // If no memories configured, skip
   if (!memSection || !memImg || !Array.isArray(imgs) || imgs.length === 0) {
     if (memSection) memSection.classList.add("hidden");
+    // fade intro in, then start
+    intro.classList.add("fade-in");
     startIntro();
     return;
   }
@@ -65,7 +67,7 @@ function startMemoriesThenIntro() {
 
   show(idx);
 
-  const flashEveryMs = 720;      // <-- speed of flashes (lower = faster)
+  const flashEveryMs = 720;         // <-- speed of flashes (lower = faster)
   const totalFlashes = imgs.length; // show each image once (set to imgs.length*2 for extra)
   let flashes = 0;
 
@@ -76,13 +78,21 @@ function startMemoriesThenIntro() {
 
     if (flashes >= totalFlashes) {
       clearInterval(iv);
+
+      // Fade memories out, then hide, then fade intro in
       setTimeout(() => {
-        memSection.classList.add("hidden");
-        startIntro();
+        memSection.classList.add("fade-out");
+
+        setTimeout(() => {
+          memSection.classList.add("hidden");
+          intro.classList.add("fade-in");
+          startIntro();
+        }, 420); // match CSS transition duration
       }, 260);
     }
   }, flashEveryMs);
 }
+
 
   
     // Intro countdown + typewriter (sync: wait for both)
