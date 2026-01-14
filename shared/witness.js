@@ -116,6 +116,7 @@
     }
 
     // fade memories out
+    memSection.classList.remove("fade-in");
     memSection.classList.add("fade-out");
     await sleep(420);
     memSection.classList.add("hidden");
@@ -165,6 +166,7 @@
 
   async function revealQuestion() {
     // fade intro out
+    intro.classList.remove("fade-in");
     intro.classList.add("fade-out");
     await sleep(420);
 
