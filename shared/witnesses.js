@@ -3,10 +3,10 @@ window.WITNESSES = {
   bastiaan: {
     name: "Bastiaan",
     memories: [
-      "/assets/getuigen/jan-m1.jpg",
-      "/assets/getuigen/jan-m2.jpg",
-      "/assets/getuigen/jan-m3.jpg",
-      "/assets/getuigen/jan-m4.jpg"
+      "/assets/getuigen/Foto1.jpg",
+      "/assets/getuigen/Foto2.jpg",
+      "/assets/getuigen/Foto3.jpg",
+      "/assets/getuigen/Foto4.jpg"
     ],
     yesText: "JA",
     noText: "NEE",
@@ -14,10 +14,10 @@ window.WITNESSES = {
   benno: {
     name: "Benno",
     memories: [
-      "/assets/getuigen/jan-m1.jpg",
-      "/assets/getuigen/jan-m2.jpg",
-      "/assets/getuigen/jan-m3.jpg",
-      "/assets/getuigen/jan-m4.jpg"
+      "/assets/getuigen/Foto1.jpg",
+      "/assets/getuigen/Foto2.jpg",
+      "/assets/getuigen/Foto3.jpg",
+      "/assets/getuigen/Foto4.jpg"
     ],
     yesText: "JA",
     noText: "NEE",
@@ -25,10 +25,10 @@ window.WITNESSES = {
   dennis: {
     name: "Dennis",
     memories: [
-      "/assets/getuigen/jan-m1.jpg",
-      "/assets/getuigen/jan-m2.jpg",
-      "/assets/getuigen/jan-m3.jpg",
-      "/assets/getuigen/jan-m4.jpg"
+      "/assets/getuigen/Foto1.jpg",
+      "/assets/getuigen/Foto2.jpg",
+      "/assets/getuigen/Foto3.jpg",
+      "/assets/getuigen/Foto4.jpg"
     ],
     yesText: "JA",
     noText: "NEE",
@@ -36,10 +36,10 @@ window.WITNESSES = {
   gerbert: {
     name: "Gerbert",
     memories: [
-      "/assets/getuigen/jan-m1.jpg",
-      "/assets/getuigen/jan-m2.jpg",
-      "/assets/getuigen/jan-m3.jpg",
-      "/assets/getuigen/jan-m4.jpg"
+      "/assets/getuigen/Foto1.jpg",
+      "/assets/getuigen/Foto2.jpg",
+      "/assets/getuigen/Foto3.jpg",
+      "/assets/getuigen/Foto4.jpg"
     ],
     yesText: "JA",
     noText: "NEE",
