@@ -65,7 +65,7 @@ function startMemoriesThenIntro() {
 
   show(idx);
 
-  const flashEveryMs = 420;      // <-- speed of flashes (lower = faster)
+  const flashEveryMs = 820;      // <-- speed of flashes (lower = faster)
   const totalFlashes = imgs.length; // show each image once (set to imgs.length*2 for extra)
   let flashes = 0;
 
