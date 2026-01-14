@@ -65,7 +65,7 @@ function startMemoriesThenIntro() {
 
   show(idx);
 
-  const flashEveryMs = 820;      // <-- speed of flashes (lower = faster)
+  const flashEveryMs = 720;      // <-- speed of flashes (lower = faster)
   const totalFlashes = imgs.length; // show each image once (set to imgs.length*2 for extra)
   let flashes = 0;
 
@@ -119,7 +119,7 @@ function typeLine(text, done) {
   const prefix = "> ";
   termBody.textContent += (termBody.textContent ? "\n" : "") + prefix;
 
-  const charDelay = 60; // <-- LANGZAMER typen (was 18). Zet bijv. 45-60 voor nog langzamer.
+  const charDelay = 50; // <-- LANGZAMER typen (was 18). Zet bijv. 45-60 voor nog langzamer.
   const iv = setInterval(() => {
     termBody.textContent += text[i] || "";
     i++;
