@@ -97,23 +97,21 @@
     // preload light
     imgs.forEach((src) => { const im = new Image(); im.src = src; });
 
-    let idx = 0;
-    const show = (i) => {
-      memImg.src = imgs[i];
+    const show = (src) => {
+      memImg.src = src;
       memImg.classList.remove("mem-flash");
       void memImg.offsetWidth;
       memImg.classList.add("mem-flash");
     };
-
-    show(idx);
-
+    
     const flashEveryMs = 720;
-    const totalFlashes = imgs.length;
-    for (let f = 0; f < totalFlashes; f++) {
+    
+    // Show each image exactly once
+    for (let i = 0; i < imgs.length; i++) {
+      show(imgs[i]);
       await sleep(flashEveryMs);
-      idx = (idx + 1) % imgs.length;
-      show(idx);
     }
+
 
     // fade memories out
     memSection.classList.remove("fade-in");
@@ -165,25 +163,27 @@
   }
 
   async function revealQuestion() {
-    // fade intro out
-    intro.classList.remove("fade-in");
-    intro.classList.add("fade-out");
-    await sleep(420);
+  // fade intro out
+  intro.classList.remove("fade-in");
+  intro.classList.add("fade-out");
+  await sleep(420);
 
-    // show main + fade in
-    main.classList.remove("hidden");
-    main.classList.add("fade-in");
+  // show main + fade in
+  main.classList.remove("hidden");
+  main.classList.remove("fade-out");
+  main.classList.add("fade-in");
 
-    // hide buttons until question typed
-    const actions = document.querySelector(".actions");
-    if (actions) actions.style.display = "none";
+  // hide buttons until question typed
+  const actions = document.querySelector(".actions");
+  if (actions) actions.style.display = "none";
 
-    // type question
-    await typeInline(title, "Wil jij mijn getuige zijn?", 75);
+  // type question
+  await typeInline(title, "Wil jij mijn getuige zijn?", 75);
 
-    // show buttons
-    if (actions) actions.style.display = "";
-  }
+  // show buttons
+  if (actions) actions.style.display = "";
+}
+
 
   // ---------- MS-DOS popup flow ----------
   const noFlow = [
