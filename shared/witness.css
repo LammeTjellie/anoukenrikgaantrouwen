@@ -17,12 +17,20 @@ body{
   background: radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,.25), rgba(0,0,0,.75));
 }
 
+/* We use opacity-based hiding (refresh-safe) */
 .hidden{
-  opacity: 0;
-  pointer-events: none;
+  opacity:0;
+  pointer-events:none;
 }
 
-/* Memories intro */
+/* Smooth fades for screens */
+.memories, .intro, #main{
+  transition: opacity 420ms ease;
+}
+.fade-out{ opacity:0; pointer-events:none; }
+.fade-in{ opacity:1; }
+
+/* --- Memories intro --- */
 .memories{
   position:fixed;
   inset:0;
@@ -32,8 +40,8 @@ body{
   justify-content:center;
   padding:18px;
   background:#050505;
+  opacity:1;
 }
-
 .mem-frame{
   position:relative;
   width:min(420px, 88vw);
@@ -44,7 +52,6 @@ body{
   border:1px solid rgba(255,255,255,.08);
   transform:translateZ(0);
 }
-
 #memImg{
   width:100%;
   height:100%;
@@ -52,13 +59,11 @@ body{
   display:block;
   filter:contrast(1.05) saturate(1.05);
 }
-
 .mem-vignette{
   position:absolute; inset:0;
   background:radial-gradient(60% 60% at 50% 45%, rgba(0,0,0,0), rgba(0,0,0,.55));
   pointer-events:none;
 }
-
 .mem-noise{
   position:absolute; inset:0;
   background-image: repeating-linear-gradient(
@@ -73,26 +78,18 @@ body{
   pointer-events:none;
   animation:noiseMove 180ms infinite linear;
 }
-
 @keyframes noiseMove{
   0%{ transform:translateY(0) }
   100%{ transform:translateY(6px) }
 }
-
-.mem-flash{
-  animation: memFlash 160ms ease-in-out;
-}
-
+.mem-flash{ animation: memFlash 160ms ease-in-out; }
 @keyframes memFlash{
   0%{ transform:scale(1.02); filter:brightness(0.75) contrast(1.05) }
   50%{ transform:scale(1.06); filter:brightness(1.2) contrast(1.1) }
   100%{ transform:scale(1.02); filter:brightness(0.85) contrast(1.05) }
 }
 
-/* Hide memories when done */
-.memories.hidden{ display:none; }
-
-
+/* --- Terminal intro --- */
 .intro{
   position:relative;
   min-height:100vh;
@@ -100,6 +97,7 @@ body{
   align-items:center;
   justify-content:center;
   padding:24px;
+  opacity:1;
 }
 .terminal{
   width:min(720px, 100%);
@@ -132,6 +130,7 @@ body{
 }
 .hint{padding:0 16px 18px 16px; opacity:.7}
 
+/* --- Main card --- */
 .card{
   position:relative;
   min-height:100vh;
@@ -140,13 +139,12 @@ body{
   justify-content:center;
   padding:24px;
 }
-.card > *{
-  width:min(680px, 100%);
-}
+.card > *{ width:min(680px, 100%); }
 main.card{
   flex-direction:column;
   gap:14px;
   text-align:center;
+  opacity:1;
 }
 .kicker{
   letter-spacing:.12em;
@@ -184,11 +182,9 @@ h1{
   font-weight:600;
 }
 .btn:hover{transform:translateY(-1px)}
-.primary{
-  background:rgba(255,255,255,.95);
-  color:#111;
-}
-.ghost{background:rgba(0,0,0,.18)}
+.primary{ background:rgba(255,255,255,.95); color:#111; }
+.ghost{ background:rgba(0,0,0,.18); }
+
 .result{
   margin-top:18px;
   background:rgba(0,0,0,.35);
@@ -237,10 +233,7 @@ h1{
   justify-content:space-between;
   align-items:center;
 }
-.popup .body{
-  padding:10px 10px 12px 10px;
-  font-size:.92rem;
-}
+.popup .body{ padding:10px 10px 12px 10px; font-size:.92rem; }
 .popup .pactions{
   display:flex;
   gap:8px;
@@ -261,26 +254,3 @@ h1{
   border-right-color:#fff;
   border-bottom-color:#fff;
 }
-
-/* Smooth fades for screen transitions */
-.memories,
-.intro,
-#main {
-  transition: opacity 420ms ease;
-}
-
-.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.fade-in {
-  opacity: 1;
-}
-/* Start states for nicer fades */
-.intro { opacity: 0; }
-#main  { opacity: 0; }
-
-/* Ensure fade-in overrides the start opacity */
-.intro.fade-in { opacity: 1; }
-#main.fade-in  { opacity: 1; }
