@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getuige?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/shared/witness.css">
+</head>
+<body>
+  <!-- achtergrond -->
+  <div class="bg" id="bg"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- INTRO -->
+  <section class="intro" id="intro">
+    <div class="terminal">
+      <div class="term-top">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="term-title">witness_request.exe</span>
+      </div>
+      <pre class="term-body" id="termBody">Initializing…</pre>
+      <div class="countdown" id="countdown">5</div>
+      <div class="hint">Even geduld…</div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="card hidden" id="main">
+    <div class="kicker" id="kicker">Hey…</div>
+    <h1 id="title">Wil jij mijn getuige zijn?</h1>
+    <p class="sub" id="sub">—</p>
+
+    <div class="actions">
+      <button class="btn primary" id="btnYes">JA</button>
+      <button class="btn ghost" id="btnNo">NEE</button>
+    </div>
+
+    <div class="result hidden" id="result">
+      <div class="badge">✅ Accepted</div>
+      <h2>YES! 🎉</h2>
+      <p>Top. Dan is het officieel: jij bent mijn getuige.</p>
+      <div class="actions">
+        <a class="btn primary" id="btnApp" href="#" target="_blank" rel="noopener">Stuur Rik een appje</a>
+        <a class="btn ghost" href="/">Terug naar de site</a>
+      </div>
+      <div class="tiny">PS: screenshotten mag. Bewijsmateriaal 😄</div>
+    </div>
+  </main>
+
+  <!-- popup container -->
+  <div id="popLayer"></div>
+
+  <script src="/shared/witnesses.js"></script>
+  <script src="/shared/witness.js"></script>
+</body>
+</html>
