@@ -37,6 +37,54 @@
     btnNo.textContent = cfg.noText || "NEE";
   }
 
+  // --- Memories slideshow (before terminal intro) ---
+const memSection = document.getElementById("memories");
+const memImg = document.getElementById("memImg");
+
+function startMemoriesThenIntro() {
+  const imgs = cfg?.memories;
+
+  // If no memories configured, skip
+  if (!memSection || !memImg || !Array.isArray(imgs) || imgs.length === 0) {
+    if (memSection) memSection.classList.add("hidden");
+    startIntro();
+    return;
+  }
+
+  let idx = 0;
+
+  // Preload (light)
+  imgs.forEach((src) => { const im = new Image(); im.src = src; });
+
+  function show(i) {
+    memImg.src = imgs[i];
+    memImg.classList.remove("mem-flash");
+    void memImg.offsetWidth; // restart animation
+    memImg.classList.add("mem-flash");
+  }
+
+  show(idx);
+
+  const flashEveryMs = 420;      // <-- speed of flashes (lower = faster)
+  const totalFlashes = imgs.length; // show each image once (set to imgs.length*2 for extra)
+  let flashes = 0;
+
+  const iv = setInterval(() => {
+    flashes++;
+    idx = (idx + 1) % imgs.length;
+    show(idx);
+
+    if (flashes >= totalFlashes) {
+      clearInterval(iv);
+      setTimeout(() => {
+        memSection.classList.add("hidden");
+        startIntro();
+      }, 260);
+    }
+  }, flashEveryMs);
+}
+
+  
     // Intro countdown + typewriter (sync: wait for both)
 const lines = [
   "SVI wint altie instellen…",
@@ -116,7 +164,9 @@ function runIntro() {
   next();
 }
 
-runIntro();
+function startIntro() {
+  runIntro();
+}
 
 
 
@@ -240,6 +290,8 @@ runIntro();
     }
   }
 
+  startMemoriesThenIntro();
+  
   btnYes.addEventListener("click", acceptYes);
   btnNo.addEventListener("click", () => {
     const actions = document.querySelector(".actions");
