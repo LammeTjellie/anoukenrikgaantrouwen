@@ -271,3 +271,6 @@ h1{
 #main.fade-in {
   opacity: 1;
 }
+
+/* Remove from layout completely when a screen is done */
+.gone { display: none !important; }
