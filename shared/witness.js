@@ -1,5 +1,10 @@
 // shared/witness.js
 (function () {
+  // Force a clean start on reloads (prevents skipping intro due to bfcache)
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) location.reload();
+  });
+  
   const slug = location.pathname.split("/").filter(Boolean).pop();
   const cfg = (window.WITNESSES && window.WITNESSES[slug]) || null;
 
