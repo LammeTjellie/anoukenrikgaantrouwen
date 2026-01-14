@@ -1,0 +1,189 @@
+/* shared/witness.css */
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:#fff;
+  overflow-x:hidden;
+}
+.bg{
+  position:fixed; inset:0;
+  background-size:cover;
+  background-position:center;
+  transform:scale(1.03);
+}
+.bg-overlay{
+  position:fixed; inset:0;
+  background: radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,.25), rgba(0,0,0,.75));
+}
+
+.hidden{display:none}
+
+.intro{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.terminal{
+  width:min(720px, 100%);
+  background:rgba(10,10,10,.85);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 30px 70px rgba(0,0,0,.45);
+}
+.term-top{
+  display:flex; align-items:center; gap:8px;
+  padding:12px 14px;
+  background:rgba(255,255,255,.06);
+}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25)}
+.term-title{margin-left:10px;opacity:.85;font-size:.9rem}
+.term-body{
+  padding:18px 16px 6px 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size:.95rem;
+  line-height:1.55;
+  min-height:140px;
+  white-space:pre-wrap;
+}
+.countdown{
+  font-family: "Playfair Display", serif;
+  font-size:3rem;
+  padding:0 16px 10px 16px;
+  opacity:.95;
+}
+.hint{padding:0 16px 18px 16px; opacity:.7}
+
+.card{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.card > *{
+  width:min(680px, 100%);
+}
+main.card{
+  flex-direction:column;
+  gap:14px;
+  text-align:center;
+}
+.kicker{
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-size:.85rem;
+  opacity:.75;
+}
+h1{
+  font-family:"Playfair Display", serif;
+  font-weight:700;
+  font-size:clamp(2rem, 4vw, 3rem);
+  line-height:1.05;
+}
+.sub{
+  opacity:.85;
+  max-width:48ch;
+  margin:0 auto;
+  line-height:1.6;
+}
+.actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.btn{
+  border-radius:14px;
+  padding:12px 18px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  text-decoration:none;
+  font-weight:600;
+}
+.btn:hover{transform:translateY(-1px)}
+.primary{
+  background:rgba(255,255,255,.95);
+  color:#111;
+}
+.ghost{background:rgba(0,0,0,.18)}
+.result{
+  margin-top:18px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:18px;
+}
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+  margin-bottom:10px;
+}
+.result h2{
+  font-family:"Playfair Display", serif;
+  font-size:2rem;
+  margin-bottom:6px;
+}
+.tiny{opacity:.75;margin-top:10px;font-size:.9rem}
+
+/* DOS popups */
+#popLayer{
+  position:fixed; inset:0;
+  pointer-events:none;
+}
+.popup{
+  pointer-events:auto;
+  position:absolute;
+  width:min(360px, 92vw);
+  background:#c0c0c0;
+  border:2px solid #fff;
+  border-right-color:#404040;
+  border-bottom-color:#404040;
+  box-shadow:6px 6px 0 rgba(0,0,0,.35);
+  color:#000;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+.popup .bar{
+  background:#000080;
+  color:#fff;
+  padding:6px 8px;
+  font-weight:700;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.popup .body{
+  padding:10px 10px 12px 10px;
+  font-size:.92rem;
+}
+.popup .pactions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  padding:0 10px 10px 10px;
+}
+.pbtn{
+  background:#e6e6e6;
+  border:2px solid #fff;
+  border-right-color:#404040;
+  border-bottom-color:#404040;
+  padding:6px 10px;
+  cursor:pointer;
+  font-weight:700;
+}
+.pbtn:active{
+  border:2px solid #404040;
+  border-right-color:#fff;
+  border-bottom-color:#fff;
+}
