@@ -98,7 +98,10 @@ body{
   justify-content:center;
   padding:24px;
   opacity:1;
+  z-index: 10;
 }
+#main { z-index: 20; position:relative;}
+
 .terminal{
   width:min(720px, 100%);
   background:rgba(10,10,10,.85);
