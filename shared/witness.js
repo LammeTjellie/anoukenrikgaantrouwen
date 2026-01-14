@@ -37,7 +37,7 @@
     btnNo.textContent = cfg.noText || "NEE";
   }
 
-  // Intro countdown (5 sec)
+    // Intro countdown + typewriter
   const lines = [
     "SVI wint altie instellen…",
     "Alle vakanties laden…",
@@ -45,26 +45,61 @@
     "ALLES 500…",
     "The Hulk is Unleashed in…"
   ];
-  let t = 5;
-  let lineIdx = 0;
 
-  function tickIntro() {
-    termBody.textContent =
-      lines.slice(0, lineIdx + 1).map((l, idx) => (idx === lineIdx ? `> ${l}` : `  ${l}`)).join("\n");
+  let countdown = 5;
+  let currentLine = 0;
 
-    countdownEl.textContent = String(t);
+  function setCountdown() {
+    countdownEl.textContent = String(countdown);
+  }
 
-    if (t <= 0) {
-      intro.style.display = "none";
-      main.classList.remove("hidden");
-      return;
+  function typeLine(text, done) {
+    let i = 0;
+    const prefix = "> ";
+    termBody.textContent += (termBody.textContent ? "\n" : "") + prefix;
+
+    const iv = setInterval(() => {
+      termBody.textContent += text[i] || "";
+      i++;
+      if (i >= text.length) {
+        clearInterval(iv);
+        done && done();
+      }
+    }, 18); // typing speed
+  }
+
+  function runIntro() {
+    termBody.textContent = "";
+    setCountdown();
+
+    const countdownTimer = setInterval(() => {
+      countdown--;
+      setCountdown();
+      if (countdown <= 0) clearInterval(countdownTimer);
+    }, 1000);
+
+    function next() {
+      if (currentLine >= lines.length) {
+        // small dramatic pause before reveal
+        setTimeout(() => {
+          intro.style.display = "none";
+          main.classList.remove("hidden");
+        }, 350);
+        return;
+      }
+
+      typeLine(lines[currentLine], () => {
+        currentLine++;
+        // small pause between lines
+        setTimeout(next, 180);
+      });
     }
 
-    t -= 1;
-    lineIdx = Math.min(lineIdx + 1, lines.length - 1);
-    setTimeout(tickIntro, 1000);
+    next();
   }
-  tickIntro();
+
+  runIntro();
+
 
   // MS-DOS popup flow for NEE
   const noFlow = [
