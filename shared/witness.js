@@ -1,0 +1,170 @@
+// shared/witness.js
+(function () {
+  const slug = location.pathname.split("/").filter(Boolean).pop(); // .../getuige/jan/ -> "jan"
+  const cfg = (window.WITNESSES && window.WITNESSES[slug]) || null;
+
+  const bg = document.getElementById("bg");
+  const intro = document.getElementById("intro");
+  const main = document.getElementById("main");
+  const termBody = document.getElementById("termBody");
+  const countdownEl = document.getElementById("countdown");
+
+  const kicker = document.getElementById("kicker");
+  const title = document.getElementById("title");
+  const sub = document.getElementById("sub");
+  const btnYes = document.getElementById("btnYes");
+  const btnNo = document.getElementById("btnNo");
+
+  const result = document.getElementById("result");
+  const btnApp = document.getElementById("btnApp");
+
+  const popLayer = document.getElementById("popLayer");
+
+  if (!cfg) {
+    // fallback
+    bg.style.backgroundImage = "linear-gradient(135deg, #333, #111)";
+    kicker.textContent = "Oeps…";
+    sub.textContent = "Deze getuigenpagina bestaat (nog) niet.";
+  } else {
+    // background slideshow
+    let i = 0;
+    bg.style.backgroundImage = `url('${cfg.photos[0]}')`;
+    setInterval(() => {
+      i = (i + 1) % cfg.photos.length;
+      bg.style.backgroundImage = `url('${cfg.photos[i]}')`;
+    }, 6000);
+
+    document.title = `Getuige? – ${cfg.name}`;
+    kicker.textContent = `Hey ${cfg.name}…`;
+    sub.textContent = cfg.subtitle || "";
+    btnYes.textContent = cfg.yesText || "JA";
+    btnNo.textContent = cfg.noText || "NEE";
+  }
+
+  // Intro countdown (5 sec)
+  const lines = [
+    "Loading personal memories…",
+    "Calibrating awkwardness level…",
+    "Decrypting question…",
+    "Checking if you’re available…",
+    "Almost there…"
+  ];
+  let t = 5;
+  let lineIdx = 0;
+
+  function tickIntro() {
+    termBody.textContent =
+      lines.slice(0, lineIdx + 1).map((l, idx) => (idx === lineIdx ? `> ${l}` : `  ${l}`)).join("\n");
+
+    countdownEl.textContent = String(t);
+
+    if (t <= 0) {
+      intro.style.display = "none";
+      main.classList.remove("hidden");
+      return;
+    }
+
+    t -= 1;
+    lineIdx = Math.min(lineIdx + 1, lines.length - 1);
+    setTimeout(tickIntro, 1000);
+  }
+  tickIntro();
+
+  // MS-DOS popup flow for NEE
+  const noFlow = [
+    { title: "Windows", msg: "Je bedoelde eigenlijk JA toch?" },
+    { title: "Systeemmelding", msg: "Hmm… dat voelde niet als de juiste klik." },
+    { title: "Fout", msg: "NEE.exe not found. Probeer opnieuw." },
+    { title: "Waarschuwing", msg: "Nu klik je volgens mij niet helemaal goed." },
+    { title: "Diagnose", msg: "Weet je het héél zeker? (hint: nee)" },
+    { title: "Rik", msg: "Rik kijkt nu teleurgesteld. Dit wil je niet." },
+    { title: "Laatste kans", msg: "Oké. Echte laatste kans. Kies verstandig." },
+    { title: "Update", msg: "Keuzemenu bijgewerkt: alleen JA is beschikbaar." },
+  ];
+
+  let noStep = 0;
+
+  function spawnPopup(step) {
+    const { title, msg } = noFlow[step];
+
+    const pop = document.createElement("div");
+    pop.className = "popup";
+
+    // random-ish position
+    const x = Math.floor(12 + Math.random() * 60);
+    const y = Math.floor(10 + Math.random() * 55);
+    pop.style.left = `${x}vw`;
+    pop.style.top = `${y}vh`;
+
+    pop.innerHTML = `
+      <div class="bar">
+        <span>${title}</span>
+        <span style="opacity:.85">✕</span>
+      </div>
+      <div class="body">${msg}</div>
+      <div class="pactions">
+        <button class="pbtn" data-ans="yes">JA</button>
+        <button class="pbtn" data-ans="no">NEE</button>
+      </div>
+    `;
+
+    // On the final step -> make it JA/JA
+    if (step === noFlow.length - 1) {
+      const btns = pop.querySelectorAll(".pbtn");
+      btns.forEach(b => (b.textContent = "JA"));
+      btns.forEach(b => b.setAttribute("data-ans", "yes"));
+    }
+
+    pop.querySelectorAll(".pbtn").forEach((b) => {
+      b.addEventListener("click", () => {
+        const ans = b.getAttribute("data-ans");
+        if (ans === "yes") {
+          pop.remove();
+          acceptYes();
+        } else {
+          pop.remove();
+          noStep = Math.min(noStep + 1, noFlow.length - 1);
+          spawnPopup(noStep);
+        }
+      });
+    });
+
+    popLayer.appendChild(pop);
+  }
+
+  function acceptYes() {
+    // Hide buttons, show result
+    btnYes.disabled = true;
+    btnNo.disabled = true;
+    result.classList.remove("hidden");
+
+    // Little confetti without libs (tiny)
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement("div");
+      s.style.position = "fixed";
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.top = "-10px";
+      s.style.width = "8px";
+      s.style.height = "8px";
+      s.style.background = "white";
+      s.style.opacity = "0.9";
+      s.style.borderRadius = "2px";
+      s.style.transform = `rotate(${Math.random() * 360}deg)`;
+      s.style.zIndex = "9999";
+      document.body.appendChild(s);
+
+      const dur = 900 + Math.random() * 900;
+      const endY = 110 + Math.random() * 20;
+      s.animate(
+        [
+          { transform: s.style.transform, top: "-10px" },
+          { transform: `rotate(${Math.random() * 360}deg)`, top: endY + "vh" },
+        ],
+        { duration: dur, easing: "cubic-bezier(.2,.7,.2,1)" }
+      ).onfinish = () => s.remove();
+    }
+  }
+
+  btnYes.addEventListener("click", acceptYes);
+  btnNo.addEventListener("click", () => spawnPopup(noStep));
+})();
