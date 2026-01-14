@@ -254,3 +254,17 @@ h1{
   border-right-color:#fff;
   border-bottom-color:#fff;
 }
+
+/* Force fades to override .memories/.intro/#main base opacity */
+.memories.fade-out,
+.intro.fade-out,
+#main.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.memories.fade-in,
+.intro.fade-in,
+#main.fade-in {
+  opacity: 1;
+}
