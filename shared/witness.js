@@ -85,70 +85,68 @@
   let noStep = 0;
 
   function spawnPopup(step) {
-    const { title, msg } = noFlow[step];
+  const { title, msg } = noFlow[step];
 
-    const pop = document.createElement("div");
-    pop.className = "popup";
+  const pop = document.createElement("div");
+  pop.className = "popup";
 
-    // Place popup fully within viewport (mobile-safe)
-    const margin = 12; // px safe padding from edges
-    // Temporarily put it off-screen so we can measure
-    pop.style.left = "-9999px";
-    pop.style.top = "-9999px";
-    popLayer.appendChild(pop);
-    
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const rect = pop.getBoundingClientRect();
-    
-    const maxLeft = Math.max(margin, vw - rect.width - margin);
-    const maxTop  = Math.max(margin, vh - rect.height - margin);
-    
-    const left = Math.floor(margin + Math.random() * (maxLeft - margin));
-    const top  = Math.floor(margin + Math.random() * (maxTop - margin));
-    
-    pop.style.left = `${left}px`;
-    pop.style.top  = `${top}px`;
-    
-    // Bring to front
-    pop.style.zIndex = String(1000 + step);
-    return; // <-- belangrijk: we hebben 'm al ge-append
+  // 1) Eerst de inhoud zetten (anders is rect.width/height ~ 0)
+  pop.innerHTML = `
+    <div class="bar">
+      <span>${title}</span>
+      <span style="opacity:.85">✕</span>
+    </div>
+    <div class="body">${msg}</div>
+    <div class="pactions">
+      <button class="pbtn" data-ans="yes">JA</button>
+      <button class="pbtn" data-ans="no">NEE</button>
+    </div>
+  `;
 
-
-    pop.innerHTML = `
-      <div class="bar">
-        <span>${title}</span>
-        <span style="opacity:.85">✕</span>
-      </div>
-      <div class="body">${msg}</div>
-      <div class="pactions">
-        <button class="pbtn" data-ans="yes">JA</button>
-        <button class="pbtn" data-ans="no">NEE</button>
-      </div>
-    `;
-
-    // On the final step -> make it JA/JA
-    if (step === noFlow.length - 1) {
-      const btns = pop.querySelectorAll(".pbtn");
-      btns.forEach(b => (b.textContent = "JA"));
-      btns.forEach(b => b.setAttribute("data-ans", "yes"));
-    }
-
-    pop.querySelectorAll(".pbtn").forEach((b) => {
-      b.addEventListener("click", () => {
-        const ans = b.getAttribute("data-ans");
-        if (ans === "yes") {
-          pop.remove();
-          acceptYes();
-        } else {
-          pop.remove();
-          noStep = Math.min(noStep + 1, noFlow.length - 1);
-          spawnPopup(noStep);
-        }
-      });
-    });
-
+  // On the final step -> make it JA/JA
+  if (step === noFlow.length - 1) {
+    const btns = pop.querySelectorAll(".pbtn");
+    btns.forEach((b) => (b.textContent = "JA"));
+    btns.forEach((b) => b.setAttribute("data-ans", "yes"));
   }
+
+  // 2) Append naar DOM zodat we kunnen meten
+  popLayer.appendChild(pop);
+
+  // 3) Positioneer binnen viewport (mobile-safe)
+  const margin = 12; // px safe padding from edges
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const rect = pop.getBoundingClientRect();
+
+  const maxLeft = Math.max(margin, vw - rect.width - margin);
+  const maxTop  = Math.max(margin, vh - rect.height - margin);
+
+  const left = Math.floor(margin + Math.random() * (maxLeft - margin));
+  const top  = Math.floor(margin + Math.random() * (maxTop - margin));
+
+  pop.style.left = `${left}px`;
+  pop.style.top  = `${top}px`;
+
+  // Bring to front
+  pop.style.zIndex = String(1000 + step);
+
+  // 4) Button handlers
+  pop.querySelectorAll(".pbtn").forEach((b) => {
+    b.addEventListener("click", () => {
+      const ans = b.getAttribute("data-ans");
+      if (ans === "yes") {
+        pop.remove();
+        acceptYes();
+      } else {
+        pop.remove();
+        noStep = Math.min(noStep + 1, noFlow.length - 1);
+        spawnPopup(noStep);
+      }
+    });
+  });
+}
+
 
   function acceptYes() {
      // Hide the main choice buttons immediately
