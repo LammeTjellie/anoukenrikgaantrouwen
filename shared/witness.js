@@ -336,6 +336,36 @@ function startIntro() {
     }
   }
 
+  // --- Reset UI state on load (prevents intro staying hidden after refresh/bfcache) ---
+intro.style.display = "";              // undo intro.style.display = "none"
+intro.classList.remove("fade-out");
+intro.classList.remove("fade-in");     // startMemoriesThenIntro will fade it in when needed
+
+main.classList.add("hidden");
+main.style.display = "";
+main.classList.remove("fade-out");
+main.classList.remove("fade-in");
+
+// Optional: reset question + result UI
+result.classList.add("hidden");
+const actionsEl = document.querySelector(".actions");
+if (actionsEl) actionsEl.style.display = "";
+btnYes.disabled = false;
+btnNo.disabled = false;
+
+// Reset intro progress variables (so typewriter/countdown always restart cleanly)
+countdown = 5;
+currentLine = 0;
+typingDone = false;
+countdownDone = false;
+
+// Ensure memories starts visible (if present)
+if (memSection) {
+  memSection.classList.remove("hidden");
+  memSection.classList.remove("fade-out");
+}
+
+  
   startMemoriesThenIntro();
   
   btnYes.addEventListener("click", acceptYes);
