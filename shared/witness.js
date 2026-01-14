@@ -43,11 +43,11 @@
 
   // Intro countdown (5 sec)
   const lines = [
-    "Loading personal memories…",
-    "Calibrating awkwardness level…",
-    "Decrypting question…",
-    "Checking if you’re available…",
-    "Almost there…"
+    "Persoonlijke herrinnering laden…",
+    "Ongemakkelijkheid kalibreren…",
+    "Vraag ontgrendelen…",
+    "Checken of je beschikbaar bent…",
+    "Bijna klaar…"
   ];
   let t = 5;
   let lineIdx = 0;
@@ -90,11 +90,30 @@
     const pop = document.createElement("div");
     pop.className = "popup";
 
-    // random-ish position
-    const x = Math.floor(12 + Math.random() * 60);
-    const y = Math.floor(10 + Math.random() * 55);
-    pop.style.left = `${x}vw`;
-    pop.style.top = `${y}vh`;
+    // Place popup fully within viewport (mobile-safe)
+    const margin = 12; // px safe padding from edges
+    // Temporarily put it off-screen so we can measure
+    pop.style.left = "-9999px";
+    pop.style.top = "-9999px";
+    popLayer.appendChild(pop);
+    
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const rect = pop.getBoundingClientRect();
+    
+    const maxLeft = Math.max(margin, vw - rect.width - margin);
+    const maxTop  = Math.max(margin, vh - rect.height - margin);
+    
+    const left = Math.floor(margin + Math.random() * (maxLeft - margin));
+    const top  = Math.floor(margin + Math.random() * (maxTop - margin));
+    
+    pop.style.left = `${left}px`;
+    pop.style.top  = `${top}px`;
+    
+    // Bring to front
+    pop.style.zIndex = String(1000 + step);
+    return; // <-- belangrijk: we hebben 'm al ge-append
+
 
     pop.innerHTML = `
       <div class="bar">
@@ -129,13 +148,21 @@
       });
     });
 
-    popLayer.appendChild(pop);
   }
 
   function acceptYes() {
-    // Hide buttons, show result
+     // Hide the main choice buttons immediately
+    const actions = document.querySelector(".actions");
+    if (actions) actions.style.display = "none";
+
+    // Also make sure the buttons can't be clicked again
     btnYes.disabled = true;
     btnNo.disabled = true;
+
+    // Hide any remaining popups (if any)
+    popLayer.innerHTML = "";
+
+    // Show result
     result.classList.remove("hidden");
 
     // Little confetti without libs (tiny)
@@ -166,5 +193,11 @@
   }
 
   btnYes.addEventListener("click", acceptYes);
-  btnNo.addEventListener("click", () => spawnPopup(noStep));
+  btnNo.addEventListener("click", () => {
+    const actions = document.querySelector(".actions");
+    if (actions) actions.style.display = "none";
+    btnYes.disabled = true;
+    btnNo.disabled = true;
+    spawnPopup(noStep);
+});
 })();
