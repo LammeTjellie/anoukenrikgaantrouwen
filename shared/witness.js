@@ -24,6 +24,7 @@
   // ---------- Init UI (refresh-safe) ----------
   // background + copy
   bg.style.backgroundImage = "linear-gradient(160deg, #3a3a3a, #1f1f1f)";
+  popLayer.style.pointerEvents = "none";
 
   if (!cfg) {
     kicker.textContent = "Oeps…";
@@ -209,6 +210,7 @@
   function spawnPopup(step) {
     const { title, msg } = noFlow[step];
     const pop = document.createElement("div");
+    popLayer.style.pointerEvents = "auto";
     pop.className = "popup";
 
     pop.innerHTML = `
@@ -268,6 +270,7 @@
     btnYes.disabled = true;
     btnNo.disabled = true;
     popLayer.innerHTML = "";
+    popLayer.style.pointerEvents = "none";
 
     result.classList.remove("hidden");
     result.classList.add("fade-in");
