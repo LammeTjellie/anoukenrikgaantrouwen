@@ -42,8 +42,11 @@
     memSection.classList.remove("hidden", "fade-out", "fade-in");
     memSection.classList.add("fade-in");
   }
-  intro.classList.remove("hidden", "fade-out");
+  intro.classList.remove("gone", "hidden", "fade-out");
   intro.classList.add("fade-in");
+
+  if (memSection) memSection.classList.remove("gone");
+  
   main.classList.add("hidden");
   main.classList.remove("fade-in", "fade-out");
   result.classList.add("hidden");
@@ -117,6 +120,7 @@
     memSection.classList.remove("fade-in");
     memSection.classList.add("fade-out");
     await sleep(420);
+    memSection.classList.add("gone");
     memSection.classList.add("hidden");
   }
 
@@ -168,6 +172,9 @@
   intro.classList.add("fade-out");
   await sleep(420);
 
+  // NOW remove intro from layout so main sits at top (no scrolling)
+  intro.classList.add("gone");
+
   // show main + fade in
   main.classList.remove("hidden");
   main.classList.remove("fade-out");
@@ -183,6 +190,7 @@
   // show buttons
   if (actions) actions.style.display = "";
 }
+
 
 
   // ---------- MS-DOS popup flow ----------
