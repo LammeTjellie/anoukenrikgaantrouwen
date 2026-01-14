@@ -116,13 +116,20 @@ function setCountdown() {
 
 function maybeReveal() {
   if (typingDone && countdownDone) {
+    // Fade terminal (intro) out
+    intro.classList.add("fade-out");
+
     setTimeout(() => {
+      // Hide intro after fade
       intro.style.display = "none";
+
+      // Show main (question) and fade it in
       main.classList.remove("hidden");
-      // (optioneel) kleine fade-in: kan via CSS, maar zo is ook oké
-    }, 350);
+      main.classList.add("fade-in");
+    }, 420); // moet gelijk zijn aan CSS transition duration
   }
 }
+
 
 function typeLine(text, done) {
   let i = 0;
