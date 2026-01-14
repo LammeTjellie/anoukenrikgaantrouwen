@@ -41,7 +41,7 @@
 const memSection = document.getElementById("memories");
 const memImg = document.getElementById("memImg");
 
-function startMemoriesThenIntro() {
+  function startMemoriesThenIntro() {
   const imgs = cfg?.memories;
 
   // If no memories configured, skip
@@ -135,7 +135,7 @@ function maybeReveal() {
     intro.classList.add("fade-out");
 
     setTimeout(() => {
-      intro.style.display = "none";
+      //intro.style.display = "none";
 
       // Show main
       main.classList.remove("hidden");
@@ -342,7 +342,7 @@ intro.classList.remove("fade-out");
 intro.classList.remove("fade-in");     // startMemoriesThenIntro will fade it in when needed
 
 main.classList.add("hidden");
-main.style.display = "";
+// main.style.display = "";
 main.classList.remove("fade-out");
 main.classList.remove("fade-in");
 
