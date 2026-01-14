@@ -43,11 +43,11 @@
 
   // Intro countdown (5 sec)
   const lines = [
-    "Persoonlijke herrinnering laden…",
-    "Ongemakkelijkheid kalibreren…",
-    "Vraag ontgrendelen…",
-    "Checken of je beschikbaar bent…",
-    "Bijna klaar…"
+    "SVI wint altie instellen…",
+    "Alle vakanties laden…",
+    "ERROR: Te veel hoogtepunten…",
+    "ALLES 500…",
+    "The Hulk is Unleashed in…"
   ];
   let t = 5;
   let lineIdx = 0;
