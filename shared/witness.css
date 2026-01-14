@@ -274,3 +274,6 @@ h1{
 .fade-in {
   opacity: 1;
 }
+/* Start states for nicer fades */
+.intro { opacity: 0; }
+#main  { opacity: 0; }
