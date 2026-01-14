@@ -71,7 +71,7 @@ function typeLine(text, done) {
   const prefix = "> ";
   termBody.textContent += (termBody.textContent ? "\n" : "") + prefix;
 
-  const charDelay = 35; // <-- LANGZAMER typen (was 18). Zet bijv. 45-60 voor nog langzamer.
+  const charDelay = 60; // <-- LANGZAMER typen (was 18). Zet bijv. 45-60 voor nog langzamer.
   const iv = setInterval(() => {
     termBody.textContent += text[i] || "";
     i++;
