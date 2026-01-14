@@ -17,7 +17,10 @@ body{
   background: radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,.25), rgba(0,0,0,.75));
 }
 
-.hidden{display:none}
+.hidden{
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* Memories intro */
 .memories{
