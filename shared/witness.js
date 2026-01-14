@@ -1,6 +1,6 @@
 // shared/witness.js
 (function () {
-  const slug = location.pathname.split("/").filter(Boolean).pop(); // .../getuige/jan/ -> "jan"
+  const slug = location.pathname.split("/").filter(Boolean).pop();
   const cfg = (window.WITNESSES && window.WITNESSES[slug]) || null;
 
   const bg = document.getElementById("bg");
@@ -16,20 +16,19 @@
   const btnNo = document.getElementById("btnNo");
 
   const result = document.getElementById("result");
-  const btnApp = document.getElementById("btnApp");
-
   const popLayer = document.getElementById("popLayer");
 
+  const memSection = document.getElementById("memories");
+  const memImg = document.getElementById("memImg");
+
+  // ---------- Init UI (refresh-safe) ----------
+  // background + copy
+  bg.style.backgroundImage = "linear-gradient(160deg, #3a3a3a, #1f1f1f)";
+
   if (!cfg) {
-    // fallback
-    bg.style.backgroundImage = "linear-gradient(135deg, #333, #111)";
     kicker.textContent = "Oeps…";
     sub.textContent = "Deze getuigenpagina bestaat (nog) niet.";
   } else {
-    
-    // static background (no photos)
-    bg.style.backgroundImage = "linear-gradient(160deg, #3a3a3a, #1f1f1f)";
-
     document.title = `Getuige? – ${cfg.name}`;
     kicker.textContent = `Hey ${cfg.name}…`;
     sub.textContent = cfg.subtitle || "";
@@ -37,186 +36,154 @@
     btnNo.textContent = cfg.noText || "NEE";
   }
 
-  // --- Memories slideshow (before terminal intro) ---
-const memSection = document.getElementById("memories");
-const memImg = document.getElementById("memImg");
-
-  function startMemoriesThenIntro() {
-  const imgs = cfg?.memories;
-
-  // If no memories configured, skip
-  if (!memSection || !memImg || !Array.isArray(imgs) || imgs.length === 0) {
-    if (memSection) memSection.classList.add("hidden");
-    // fade intro in, then start
-    intro.classList.add("fade-in");
-    startIntro();
-    return;
+  // Reset screen states
+  // memories visible by default, intro visible, main hidden
+  if (memSection) {
+    memSection.classList.remove("hidden", "fade-out", "fade-in");
+    memSection.classList.add("fade-in");
   }
+  intro.classList.remove("hidden", "fade-out");
+  intro.classList.add("fade-in");
+  main.classList.add("hidden");
+  main.classList.remove("fade-in", "fade-out");
+  result.classList.add("hidden");
 
-  let idx = 0;
+  // Reset buttons state
+  btnYes.disabled = false;
+  btnNo.disabled = false;
+  const actionsEl = document.querySelector(".actions");
+  if (actionsEl) actionsEl.style.display = "";
 
-  // Preload (light)
-  imgs.forEach((src) => { const im = new Image(); im.src = src; });
+  // ---------- Helpers ----------
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  function show(i) {
-    memImg.src = imgs[i];
-    memImg.classList.remove("mem-flash");
-    void memImg.offsetWidth; // restart animation
-    memImg.classList.add("mem-flash");
-  }
-
-  show(idx);
-
-  const flashEveryMs = 720;         // <-- speed of flashes (lower = faster)
-  const totalFlashes = imgs.length; // show each image once (set to imgs.length*2 for extra)
-  let flashes = 0;
-
-  const iv = setInterval(() => {
-    flashes++;
-    idx = (idx + 1) % imgs.length;
-    show(idx);
-
-    if (flashes >= totalFlashes) {
-      clearInterval(iv);
-
-      // Fade memories out, then hide, then fade intro in
-      setTimeout(() => {
-        memSection.classList.add("fade-out");
-
-        setTimeout(() => {
-          memSection.classList.add("hidden");
-          intro.classList.add("fade-in");
-          startIntro();
-        }, 420); // match CSS transition duration
-      }, 260);
-    }
-  }, flashEveryMs);
-}
-
-
-  
-    // Intro countdown + typewriter (sync: wait for both)
-const lines = [
-  "SVI wint altie instellen…",
-  "Alle vakanties laden…",
-  "ERROR: Te veel hoogtepunten…",
-  "ALLES 500…",
-  "The Hulk is Unleashed in…"
-];
-
-let countdown = 5;
-let currentLine = 0;
-
-let typingDone = false;
-let countdownDone = false;
-
-function setCountdown() {
-  countdownEl.textContent = String(countdown);
-}
-
-function typeQuestion(text, el, done) {
-  el.textContent = "";
-  let i = 0;
-
-  const charDelay = 75; // <-- snelheid van typen (lager = sneller)
-  const iv = setInterval(() => {
-    el.textContent += text[i] || "";
-    i++;
-    if (i >= text.length) {
-      clearInterval(iv);
-      done && done();
-    }
-  }, charDelay);
-}
-  
-function maybeReveal() {
-  if (typingDone && countdownDone) {
-    // Fade terminal out
-    intro.classList.add("fade-out");
-
-    setTimeout(() => {
-      //intro.style.display = "none";
-
-      // Show main
-      main.classList.remove("hidden");
-      main.classList.add("fade-in");
-
-      // Prepare question typing
-      const questionText = "Wil jij mijn getuige zijn?";
-      const actions = document.querySelector(".actions");
-
-      // Hide buttons until typing is done
-      if (actions) actions.style.display = "none";
-
-      // Type the question
-      typeQuestion(questionText, title, () => {
-        // Show buttons after typing
-        if (actions) actions.style.display = "";
-      });
-
-    }, 420);
-  }
-}
-
-
-
-function typeLine(text, done) {
-  let i = 0;
-  const prefix = "> ";
-  termBody.textContent += (termBody.textContent ? "\n" : "") + prefix;
-
-  const charDelay = 50; // <-- LANGZAMER typen (was 18). Zet bijv. 45-60 voor nog langzamer.
-  const iv = setInterval(() => {
-    termBody.textContent += text[i] || "";
-    i++;
-    if (i >= text.length) {
-      clearInterval(iv);
-      done && done();
-    }
-  }, charDelay);
-}
-
-function runIntro() {
-  termBody.textContent = "";
-  setCountdown();
-
-  // Countdown timer
-  const countdownTimer = setInterval(() => {
-    countdown--;
-    if (countdown <= 0) {
-      countdown = 0;
-      countdownDone = true;
-      clearInterval(countdownTimer);
-      setCountdown();
-      maybeReveal();
-      return;
-    }
-    setCountdown();
-  }, 1000);
-
-  // Typewriter sequence
-  function next() {
-    if (currentLine >= lines.length) {
-      typingDone = true;
-      maybeReveal();
-      return;
-    }
-    typeLine(lines[currentLine], () => {
-      currentLine++;
-      setTimeout(next, 220); // <-- pauze tussen regels (was 180). Verhoog voor meer drama.
+  function typeLineInto(el, prefix, text, charDelay = 50) {
+    return new Promise((resolve) => {
+      let i = 0;
+      el.textContent += (el.textContent ? "\n" : "") + prefix;
+      const iv = setInterval(() => {
+        el.textContent += text[i] || "";
+        i++;
+        if (i >= text.length) {
+          clearInterval(iv);
+          resolve();
+        }
+      }, charDelay);
     });
   }
 
-  next();
-}
+  function typeInline(el, text, charDelay = 75) {
+    return new Promise((resolve) => {
+      el.textContent = "";
+      let i = 0;
+      const iv = setInterval(() => {
+        el.textContent += text[i] || "";
+        i++;
+        if (i >= text.length) {
+          clearInterval(iv);
+          resolve();
+        }
+      }, charDelay);
+    });
+  }
 
-function startIntro() {
-  runIntro();
-}
+  async function runMemories() {
+    const imgs = cfg?.memories;
+    if (!memSection || !memImg || !Array.isArray(imgs) || imgs.length === 0) {
+      if (memSection) memSection.classList.add("hidden");
+      return;
+    }
 
+    // preload light
+    imgs.forEach((src) => { const im = new Image(); im.src = src; });
 
+    let idx = 0;
+    const show = (i) => {
+      memImg.src = imgs[i];
+      memImg.classList.remove("mem-flash");
+      void memImg.offsetWidth;
+      memImg.classList.add("mem-flash");
+    };
 
-  // MS-DOS popup flow for NEE
+    show(idx);
+
+    const flashEveryMs = 720;
+    const totalFlashes = imgs.length;
+    for (let f = 0; f < totalFlashes; f++) {
+      await sleep(flashEveryMs);
+      idx = (idx + 1) % imgs.length;
+      show(idx);
+    }
+
+    // fade memories out
+    memSection.classList.add("fade-out");
+    await sleep(420);
+    memSection.classList.add("hidden");
+  }
+
+  async function runIntro() {
+    termBody.textContent = "";
+    const lines = [
+      "SVI wint altie instellen…",
+      "Alle vakanties laden…",
+      "ERROR: Te veel hoogtepunten…",
+      "ALLES 500…",
+      "The Hulk is Unleashed in…"
+    ];
+
+    // countdown + typing in parallel
+    let countdown = 5;
+    countdownEl.textContent = String(countdown);
+
+    let countdownDone = false;
+    const countdownPromise = new Promise((resolve) => {
+      const t = setInterval(() => {
+        countdown--;
+        if (countdown <= 0) {
+          countdown = 0;
+          countdownEl.textContent = "0";
+          clearInterval(t);
+          countdownDone = true;
+          resolve();
+          return;
+        }
+        countdownEl.textContent = String(countdown);
+      }, 1000);
+    });
+
+    const typingPromise = (async () => {
+      for (const line of lines) {
+        await typeLineInto(termBody, "> ", line, 50);
+        await sleep(220);
+      }
+    })();
+
+    await Promise.all([countdownPromise, typingPromise]);
+    // small pause for drama
+    await sleep(250);
+  }
+
+  async function revealQuestion() {
+    // fade intro out
+    intro.classList.add("fade-out");
+    await sleep(420);
+
+    // show main + fade in
+    main.classList.remove("hidden");
+    main.classList.add("fade-in");
+
+    // hide buttons until question typed
+    const actions = document.querySelector(".actions");
+    if (actions) actions.style.display = "none";
+
+    // type question
+    await typeInline(title, "Wil jij mijn getuige zijn?", 75);
+
+    // show buttons
+    if (actions) actions.style.display = "";
+  }
+
+  // ---------- MS-DOS popup flow ----------
   const noFlow = [
     { title: "Windows", msg: "Je bedoelde eigenlijk JA toch?" },
     { title: "Systeemmelding", msg: "Hmm… dat voelde niet als de juiste klik." },
@@ -227,89 +194,75 @@ function startIntro() {
     { title: "Laatste kans", msg: "Oké. Echte laatste kans. Kies verstandig." },
     { title: "Update", msg: "Keuzemenu bijgewerkt: alleen JA is beschikbaar." },
   ];
-
   let noStep = 0;
 
   function spawnPopup(step) {
-  const { title, msg } = noFlow[step];
+    const { title, msg } = noFlow[step];
+    const pop = document.createElement("div");
+    pop.className = "popup";
 
-  const pop = document.createElement("div");
-  pop.className = "popup";
+    pop.innerHTML = `
+      <div class="bar">
+        <span>${title}</span>
+        <span style="opacity:.85">✕</span>
+      </div>
+      <div class="body">${msg}</div>
+      <div class="pactions">
+        <button class="pbtn" data-ans="yes">JA</button>
+        <button class="pbtn" data-ans="no">NEE</button>
+      </div>
+    `;
 
-  // 1) Eerst de inhoud zetten (anders is rect.width/height ~ 0)
-  pop.innerHTML = `
-    <div class="bar">
-      <span>${title}</span>
-      <span style="opacity:.85">✕</span>
-    </div>
-    <div class="body">${msg}</div>
-    <div class="pactions">
-      <button class="pbtn" data-ans="yes">JA</button>
-      <button class="pbtn" data-ans="no">NEE</button>
-    </div>
-  `;
+    if (step === noFlow.length - 1) {
+      const btns = pop.querySelectorAll(".pbtn");
+      btns.forEach((b) => (b.textContent = "JA"));
+      btns.forEach((b) => b.setAttribute("data-ans", "yes"));
+    }
 
-  // On the final step -> make it JA/JA
-  if (step === noFlow.length - 1) {
-    const btns = pop.querySelectorAll(".pbtn");
-    btns.forEach((b) => (b.textContent = "JA"));
-    btns.forEach((b) => b.setAttribute("data-ans", "yes"));
+    popLayer.appendChild(pop);
+
+    // position within viewport
+    const margin = 12;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const rect = pop.getBoundingClientRect();
+
+    const maxLeft = Math.max(margin, vw - rect.width - margin);
+    const maxTop = Math.max(margin, vh - rect.height - margin);
+
+    const left = Math.floor(margin + Math.random() * (maxLeft - margin));
+    const top = Math.floor(margin + Math.random() * (maxTop - margin));
+
+    pop.style.left = `${left}px`;
+    pop.style.top = `${top}px`;
+    pop.style.zIndex = String(1000 + step);
+
+    pop.querySelectorAll(".pbtn").forEach((b) => {
+      b.addEventListener("click", () => {
+        const ans = b.getAttribute("data-ans");
+        if (ans === "yes") {
+          pop.remove();
+          acceptYes();
+        } else {
+          pop.remove();
+          noStep = Math.min(noStep + 1, noFlow.length - 1);
+          spawnPopup(noStep);
+        }
+      });
+    });
   }
 
-  // 2) Append naar DOM zodat we kunnen meten
-  popLayer.appendChild(pop);
-
-  // 3) Positioneer binnen viewport (mobile-safe)
-  const margin = 12; // px safe padding from edges
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const rect = pop.getBoundingClientRect();
-
-  const maxLeft = Math.max(margin, vw - rect.width - margin);
-  const maxTop  = Math.max(margin, vh - rect.height - margin);
-
-  const left = Math.floor(margin + Math.random() * (maxLeft - margin));
-  const top  = Math.floor(margin + Math.random() * (maxTop - margin));
-
-  pop.style.left = `${left}px`;
-  pop.style.top  = `${top}px`;
-
-  // Bring to front
-  pop.style.zIndex = String(1000 + step);
-
-  // 4) Button handlers
-  pop.querySelectorAll(".pbtn").forEach((b) => {
-    b.addEventListener("click", () => {
-      const ans = b.getAttribute("data-ans");
-      if (ans === "yes") {
-        pop.remove();
-        acceptYes();
-      } else {
-        pop.remove();
-        noStep = Math.min(noStep + 1, noFlow.length - 1);
-        spawnPopup(noStep);
-      }
-    });
-  });
-}
-
-
   function acceptYes() {
-     // Hide the main choice buttons immediately
     const actions = document.querySelector(".actions");
     if (actions) actions.style.display = "none";
-
-    // Also make sure the buttons can't be clicked again
     btnYes.disabled = true;
     btnNo.disabled = true;
-
-    // Hide any remaining popups (if any)
     popLayer.innerHTML = "";
 
-    // Show result
     result.classList.remove("hidden");
+    result.classList.add("fade-in");
 
-    // Little confetti without libs (tiny)
+    // confetti
     for (let i = 0; i < 40; i++) {
       const s = document.createElement("div");
       s.style.position = "fixed";
@@ -336,38 +289,7 @@ function startIntro() {
     }
   }
 
-  // --- Reset UI state on load (prevents intro staying hidden after refresh/bfcache) ---
-intro.style.display = "";              // undo intro.style.display = "none"
-intro.classList.remove("fade-out");
-intro.classList.remove("fade-in");     // startMemoriesThenIntro will fade it in when needed
-
-main.classList.add("hidden");
-// main.style.display = "";
-main.classList.remove("fade-out");
-main.classList.remove("fade-in");
-
-// Optional: reset question + result UI
-result.classList.add("hidden");
-const actionsEl = document.querySelector(".actions");
-if (actionsEl) actionsEl.style.display = "";
-btnYes.disabled = false;
-btnNo.disabled = false;
-
-// Reset intro progress variables (so typewriter/countdown always restart cleanly)
-countdown = 5;
-currentLine = 0;
-typingDone = false;
-countdownDone = false;
-
-// Ensure memories starts visible (if present)
-if (memSection) {
-  memSection.classList.remove("hidden");
-  memSection.classList.remove("fade-out");
-}
-
-  
-  startMemoriesThenIntro();
-  
+  // Hook buttons
   btnYes.addEventListener("click", acceptYes);
   btnNo.addEventListener("click", () => {
     const actions = document.querySelector(".actions");
@@ -375,5 +297,12 @@ if (memSection) {
     btnYes.disabled = true;
     btnNo.disabled = true;
     spawnPopup(noStep);
-});
+  });
+
+  // ---------- Run flow ----------
+  (async () => {
+    await runMemories();
+    await runIntro();
+    await revealQuestion();
+  })();
 })();
