@@ -114,21 +114,50 @@ function setCountdown() {
   countdownEl.textContent = String(countdown);
 }
 
+function typeQuestion(text, el, done) {
+  el.textContent = "";
+  let i = 0;
+
+  const charDelay = 75; // <-- snelheid van typen (lager = sneller)
+  const iv = setInterval(() => {
+    el.textContent += text[i] || "";
+    i++;
+    if (i >= text.length) {
+      clearInterval(iv);
+      done && done();
+    }
+  }, charDelay);
+}
+  
 function maybeReveal() {
   if (typingDone && countdownDone) {
-    // Fade terminal (intro) out
+    // Fade terminal out
     intro.classList.add("fade-out");
 
     setTimeout(() => {
-      // Hide intro after fade
       intro.style.display = "none";
 
-      // Show main (question) and fade it in
+      // Show main
       main.classList.remove("hidden");
       main.classList.add("fade-in");
-    }, 420); // moet gelijk zijn aan CSS transition duration
+
+      // Prepare question typing
+      const questionText = "Wil jij mijn getuige zijn?";
+      const actions = document.querySelector(".actions");
+
+      // Hide buttons until typing is done
+      if (actions) actions.style.display = "none";
+
+      // Type the question
+      typeQuestion(questionText, title, () => {
+        // Show buttons after typing
+        if (actions) actions.style.display = "";
+      });
+
+    }, 420);
   }
 }
+
 
 
 function typeLine(text, done) {
