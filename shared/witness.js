@@ -26,13 +26,9 @@
     kicker.textContent = "Oeps…";
     sub.textContent = "Deze getuigenpagina bestaat (nog) niet.";
   } else {
-    // background slideshow
-    let i = 0;
-    bg.style.backgroundImage = `url('${cfg.photos[0]}')`;
-    setInterval(() => {
-      i = (i + 1) % cfg.photos.length;
-      bg.style.backgroundImage = `url('${cfg.photos[i]}')`;
-    }, 6000);
+    
+    // static background (no photos)
+    bg.style.backgroundImage = "linear-gradient(160deg, #3a3a3a, #1f1f1f)";
 
     document.title = `Getuige? – ${cfg.name}`;
     kicker.textContent = `Hey ${cfg.name}…`;
