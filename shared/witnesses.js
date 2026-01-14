@@ -2,25 +2,45 @@
 window.WITNESSES = {
   bastiaan: {
     name: "Bastiaan",
-    //subtitle: "Oké Bastiaan… even serieus 👀",
+    memories: [
+      "/assets/getuigen/jan-m1.jpg",
+      "/assets/getuigen/jan-m2.jpg",
+      "/assets/getuigen/jan-m3.jpg",
+      "/assets/getuigen/jan-m4.jpg"
+    ],
     yesText: "JA",
     noText: "NEE",
   },
   benno: {
     name: "Benno",
-    //subtitle: "Benno, jij weet wat je te doen staat 😄",
+    memories: [
+      "/assets/getuigen/jan-m1.jpg",
+      "/assets/getuigen/jan-m2.jpg",
+      "/assets/getuigen/jan-m3.jpg",
+      "/assets/getuigen/jan-m4.jpg"
+    ],
     yesText: "JA",
     noText: "NEE",
   },
   dennis: {
     name: "Dennis",
-    //subtitle: "Dennis… ik heb je iets te vragen ✨",
+    memories: [
+      "/assets/getuigen/jan-m1.jpg",
+      "/assets/getuigen/jan-m2.jpg",
+      "/assets/getuigen/jan-m3.jpg",
+      "/assets/getuigen/jan-m4.jpg"
+    ],
     yesText: "JA",
     noText: "NEE",
   },
   gerbert: {
     name: "Gerbert",
-    //subtitle: "Gerbert, even een officiële aanvraag 😎",
+    memories: [
+      "/assets/getuigen/jan-m1.jpg",
+      "/assets/getuigen/jan-m2.jpg",
+      "/assets/getuigen/jan-m3.jpg",
+      "/assets/getuigen/jan-m4.jpg"
+    ],
     yesText: "JA",
     noText: "NEE",
   }
