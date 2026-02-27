@@ -23,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* Intro Scherm */
         .intro-screen {
             height: 100vh;
             display: flex;
@@ -36,26 +35,26 @@
 
         .intro-screen h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 12vw, 5.5rem);
+            font-size: clamp(3.5rem, 12vw, 6rem);
             margin: 0;
             color: #2c2c2c;
             font-weight: 400;
         }
 
         .intro-screen p {
-            font-size: clamp(0.8rem, 3vw, 1.1rem);
+            font-size: clamp(0.8rem, 3vw, 1rem);
             text-transform: uppercase;
-            letter-spacing: 6px;
+            letter-spacing: 8px;
             color: var(--text-grey);
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .scroll-container {
             position: relative;
             width: 100%;
-            /* Lange aanloop naar de eerste tekst */
-            padding-top: 120vh; 
-            padding-bottom: 100vh;
+            /* Veel kortere aanloop zodat de lijn direct zichtbaar is */
+            padding-top: 20vh; 
+            padding-bottom: 80vh;
         }
 
         .wavy-line-svg {
@@ -75,42 +74,41 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            height: 120vh; /* Ruimte per punt */
+            height: 100vh;
             text-align: center;
         }
 
         .content-box {
             display: inline-block;
             background-color: var(--bg-color);
-            padding: 20px 40px;
-            /* Dwing de tekst naar de bovenkant van de milestone */
-            margin-top: 10vh; 
+            padding: 10px 20px;
+            /* Tekst staat heel hoog in het blok */
+            margin-top: 2vh; 
             max-width: 85%;
-            box-shadow: 0 0 50px 30px var(--bg-color); /* Zorgt dat de lijn achter de tekst wegvalt */
+            box-shadow: 0 0 40px 30px var(--bg-color); 
         }
 
         .date { 
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             letter-spacing: 4px; 
             color: var(--gold); 
             text-transform: uppercase; 
             display: block; 
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             opacity: 0;
         }
 
         h3 { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 8vw, 3rem); 
-            margin: 5px 0 15px 0; 
+            font-size: clamp(1.8rem, 8vw, 2.8rem); 
+            margin: 0 0 10px 0; 
             font-weight: 400; 
-            color: #222;
         }
 
         p.description { 
-            font-size: clamp(1.1rem, 4vw, 1.3rem); 
+            font-size: clamp(1rem, 4vw, 1.2rem); 
             line-height: 1.6; 
-            max-width: 550px; 
+            max-width: 500px; 
             margin: 0 auto;
             opacity: 0;
         }
@@ -134,21 +132,77 @@
             <div class="content-box">
                 <span class="date">Februari 2018</span>
                 <h3 class="typewriter">De Eerste Ontmoeting</h3>
-                <p class="description">Waar het allemaal begon, in dat kleine cafeetje.</p>
+                <p class="description">Waar het allemaal begon.</p>
             </div>
         </div>
 
         <div class="milestone">
             <div class="content-box">
                 <span class="date">Juni 2018</span>
-                <h3 class="typewriter">Onze Eerste Reis</h3>
-                <p class="description">Samen de wereld ontdekken in Frankrijk.</p>
+                <h3 class="typewriter">Eerste Vakantie</h3>
+                <p class="description">Verliefd in Frankrijk.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Januari 2019</span>
+                <h3 class="typewriter">Samenwonen</h3>
+                <p class="description">Ons eerste eigen plekje.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Maart 2020</span>
+                <h3 class="typewriter">Hoogtepunt 4</h3>
+                <p class="description">Beschrijving van dit moment.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Mei 2021</span>
+                <h3 class="typewriter">Hoogtepunt 5</h3>
+                <p class="description">Beschrijving van dit moment.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Juli 2022</span>
+                <h3 class="typewriter">Hoogtepunt 6</h3>
+                <p class="description">Beschrijving van dit moment.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Oktober 2023</span>
+                <h3 class="typewriter">Hoogtepunt 7</h3>
+                <p class="description">Beschrijving van dit moment.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Maart 2024</span>
+                <h3 class="typewriter">Hoogtepunt 8</h3>
+                <p class="description">Beschrijving van dit moment.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">September 2026</span>
+                <h3 class="typewriter">De Grote Dag</h3>
+                <p class="description">Eindelijk JA zeggen!</p>
             </div>
         </div>
 
         <div class="milestone final-screen">
-            <div class="content-box" style="margin-top: 20vh;">
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold);">Tot snel!</h2>
+            <div class="content-box" style="margin-top: 10vh;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold);">Tot snel!</h2>
                 <p style="text-transform: uppercase; letter-spacing: 4px;">Wij kunnen niet wachten</p>
             </div>
         </div>
@@ -180,12 +234,9 @@
             const pathLength = drawLine();
             gsap.set(wavyPath, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
 
-            // Start de animatie pas na een korte delay voor stabiliteit
             setTimeout(() => {
                 const tl = gsap.timeline({
-                    onComplete: () => {
-                        document.body.style.overflowY = "auto";
-                    }
+                    onComplete: () => { document.body.style.overflowY = "auto"; }
                 });
 
                 document.body.style.overflow = "hidden";
@@ -198,25 +249,26 @@
                     const originalTitle = title ? title.innerText : "";
                     if(title) title.innerText = "";
 
-                    // Forceer scrollen naar de top van de milestone
+                    // ScrollPos naar de bovenkant van het blok
+                    // De offsetY van -100 zorgt dat de tekst EXTRA hoog komt te staan
                     const scrollPos = m.offsetTop;
 
                     tl.to(window, {
-                        scrollTo: { y: scrollPos, autoKill: false },
-                        duration: 3,
+                        scrollTo: { y: scrollPos, offsetY: -100, autoKill: false },
+                        duration: 2.5,
                         ease: "power2.inOut"
                     })
                     .to(wavyPath, {
                         strokeDashoffset: pathLength - (pathLength * (m.offsetTop / container.offsetHeight)),
-                        duration: 2.8,
+                        duration: 2.2,
                         ease: "none"
-                    }, "-=3")
-                    .to(date, { opacity: 1, duration: 0.5 })
-                    .to(title, { text: originalTitle, duration: 1.2, ease: "none" })
-                    .to(text, { opacity: 1, duration: 0.8 })
-                    .to({}, { duration: 2 });
+                    }, "-=2.5")
+                    .to(date, { opacity: 1, duration: 0.4 })
+                    .to(title, { text: originalTitle, duration: 1, ease: "none" })
+                    .to(text, { opacity: 1, duration: 0.7 })
+                    .to({}, { duration: 1.5 });
                 });
-            }, 500);
+            }, 300);
 
             window.addEventListener('resize', () => drawLine());
         };
