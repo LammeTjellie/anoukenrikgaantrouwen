@@ -1,228 +1,187 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anouk & Rik gaan trouwen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onze Reis - Dynamic</title>
+    
+    <style>
+        :root {
+            --bg-color: #fdfaf7; 
+            --gold: #d4af37;
+        }
 
-  <!-- SEO -->
-  <meta name="description" content="Anouk & Rik gaan trouwen. Save the date – 30 oktober 2026." />
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'optima', 'georgia', serif;
+            color: #4a4a4a;
+            overflow-x: hidden;
+        }
 
-  <!-- Open Graph (preview bij delen) -->
-  <meta property="og:title" content="Anouk & Rik gaan trouwen" />
-  <meta property="og:description" content="Save the date – 30 oktober 2026." />
-  <meta property="og:type" content="website" />
+        .scroll-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50vh 0; /* Ruimte aan begin en eind */
+        }
 
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+        /* De Golvende Lijn */
+        .wavy-line-svg {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px; 
+            height: 100%;
+            z-index: 1;
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
 
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        .milestone {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 900px; /* Veel breder */
+            min-height: 80vh; /* Zorgt dat elk punt het scherm vult */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+        }
 
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(160deg, #f5efe6, #ffffff);
-      color: #2b2b2b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-    }
+        .content-box {
+            padding: 60px 80px; /* 2.5x groter gevoel */
+            background-color: var(--bg-color); 
+            border: none; /* Geen rand meer */
+        }
 
-    .card {
-      max-width: 560px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
-      padding: 3rem 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-      backdrop-filter: blur(6px);
-    }
+        .date { font-size: 1.2rem; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 20px; }
+        h3 { font-size: 3rem; margin: 0 0 20px 0; font-weight: normal; color: #222; }
+        p { font-size: 1.5rem; line-height: 1.6; max-width: 700px; margin: 0 auto; }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.6rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-      color: #8a8a8a;
-    }
-
-    .divider {
-      width: 60px;
-      height: 2px;
-      background: #c9a46c;
-      margin: 2rem auto;
-      border-radius: 2px;
-    }
-
-    .date {
-      font-size: 1.1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    /* Countdown */
-    .countdown-title {
-      font-size: 0.95rem;
-      color: #777;
-      margin-bottom: 0.75rem;
-    }
-
-    .countdown {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.75rem;
-      margin: 0 auto 2.25rem;
-      max-width: 420px;
-    }
-
-    .cd-box {
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.06);
-      border-radius: 14px;
-      padding: 0.9rem 0.6rem;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.04);
-    }
-
-    .cd-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .cd-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #8a8a8a;
-      margin-top: 0.4rem;
-    }
-
-    .text {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-      color: #555;
-    }
-
-    .footer {
-      font-size: 0.85rem;
-      color: #999;
-    }
-
-    .tiny {
-      font-size: 0.8rem;
-      color: #9a9a9a;
-      margin-top: 0.75rem;
-    }
-
-    @media (max-width: 480px) {
-      h1 { font-size: 2.2rem; }
-      .card { padding: 2.5rem 1.5rem; }
-      .countdown { gap: 0.6rem; }
-      .cd-num { font-size: 1.55rem; }
-    }
-  </style>
+        .intro-screen {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="card">
-    <h1>Anouk & Rik</h1>
-    <h2>gaan trouwen</h2>
 
-    <div class="divider"></div>
-
-    <div class="date">
-      Save the date<br>
-      <strong>30 oktober 2026</strong>
+    <div class="intro-screen">
+        <div>
+            <h1 style="font-size: 4rem;">Onze Reis</h1>
+            <p>Het avontuur van ons leven</p>
+        </div>
     </div>
 
-    <div class="countdown-title">Nog even geduld…</div>
+    <div class="scroll-container">
+        <svg class="wavy-line-svg" id="svgContainer" preserveAspectRatio="none">
+            <path id="wavyPath" d="" />
+        </svg>
 
-    <div class="countdown" aria-label="Countdown tot de bruiloft">
-      <div class="cd-box">
-        <div class="cd-num" id="cd-days">—</div>
-        <div class="cd-label">Dagen</div>
-      </div>
-      <div class="cd-box">
-        <div class="cd-num" id="cd-hours">—</div>
-        <div class="cd-label">Uren</div>
-      </div>
-      <div class="cd-box">
-        <div class="cd-num" id="cd-mins">—</div>
-        <div class="cd-label">Min</div>
-      </div>
-      <div class="cd-box">
-        <div class="cd-num" id="cd-secs">—</div>
-        <div class="cd-label">Sec</div>
-      </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Feb 2018</span><h3>De Eerste Ontmoeting</h3><p>Waar de vonk oversloeg in dat kleine cafeetje.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Juni 2018</span><h3>Eerste Vakantie</h3><p>Verliefd worden onder de Franse zon.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Jan 2019</span><h3>Samenwonen</h3><p>Van twee huizen naar één thuis.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Maart 2020</span><h3>Lockdown Buddy's</h3><p>Als je dit overleeft, overleef je alles.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Mei 2021</span><h3>Gezinsuitbreiding</h3><p>De dag dat onze trouwe viervoeter kwam.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Okt 2022</span><h3>Droomreis</h3><p>Samen de wereld ontdekken, stap voor stap.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Dec 2023</span><h3>HET Aanzoek</h3><p>Het makkelijkste 'JA' ooit gegeven.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Juli 2024</span><h3>De Locatie</h3><p>We vonden de perfecte plek voor ons ja-woord.</p></div>
+        </div>
+        <div class="milestone">
+            <div class="content-box"><span class="date">Vandaag</span><h3>De Voorpret</h3><p>We kunnen niet wachten om dit met jullie te vieren!</p></div>
+        </div>
     </div>
 
-    <p class="text">
-      We zijn bezig met het voorbereiden van een dag vol liefde, gezelligheid en mooie momenten.<br>
-    </p>
-
-    <div class="footer">
-      Meer details volgen 💛
-      <div class="tiny" id="cd-status"></div>
+    <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <h2 style="font-size: 3rem;">Tot snel op de bruiloft!</h2>
     </div>
-  </div>
 
-  <script>
-    // Countdown naar 30 oktober 2026, 00:00 (lokale tijd van de bezoeker)
-    const targetDate = new Date(2026, 9, 30, 0, 0, 0); // maand is 0-based: 9 = oktober
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
 
-    const elDays = document.getElementById("cd-days");
-    const elHours = document.getElementById("cd-hours");
-    const elMins = document.getElementById("cd-mins");
-    const elSecs = document.getElementById("cd-secs");
-    const elStatus = document.getElementById("cd-status");
+    <script>
+        gsap.registerPlugin(ScrollToPlugin);
 
-    function pad2(n) {
-      return String(n).padStart(2, "0");
-    }
+        // 1. Teken de langere golvende lijn
+        const container = document.querySelector('.scroll-container');
+        const wavyPath = document.getElementById('wavyPath');
+        const height = container.offsetHeight;
+        
+        let pathData = "M 60 0 "; 
+        for (let i = 0; i <= height; i += 10) {
+            // Delen door 150 maakt de golven veel langer/rustiger
+            let x = 60 + Math.sin(i / 150) * 40; 
+            pathData += `L ${x} ${i} `;
+        }
+        wavyPath.setAttribute('d', pathData);
 
-    function tick() {
-      const now = new Date();
-      let diff = targetDate - now;
+        // 2. Lijn onzichtbaar maken voor het "drawing" effect
+        const pathLength = wavyPath.getTotalLength();
+        gsap.set(wavyPath, {
+            strokeDasharray: pathLength,
+            strokeDashoffset: pathLength
+        });
 
-      if (diff <= 0) {
-        elDays.textContent = "0";
-        elHours.textContent = "00";
-        elMins.textContent = "00";
-        elSecs.textContent = "00";
-        elStatus.textContent = "Het is zover! 🎉";
-        return;
-      }
+        // 3. De Animatie Timeline
+        const tl = gsap.timeline({
+            onComplete: () => {
+                document.body.style.overflow = "auto";
+            }
+        });
 
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / (3600 * 24));
-      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-      const mins = Math.floor((totalSeconds % 3600) / 60);
-      const secs = totalSeconds % 60;
+        document.body.style.overflow = "hidden";
 
-      elDays.textContent = String(days);
-      elHours.textContent = pad2(hours);
-      elMins.textContent = pad2(mins);
-      elSecs.textContent = pad2(secs);
-      elStatus.textContent = "";
-    }
+        const milestones = document.querySelectorAll('.milestone');
 
-    tick();
-    setInterval(tick, 1000);
-  </script>
+        milestones.forEach((m, index) => {
+            // Bereken hoe ver de lijn moet zijn voor dit punt
+            const scrollPos = m.offsetTop + (m.offsetHeight / 2);
+            const relativeDraw = pathLength * (scrollPos / height);
+
+            tl.to(window, {
+                scrollTo: { y: m, offsetY: 0 },
+                duration: 2.5,
+                ease: "power2.inOut"
+            })
+            // De lijn tekent mee met de scroll
+            .to(wavyPath, {
+                strokeDashoffset: pathLength - relativeDraw,
+                duration: 2.5,
+                ease: "power2.inOut"
+            }, "-=2.5") 
+            .to(m, {
+                opacity: 1,
+                duration: 1.5
+            }, "-=1")
+            .to({}, { duration: 1.5 }); // Pauze bij elk moment
+        });
+
+    </script>
 </body>
 </html>
