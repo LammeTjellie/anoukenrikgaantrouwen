@@ -23,17 +23,28 @@
             overflow-x: hidden;
         }
 
-        .intro-screen {
-            height: 100vh;
+        /* De container is nu de hele pagina */
+        .scroll-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 100vh;
+        }
+
+        /* De namen staan nu bovenaan de scroll-container */
+        .intro-header {
+            height: 60vh; /* Iets minder dan een heel scherm voor een snelle start */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background-color: var(--bg-color);
+            z-index: 10;
         }
 
-        .intro-screen h1 {
+        .intro-header h1 {
             font-family: 'Playfair Display', serif;
             font-size: clamp(3.5rem, 12vw, 6rem);
             margin: 0;
@@ -41,29 +52,21 @@
             font-weight: 400;
         }
 
-        .intro-screen p {
-            font-size: clamp(0.8rem, 3vw, 1rem);
+        .intro-header p {
+            font-size: clamp(0.7rem, 3vw, 0.9rem);
             text-transform: uppercase;
             letter-spacing: 8px;
             color: var(--text-grey);
             margin-top: 5px;
         }
 
-        .scroll-container {
-            position: relative;
-            width: 100%;
-            /* Veel kortere aanloop zodat de lijn direct zichtbaar is */
-            padding-top: 20vh; 
-            padding-bottom: 80vh;
-        }
-
         .wavy-line-svg {
             position: absolute;
-            top: 0;
+            top: 55vh; /* Begint direct onder de namen */
             left: 50%;
             transform: translateX(-50%);
             width: 80px; 
-            height: 100%;
+            height: calc(100% - 55vh);
             z-index: 1;
             fill: none;
             stroke: var(--gold);
@@ -74,7 +77,7 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            height: 100vh;
+            height: 100vh; /* Ruimte tussen de stops */
             text-align: center;
         }
 
@@ -82,10 +85,9 @@
             display: inline-block;
             background-color: var(--bg-color);
             padding: 10px 20px;
-            /* Tekst staat heel hoog in het blok */
-            margin-top: 2vh; 
+            margin-top: 5vh; /* Staat hoog in het 100vh blok */
             max-width: 85%;
-            box-shadow: 0 0 40px 30px var(--bg-color); 
+            box-shadow: 0 0 30px 20px var(--bg-color); 
         }
 
         .date { 
@@ -94,7 +96,7 @@
             color: var(--gold); 
             text-transform: uppercase; 
             display: block; 
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             opacity: 0;
         }
 
@@ -112,18 +114,16 @@
             margin: 0 auto;
             opacity: 0;
         }
-
-        .final-screen { height: 100vh; }
     </style>
 </head>
 <body>
 
-    <div class="intro-screen">
-        <h1>Anouk & Rik</h1>
-        <p>Gaan Trouwen</p>
-    </div>
-
     <div class="scroll-container">
+        <header class="intro-header">
+            <h1>Anouk & Rik</h1>
+            <p>Gaan Trouwen</p>
+        </header>
+
         <svg class="wavy-line-svg" id="svgContainer" preserveAspectRatio="none">
             <path id="wavyPath" d="" />
         </svg>
@@ -132,78 +132,23 @@
             <div class="content-box">
                 <span class="date">Februari 2018</span>
                 <h3 class="typewriter">De Eerste Ontmoeting</h3>
-                <p class="description">Waar het allemaal begon.</p>
+                <p class="description">Het begin van alles.</p>
             </div>
         </div>
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Juni 2018</span>
-                <h3 class="typewriter">Eerste Vakantie</h3>
-                <p class="description">Verliefd in Frankrijk.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Januari 2019</span>
-                <h3 class="typewriter">Samenwonen</h3>
-                <p class="description">Ons eerste eigen plekje.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Maart 2020</span>
-                <h3 class="typewriter">Hoogtepunt 4</h3>
-                <p class="description">Beschrijving van dit moment.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Mei 2021</span>
-                <h3 class="typewriter">Hoogtepunt 5</h3>
-                <p class="description">Beschrijving van dit moment.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Juli 2022</span>
-                <h3 class="typewriter">Hoogtepunt 6</h3>
-                <p class="description">Beschrijving van dit moment.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Oktober 2023</span>
-                <h3 class="typewriter">Hoogtepunt 7</h3>
-                <p class="description">Beschrijving van dit moment.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Maart 2024</span>
-                <h3 class="typewriter">Hoogtepunt 8</h3>
-                <p class="description">Beschrijving van dit moment.</p>
-            </div>
-        </div>
+        <div class="milestone"><div class="content-box"><span class="date">Datum</span><h3 class="typewriter">Punt 2</h3><p class="description">Tekst...</p></div></div>
+        <div class="milestone"><div class="content-box"><span class="date">Datum</span><h3 class="typewriter">Punt 3</h3><p class="description">Tekst...</p></div></div>
+        <div class="milestone"><div class="content-box"><span class="date">Datum</span><h3 class="typewriter">Punt 4</h3><p class="description">Tekst...</p></div></div>
+        <div class="milestone"><div class="content-box"><span class="date">Datum</span><h3 class="typewriter">Punt 5</h3><p class="description">Tekst...</p></div></div>
+        <div class="milestone"><div class="content-box"><span class="date">Datum</span><h3 class="typewriter">Punt 6</h3><p class="description">Tekst...</p></div></div>
+        <div class="milestone"><div class="content-box"><span class="date">Datum</span><h3 class="typewriter">Punt 7</h3><p class="description">Tekst...</p></div></div>
+        <div class="milestone"><div class="content-box"><span class="date">Datum</span><h3 class="typewriter">Punt 8</h3><p class="description">Tekst...</p></div></div>
 
         <div class="milestone">
             <div class="content-box">
                 <span class="date">September 2026</span>
-                <h3 class="typewriter">De Grote Dag</h3>
-                <p class="description">Eindelijk JA zeggen!</p>
-            </div>
-        </div>
-
-        <div class="milestone final-screen">
-            <div class="content-box" style="margin-top: 10vh;">
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold);">Tot snel!</h2>
-                <p style="text-transform: uppercase; letter-spacing: 4px;">Wij kunnen niet wachten</p>
+                <h3 class="typewriter">Onze Bruiloft</h3>
+                <p class="description">Wij kunnen niet wachten.</p>
             </div>
         </div>
     </div>
@@ -221,7 +166,7 @@
             const milestones = document.querySelectorAll('.milestone');
 
             function drawLine() {
-                const height = container.offsetHeight;
+                const height = container.offsetHeight - (window.innerHeight * 0.55);
                 let pathData = "M 40 0 "; 
                 for (let i = 0; i <= height; i += 10) {
                     let x = 40 + Math.sin(i / 150) * 30; 
@@ -245,21 +190,20 @@
                     const title = m.querySelector('.typewriter');
                     const text = m.querySelector('.description');
                     const date = m.querySelector('.date');
-                    
-                    const originalTitle = title ? title.innerText : "";
-                    if(title) title.innerText = "";
+                    const originalTitle = title.innerText;
+                    title.innerText = "";
 
-                    // ScrollPos naar de bovenkant van het blok
-                    // De offsetY van -100 zorgt dat de tekst EXTRA hoog komt te staan
-                    const scrollPos = m.offsetTop;
+                    // We scrollen naar de milestone, maar stoppen 15% boven de bovenkant van het scherm
+                    // om de tekst echt hoog te krijgen.
+                    const scrollPos = m.offsetTop - (window.innerHeight * 0.15);
 
                     tl.to(window, {
-                        scrollTo: { y: scrollPos, offsetY: -100, autoKill: false },
+                        scrollTo: { y: scrollPos, autoKill: false },
                         duration: 2.5,
                         ease: "power2.inOut"
                     })
                     .to(wavyPath, {
-                        strokeDashoffset: pathLength - (pathLength * (m.offsetTop / container.offsetHeight)),
+                        strokeDashoffset: pathLength - (pathLength * ((m.offsetTop - (window.innerHeight * 0.55)) / (container.offsetHeight - (window.innerHeight * 0.55)))),
                         duration: 2.2,
                         ease: "none"
                     }, "-=2.5")
