@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onze Reis - Professional</title>
+    <title>Onze Reis - Perfect Centered</title>
     
     <style>
         :root {
@@ -16,9 +16,10 @@
             background-color: var(--bg-color);
             font-family: 'optima', 'georgia', serif;
             color: #4a4a4a;
-            overflow-x: hidden;
+            overflow: hidden; /* Wordt door JS pas aan het eind op 'auto' gezet */
         }
 
+        /* Intro scherm */
         .intro-screen {
             height: 100vh;
             display: flex;
@@ -30,11 +31,8 @@
         .scroll-container {
             position: relative;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Veel ruimte aan de bovenkant voor een lange start-lijn */
-            padding-top: 80vh; 
+            /* Padding top zorgt dat de lijn eerst een stukje loopt */
+            padding-top: 50vh; 
         }
 
         .wavy-line-svg {
@@ -43,7 +41,7 @@
             left: 50%;
             transform: translateX(-50%);
             width: 100px; 
-            height: 100%;
+            height: 100%; /* De SVG beslaat de hele container */
             z-index: 1;
             fill: none;
             stroke: var(--gold);
@@ -55,34 +53,28 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 90%;
+            height: 100vh; /* Elk punt vult exact één schermhoogte */
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; /* Horizontaal midden */
+            align-items: center;     /* Verticaal midden */
             text-align: center;
-            margin-bottom: 100vh; 
         }
-
-        /* Variabele afstanden tussen de punten */
-        .spacing-large { margin-bottom: 140vh; }
-        .spacing-xl { margin-bottom: 200vh; }
 
         .content-box {
             padding: 40px;
             background-color: var(--bg-color); 
-            border: none;
-            width: 100%;
+            max-width: 800px;
+            width: 90%;
         }
 
-        /* Styling voor de foto's */
         .milestone-img {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             height: auto;
             border-radius: 15px;
             margin-top: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            opacity: 0; /* Wordt later door GSAP geanimeerd */
+            opacity: 0;
             transform: translateY(20px);
         }
 
@@ -96,29 +88,13 @@
             opacity: 0;
         }
 
-        h3 { 
-            font-size: clamp(2rem, 8vw, 3.5rem); 
-            margin: 0 0 20px 0; 
-            font-weight: normal; 
-            color: #222;
-        }
+        h3 { font-size: clamp(2rem, 8vw, 3.5rem); margin: 0 0 20px 0; font-weight: normal; color: #222; }
+        p { font-size: clamp(1.1rem, 4vw, 1.4rem); line-height: 1.6; margin: 0 auto; }
 
-        p { 
-            font-size: clamp(1.1rem, 4vw, 1.4rem); 
-            line-height: 1.6; 
-            max-width: 700px; 
-            margin: 0 auto;
-        }
-
-        .final-screen {
-            height: 100vh; /* Vult het hele scherm aan het eind */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--bg-color);
-            z-index: 3;
-        }
+        /* Afstanden tussen de milestones aanpassen door lege ruimte */
+        .gap { height: 50vh; }
+        .gap.large { height: 120vh; }
+        .gap.xl { height: 200vh; }
     </style>
 </head>
 <body>
@@ -140,80 +116,25 @@
                 <span class="date">Feb 2018</span>
                 <h3 class="typewriter">De Eerste Ontmoeting</h3>
                 <p class="typewriter-p">Waar de vonk oversloeg in dat kleine cafeetje.</p>
-                <img src="https://picsum.photos/seed/wedding1/800/500" class="milestone-img" alt="Ons moment">
+                <img src="https://picsum.photos/seed/wedding1/800/500" class="milestone-img">
             </div>
         </div>
 
-        <div class="milestone spacing-large">
+        <div class="gap large"></div> <div class="milestone">
             <div class="content-box">
                 <span class="date">Juni 2018</span>
                 <h3 class="typewriter">Eerste Vakantie</h3>
                 <p class="typewriter-p">Verliefd worden onder de Franse zon.</p>
+                <img src="https://picsum.photos/seed/holiday/800/500" class="milestone-img">
             </div>
         </div>
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Jan 2019</span>
-                <h3 class="typewriter">Samenwonen</h3>
-                <p class="typewriter-p">Van twee huizen naar één thuis.</p>
-                <img src="https://picsum.photos/seed/home/800/500" class="milestone-img" alt="Ons huis">
-            </div>
-        </div>
+        <div class="gap xl"></div>
 
-        <div class="milestone spacing-xl">
-            <div class="content-box">
-                <span class="date">Maart 2020</span>
-                <h3 class="typewriter">Lockdown Buddy's</h3>
-                <p class="typewriter-p">Als je dit overleeft, overleef je alles.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Mei 2021</span>
-                <h3 class="typewriter">Gezinsuitbreiding</h3>
-                <p class="typewriter-p">De dag dat onze trouwe viervoeter kwam.</p>
-                <img src="https://picsum.photos/seed/dog/800/500" class="milestone-img" alt="Onze hond">
-            </div>
-        </div>
-
-        <div class="milestone spacing-large">
-            <div class="content-box">
-                <span class="date">Okt 2022</span>
-                <h3 class="typewriter">Droomreis</h3>
-                <p class="typewriter-p">Samen de wereld ontdekken, stap voor stap.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Dec 2023</span>
-                <h3 class="typewriter">HET Aanzoek</h3>
-                <p class="typewriter-p">Het makkelijkste 'JA' ooit gegeven.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Juli 2024</span>
-                <h3 class="typewriter">De Locatie</h3>
-                <p class="typewriter-p">We vonden de perfecte plek voor ons ja-woord.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Vandaag</span>
-                <h3 class="typewriter">De Voorpret</h3>
-                <p class="typewriter-p">We kunnen niet wachten om dit te vieren!</p>
-            </div>
-        </div>
-
-        <div class="milestone final-screen">
+        <div class="milestone" id="final">
             <div class="content-box">
                 <h2 style="font-size: clamp(2.5rem, 8vw, 4rem); color: var(--gold);">Tot snel!</h2>
-                <p>Scroll nu gerust verder door de website.</p>
+                <p>Wij kunnen niet wachten om dit met jullie te vieren.</p>
             </div>
         </div>
     </div>
@@ -233,7 +154,7 @@
             const height = container.offsetHeight;
             let pathData = "M 50 0 "; 
             for (let i = 0; i <= height; i += 10) {
-                let x = 50 + Math.sin(i / 120) * 35; 
+                let x = 50 + Math.sin(i / 100) * 35; 
                 pathData += `L ${x} ${i} `;
             }
             wavyPath.setAttribute('d', pathData);
@@ -245,11 +166,9 @@
 
         const tl = gsap.timeline({
             onComplete: () => {
-                document.body.style.overflow = "auto";
+                document.body.style.overflowY = "auto";
             }
         });
-
-        document.body.style.overflow = "hidden";
 
         milestones.forEach((m, index) => {
             const title = m.querySelector('.typewriter');
@@ -257,36 +176,34 @@
             const date = m.querySelector('.date');
             const img = m.querySelector('.milestone-img');
             
-            // Tekst opslaan en leegmaken (indien aanwezig)
             const originalTitle = title ? title.innerText : "";
             const originalText = text ? text.innerText : "";
             if(title) title.innerText = "";
             if(text) text.innerText = "";
 
-            const scrollPos = m.offsetTop + (m.offsetHeight / 2) - (window.innerHeight / 2);
-            const relativeDraw = pathLength * ((m.offsetTop + (m.offsetHeight / 2)) / container.offsetHeight);
+            // Bereken het punt waar de lijn moet stoppen (precies in het midden van het blok)
+            const rect = m.getBoundingClientRect();
+            const scrollTarget = m.offsetTop;
+            const drawTarget = m.offsetTop + (m.offsetHeight / 2);
+            const relativeDraw = pathLength * (drawTarget / container.offsetHeight);
 
             tl.to(window, {
-                scrollTo: { y: m, offsetY: 0 },
+                scrollTo: { y: scrollTarget, offsetY: 0 },
                 duration: 3,
                 ease: "power2.inOut"
             })
             .to(wavyPath, {
                 strokeDashoffset: pathLength - relativeDraw,
-                duration: 2.7,
+                duration: 2.8,
                 ease: "power1.inOut"
             }, "-=3");
 
             if(date) tl.to(date, { opacity: 1, duration: 0.5 });
             if(title) tl.to(title, { text: originalTitle, duration: 1.2, ease: "none" });
             if(text) tl.to(text, { text: originalText, duration: 1.5, ease: "none" });
-            
-            // Foto subtiel laten infaden na de tekst
-            if(img) {
-                tl.to(img, { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.5");
-            }
+            if(img) tl.to(img, { opacity: 1, y: 0, duration: 1 }, "-=0.5");
 
-            tl.to({}, { duration: 2 }); // Pauze per moment
+            tl.to({}, { duration: 2 });
         });
 
         window.addEventListener('resize', () => drawLine());
