@@ -22,7 +22,7 @@
             overflow-x: hidden;
         }
 
-        /* Intro Scherm (Anouk & Rik stijl) */
+        /* Intro Scherm */
         .intro-screen {
             height: 100vh;
             display: flex;
@@ -55,8 +55,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Lange aanloop naar het eerste punt */
-            padding-top: 80vh; 
+            padding-top: 100vh; /* Lange aanloop zoals gevraagd */
         }
 
         .wavy-line-svg {
@@ -82,29 +81,13 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            /* Ruimte tussen de hoogtepunten */
-            margin-bottom: 120vh; 
+            margin-bottom: 100vh; 
         }
-
-        /* Extra afstand voor variatie */
-        .milestone.spacing-large { margin-bottom: 150vh; }
-        .milestone.spacing-xl { margin-bottom: 210vh; }
 
         .content-box {
-            padding: 40px;
+            padding: 20px;
             background-color: var(--bg-color); 
             width: 100%;
-        }
-
-        .milestone-img {
-            width: 100%;
-            max-width: 500px;
-            height: auto;
-            border-radius: 8px;
-            margin-top: 30px;
-            opacity: 0;
-            transform: translateY(20px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         .date { 
@@ -133,11 +116,10 @@
         }
 
         .final-screen {
-            height: 120vh;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
         }
     </style>
 </head>
@@ -160,16 +142,6 @@
                 <span class="date">Feb 2018</span>
                 <h3 class="typewriter">De Eerste Ontmoeting</h3>
                 <p class="description typewriter-p">Waar de vonk oversloeg in dat kleine cafeetje.</p>
-                <img src="https://picsum.photos/seed/love/800/500" class="milestone-img">
-            </div>
-        </div>
-
-        <div class="milestone spacing-large">
-            <div class="content-box">
-                <span class="date">Juni 2018</span>
-                <h3 class="typewriter">Eerste Vakantie</h3>
-                <p class="description typewriter-p">Verliefd worden onder de Franse zon.</p>
-                <img src="https://picsum.photos/seed/holiday/800/500" class="milestone-img">
             </div>
         </div>
 
@@ -216,24 +188,21 @@
 
         milestones.forEach((m, index) => {
             const title = m.querySelector('.typewriter');
-            const text = m.querySelector('.typewriter-p');
+            const text = m.querySelector('.description');
             const date = m.querySelector('.date');
-            const img = m.querySelector('.milestone-img');
             
             const originalTitle = title ? title.innerText : "";
             const originalText = text ? text.innerText : "";
             if(title) title.innerText = "";
             if(text) text.innerText = "";
 
-            // We scrollen nu naar het punt, maar laten het lager stoppen (offsetY)
-            // zodat het niet tegen de bovenkant van het scherm plakt.
             const scrollPos = m.offsetTop;
             const lineDrawPoint = m.offsetTop + (m.offsetHeight / 2);
             const relativeDraw = pathLength * (lineDrawPoint / container.offsetHeight);
 
             tl.to(window, {
-                // offsetY op 150-200px zorgt dat het lager stopt
-                scrollTo: { y: scrollPos, offsetY: 180, autoKill: false },
+                // We scrolen naar het punt met een kleine marge van 100px van boven
+                scrollTo: { y: scrollPos, offsetY: 100, autoKill: false },
                 duration: 3,
                 ease: "power2.inOut"
             })
@@ -244,13 +213,8 @@
             }, "-=3")
             .to(date, { opacity: 1, duration: 0.5 })
             .to(title, { text: originalTitle, duration: 1.2, ease: "none" })
-            .to(text, { text: originalText, duration: 1.5, ease: "none" });
-
-            if(img) {
-                tl.to(img, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5");
-            }
-
-            tl.to({}, { duration: 2 });
+            .to(text, { text: originalText, duration: 1.5, ease: "none" })
+            .to({}, { duration: 1.5 });
         });
 
         window.addEventListener('resize', () => drawLine());
