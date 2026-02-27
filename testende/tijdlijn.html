@@ -14,14 +14,16 @@
             --text-grey: #a0a0a0;
         }
 
-        body {
+        body, html {
             margin: 0;
+            padding: 0;
             background-color: var(--bg-color);
             font-family: 'Inter', sans-serif;
             color: #4a4a4a;
             overflow-x: hidden;
         }
 
+        /* Intro Scherm */
         .intro-screen {
             height: 100vh;
             display: flex;
@@ -29,6 +31,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            background-color: var(--bg-color);
         }
 
         .intro-screen h1 {
@@ -36,6 +39,7 @@
             font-size: clamp(3rem, 12vw, 5.5rem);
             margin: 0;
             color: #2c2c2c;
+            font-weight: 400;
         }
 
         .intro-screen p {
@@ -49,8 +53,9 @@
         .scroll-container {
             position: relative;
             width: 100%;
-            padding-top: 100vh; /* De aanloop naar het eerste punt */
-            padding-bottom: 50vh; /* Ruimte aan de onderkant zodat laatste punt ook hoog komt */
+            /* Lange aanloop naar de eerste tekst */
+            padding-top: 120vh; 
+            padding-bottom: 100vh;
         }
 
         .wavy-line-svg {
@@ -70,17 +75,18 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            height: 100vh; /* Elk punt krijgt de ruimte van één volledig scherm */
+            height: 120vh; /* Ruimte per punt */
             text-align: center;
         }
 
         .content-box {
             display: inline-block;
             background-color: var(--bg-color);
-            padding: 20px;
-            /* Hier bepalen we de hoogte: 5vh is erg hoog in beeld */
-            margin-top: 5vh; 
-            max-width: 90%;
+            padding: 20px 40px;
+            /* Dwing de tekst naar de bovenkant van de milestone */
+            margin-top: 10vh; 
+            max-width: 85%;
+            box-shadow: 0 0 50px 30px var(--bg-color); /* Zorgt dat de lijn achter de tekst wegvalt */
         }
 
         .date { 
@@ -89,21 +95,22 @@
             color: var(--gold); 
             text-transform: uppercase; 
             display: block; 
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             opacity: 0;
         }
 
         h3 { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 8vw, 2.8rem); 
+            font-size: clamp(1.8rem, 8vw, 3rem); 
             margin: 5px 0 15px 0; 
             font-weight: 400; 
+            color: #222;
         }
 
         p.description { 
-            font-size: clamp(1rem, 4vw, 1.2rem); 
+            font-size: clamp(1.1rem, 4vw, 1.3rem); 
             line-height: 1.6; 
-            max-width: 500px; 
+            max-width: 550px; 
             margin: 0 auto;
             opacity: 0;
         }
@@ -139,66 +146,10 @@
             </div>
         </div>
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Januari 2019</span>
-                <h3 class="typewriter">Samenwonen</h3>
-                <p class="description">Van twee huizen naar één echt thuis.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Maart 2020</span>
-                <h3 class="typewriter">Gezinsuitbreiding</h3>
-                <p class="description">Onze eerste stappen als 'ouders' van onze trouwe viervoeter.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Augustus 2021</span>
-                <h3 class="typewriter">Nieuwe Avonturen</h3>
-                <p class="description">Een nieuwe plek, een nieuw hoofdstuk.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Mei 2022</span>
-                <h3 class="typewriter">Hoogtepunten</h3>
-                <p class="description">Bijzondere momenten die we nooit meer vergeten.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">December 2023</span>
-                <h3 class="typewriter">Het Aanzoek</h3>
-                <p class="description">De meest magische vraag op het mooiste moment.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Januari 2025</span>
-                <h3 class="typewriter">De Voorbereidingen</h3>
-                <p class="description">Plannen maken voor de dag van onze dromen.</p>
-            </div>
-        </div>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">September 2026</span>
-                <h3 class="typewriter">Onze Bruiloft</h3>
-                <p class="description">De dag dat we eindelijk 'JA' zeggen tegen elkaar.</p>
-            </div>
-        </div>
-
         <div class="milestone final-screen">
-            <div class="content-box" style="margin-top: 10vh;">
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold);">Tot snel!</h2>
-                <p style="text-transform: uppercase; letter-spacing: 3px;">Wij kunnen niet wachten</p>
+            <div class="content-box" style="margin-top: 20vh;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold);">Tot snel!</h2>
+                <p style="text-transform: uppercase; letter-spacing: 4px;">Wij kunnen niet wachten</p>
             </div>
         </div>
     </div>
@@ -208,63 +159,67 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
 
     <script>
-        gsap.registerPlugin(ScrollToPlugin, TextPlugin);
+        window.onload = () => {
+            gsap.registerPlugin(ScrollToPlugin, TextPlugin);
 
-        const container = document.querySelector('.scroll-container');
-        const wavyPath = document.getElementById('wavyPath');
-        const milestones = document.querySelectorAll('.milestone');
+            const container = document.querySelector('.scroll-container');
+            const wavyPath = document.getElementById('wavyPath');
+            const milestones = document.querySelectorAll('.milestone');
 
-        function drawLine() {
-            const height = container.offsetHeight;
-            let pathData = "M 40 0 "; 
-            for (let i = 0; i <= height; i += 10) {
-                let x = 40 + Math.sin(i / 150) * 30; 
-                pathData += `L ${x} ${i} `;
+            function drawLine() {
+                const height = container.offsetHeight;
+                let pathData = "M 40 0 "; 
+                for (let i = 0; i <= height; i += 10) {
+                    let x = 40 + Math.sin(i / 150) * 30; 
+                    pathData += `L ${x} ${i} `;
+                }
+                wavyPath.setAttribute('d', pathData);
+                return wavyPath.getTotalLength();
             }
-            wavyPath.setAttribute('d', pathData);
-            return wavyPath.getTotalLength();
-        }
 
-        const pathLength = drawLine();
-        gsap.set(wavyPath, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+            const pathLength = drawLine();
+            gsap.set(wavyPath, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
 
-        const tl = gsap.timeline({
-            onComplete: () => {
-                document.body.style.overflowY = "auto";
-            }
-        });
+            // Start de animatie pas na een korte delay voor stabiliteit
+            setTimeout(() => {
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        document.body.style.overflowY = "auto";
+                    }
+                });
 
-        document.body.style.overflow = "hidden";
+                document.body.style.overflow = "hidden";
 
-        milestones.forEach((m, index) => {
-            const title = m.querySelector('.typewriter');
-            const text = m.querySelector('.description');
-            const date = m.querySelector('.date');
-            
-            const originalTitle = title ? title.innerText : "";
-            if(title) title.innerText = "";
+                milestones.forEach((m, index) => {
+                    const title = m.querySelector('.typewriter');
+                    const text = m.querySelector('.description');
+                    const date = m.querySelector('.date');
+                    
+                    const originalTitle = title ? title.innerText : "";
+                    if(title) title.innerText = "";
 
-            // We scrollen naar de bovenkant van de milestone (offsetY op 0)
-            const scrollPos = m.offsetTop;
+                    // Forceer scrollen naar de top van de milestone
+                    const scrollPos = m.offsetTop;
 
-            tl.to(window, {
-                scrollTo: { y: scrollPos, offsetY: 0, autoKill: false },
-                duration: 2.5,
-                ease: "power2.inOut"
-            })
-            .to(wavyPath, {
-                // Lijn tekent tot de bovenkant van het tekstblok
-                strokeDashoffset: pathLength - (pathLength * (m.offsetTop / container.offsetHeight)),
-                duration: 2.2,
-                ease: "none"
-            }, "-=2.5")
-            .to(date, { opacity: 1, duration: 0.5 })
-            .to(title, { text: originalTitle, duration: 1.2, ease: "none" })
-            .to(text, { opacity: 1, duration: 0.8 })
-            .to({}, { duration: 1.5 });
-        });
+                    tl.to(window, {
+                        scrollTo: { y: scrollPos, autoKill: false },
+                        duration: 3,
+                        ease: "power2.inOut"
+                    })
+                    .to(wavyPath, {
+                        strokeDashoffset: pathLength - (pathLength * (m.offsetTop / container.offsetHeight)),
+                        duration: 2.8,
+                        ease: "none"
+                    }, "-=3")
+                    .to(date, { opacity: 1, duration: 0.5 })
+                    .to(title, { text: originalTitle, duration: 1.2, ease: "none" })
+                    .to(text, { opacity: 1, duration: 0.8 })
+                    .to({}, { duration: 2 });
+                });
+            }, 500);
 
-        window.addEventListener('resize', () => drawLine());
+            window.addEventListener('resize', () => drawLine());
+        };
     </script>
 </body>
 </html>
