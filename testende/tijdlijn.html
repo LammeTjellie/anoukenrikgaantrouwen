@@ -49,8 +49,8 @@
         .scroll-container {
             position: relative;
             width: 100%;
-            /* Extreem lange aanloop naar de eerste tekst */
-            padding-top: 120vh; 
+            padding-top: 100vh; /* De aanloop naar het eerste punt */
+            padding-bottom: 50vh; /* Ruimte aan de onderkant zodat laatste punt ook hoog komt */
         }
 
         .wavy-line-svg {
@@ -63,25 +63,23 @@
             z-index: 1;
             fill: none;
             stroke: var(--gold);
-            stroke-width: 2;
+            stroke-width: 2.5;
         }
 
         .milestone {
             position: relative;
             z-index: 2;
             width: 100%;
-            /* Elk blok is hoog, maar we plakken de tekst aan de bovenkant */
-            height: 110vh; 
+            height: 100vh; /* Elk punt krijgt de ruimte van één volledig scherm */
             text-align: center;
-            display: block; /* Geen flex meer */
         }
 
         .content-box {
             display: inline-block;
             background-color: var(--bg-color);
-            padding: 15px;
-            /* Dwing de tekst naar bovenin het blok */
-            margin-top: 50px; 
+            padding: 20px;
+            /* Hier bepalen we de hoogte: 5vh is erg hoog in beeld */
+            margin-top: 5vh; 
             max-width: 90%;
         }
 
@@ -129,12 +127,76 @@
             <div class="content-box">
                 <span class="date">Februari 2018</span>
                 <h3 class="typewriter">De Eerste Ontmoeting</h3>
-                <p class="description typewriter-p">Waar de vonk oversloeg in dat kleine cafeetje.</p>
+                <p class="description">Waar het allemaal begon, in dat kleine cafeetje.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Juni 2018</span>
+                <h3 class="typewriter">Onze Eerste Reis</h3>
+                <p class="description">Samen de wereld ontdekken in Frankrijk.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Januari 2019</span>
+                <h3 class="typewriter">Samenwonen</h3>
+                <p class="description">Van twee huizen naar één echt thuis.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Maart 2020</span>
+                <h3 class="typewriter">Gezinsuitbreiding</h3>
+                <p class="description">Onze eerste stappen als 'ouders' van onze trouwe viervoeter.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Augustus 2021</span>
+                <h3 class="typewriter">Nieuwe Avonturen</h3>
+                <p class="description">Een nieuwe plek, een nieuw hoofdstuk.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Mei 2022</span>
+                <h3 class="typewriter">Hoogtepunten</h3>
+                <p class="description">Bijzondere momenten die we nooit meer vergeten.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">December 2023</span>
+                <h3 class="typewriter">Het Aanzoek</h3>
+                <p class="description">De meest magische vraag op het mooiste moment.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">Januari 2025</span>
+                <h3 class="typewriter">De Voorbereidingen</h3>
+                <p class="description">Plannen maken voor de dag van onze dromen.</p>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="content-box">
+                <span class="date">September 2026</span>
+                <h3 class="typewriter">Onze Bruiloft</h3>
+                <p class="description">De dag dat we eindelijk 'JA' zeggen tegen elkaar.</p>
             </div>
         </div>
 
         <div class="milestone final-screen">
-            <div class="content-box" style="margin-top: 150px;">
+            <div class="content-box" style="margin-top: 10vh;">
                 <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold);">Tot snel!</h2>
                 <p style="text-transform: uppercase; letter-spacing: 3px;">Wij kunnen niet wachten</p>
             </div>
@@ -180,19 +242,18 @@
             const date = m.querySelector('.date');
             
             const originalTitle = title ? title.innerText : "";
-            const originalText = text ? text.innerText : "";
             if(title) title.innerText = "";
 
-            // We scrollen naar de bovenkant van de milestone
-            // Maar we stoppen de browser al op -50px, zodat de tekst heel hoog staat
+            // We scrollen naar de bovenkant van de milestone (offsetY op 0)
             const scrollPos = m.offsetTop;
 
             tl.to(window, {
-                scrollTo: { y: scrollPos, offsetY: 50, autoKill: false },
+                scrollTo: { y: scrollPos, offsetY: 0, autoKill: false },
                 duration: 2.5,
                 ease: "power2.inOut"
             })
             .to(wavyPath, {
+                // Lijn tekent tot de bovenkant van het tekstblok
                 strokeDashoffset: pathLength - (pathLength * (m.offsetTop / container.offsetHeight)),
                 duration: 2.2,
                 ease: "none"
