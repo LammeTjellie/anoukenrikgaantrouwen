@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* Intro Scherm */
         .intro-screen {
             height: 100vh;
             display: flex;
@@ -30,35 +29,28 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            position: relative;
-            z-index: 10;
         }
 
         .intro-screen h1 {
             font-family: 'Playfair Display', serif;
             font-size: clamp(3rem, 12vw, 5.5rem);
-            font-weight: 400;
             margin: 0;
             color: #2c2c2c;
         }
 
         .intro-screen p {
-            font-family: 'Inter', sans-serif;
             font-size: clamp(0.8rem, 3vw, 1.1rem);
             text-transform: uppercase;
             letter-spacing: 6px;
             color: var(--text-grey);
-            margin: 10px 0 0 0;
+            margin-top: 10px;
         }
 
         .scroll-container {
             position: relative;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Extra lange aanloop vanaf de start */
-            padding-top: 150vh; 
+            /* Extreem lange aanloop naar de eerste tekst */
+            padding-top: 120vh; 
         }
 
         .wavy-line-svg {
@@ -66,64 +58,59 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px; 
+            width: 80px; 
             height: 100%;
             z-index: 1;
             fill: none;
             stroke: var(--gold);
-            stroke-width: 2.5;
-            stroke-linecap: round;
+            stroke-width: 2;
         }
 
         .milestone {
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 800px;
-            /* We geven elk blok een vaste hoogte zodat we precies weten waar we zijn */
-            height: 100vh; 
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Start bovenaan */
-            padding-top: 15vh; /* Dit bepaalt hoe ver van de bovenkant de tekst staat */
+            /* Elk blok is hoog, maar we plakken de tekst aan de bovenkant */
+            height: 110vh; 
             text-align: center;
+            display: block; /* Geen flex meer */
         }
 
         .content-box {
-            padding: 20px;
-            background-color: var(--bg-color); 
             display: inline-block;
-            margin: 0 auto;
+            background-color: var(--bg-color);
+            padding: 15px;
+            /* Dwing de tekst naar bovenin het blok */
+            margin-top: 50px; 
+            max-width: 90%;
         }
 
         .date { 
-            font-size: 0.85rem; 
+            font-size: 0.8rem; 
             letter-spacing: 4px; 
             color: var(--gold); 
             text-transform: uppercase; 
             display: block; 
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             opacity: 0;
         }
 
         h3 { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 7vw, 2.8rem); 
-            margin: 0 0 15px 0; 
+            font-size: clamp(1.8rem, 8vw, 2.8rem); 
+            margin: 5px 0 15px 0; 
             font-weight: 400; 
-            color: #222;
         }
 
         p.description { 
             font-size: clamp(1rem, 4vw, 1.2rem); 
             line-height: 1.6; 
-            max-width: 550px; 
+            max-width: 500px; 
             margin: 0 auto;
+            opacity: 0;
         }
 
-        .final-screen {
-            padding-top: 30vh;
-        }
+        .final-screen { height: 100vh; }
     </style>
 </head>
 <body>
@@ -147,7 +134,7 @@
         </div>
 
         <div class="milestone final-screen">
-            <div class="content-box">
+            <div class="content-box" style="margin-top: 150px;">
                 <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold);">Tot snel!</h2>
                 <p style="text-transform: uppercase; letter-spacing: 3px;">Wij kunnen niet wachten</p>
             </div>
@@ -167,9 +154,9 @@
 
         function drawLine() {
             const height = container.offsetHeight;
-            let pathData = "M 50 0 "; 
+            let pathData = "M 40 0 "; 
             for (let i = 0; i <= height; i += 10) {
-                let x = 50 + Math.sin(i / 150) * 35; 
+                let x = 40 + Math.sin(i / 150) * 30; 
                 pathData += `L ${x} ${i} `;
             }
             wavyPath.setAttribute('d', pathData);
@@ -195,31 +182,25 @@
             const originalTitle = title ? title.innerText : "";
             const originalText = text ? text.innerText : "";
             if(title) title.innerText = "";
-            if(text) text.innerText = "";
 
-            // We scrollen nu EXACT naar de bovenkant van het milestone-blok.
-            // Omdat de tekst binnen dat blok 15vh padding-top heeft, 
-            // staat het altijd op precies 15% van de bovenkant van je scherm.
+            // We scrollen naar de bovenkant van de milestone
+            // Maar we stoppen de browser al op -50px, zodat de tekst heel hoog staat
             const scrollPos = m.offsetTop;
-            
-            // De lijn tekent tot de plek waar de tekst begint
-            const lineDrawPoint = m.offsetTop + (window.innerHeight * 0.15);
-            const relativeDraw = pathLength * (lineDrawPoint / container.offsetHeight);
 
             tl.to(window, {
-                scrollTo: { y: scrollPos, autoKill: false },
+                scrollTo: { y: scrollPos, offsetY: 50, autoKill: false },
                 duration: 2.5,
                 ease: "power2.inOut"
             })
             .to(wavyPath, {
-                strokeDashoffset: pathLength - relativeDraw,
+                strokeDashoffset: pathLength - (pathLength * (m.offsetTop / container.offsetHeight)),
                 duration: 2.2,
                 ease: "none"
             }, "-=2.5")
             .to(date, { opacity: 1, duration: 0.5 })
-            .to(title, { text: originalTitle, duration: 1, ease: "none" })
-            .to(text, { text: originalText, duration: 1.2, ease: "none" })
-            .to({}, { duration: 2 });
+            .to(title, { text: originalTitle, duration: 1.2, ease: "none" })
+            .to(text, { opacity: 1, duration: 0.8 })
+            .to({}, { duration: 1.5 });
         });
 
         window.addEventListener('resize', () => drawLine());
