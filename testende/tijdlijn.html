@@ -17,14 +17,7 @@
             font-family: 'optima', 'georgia', serif;
             color: #4a4a4a;
             overflow-x: hidden;
-        }
-
-        .intro-screen {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            /* Scroll wordt door JS uitgezet tijdens intro */
         }
 
         .scroll-container {
@@ -33,10 +26,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Veel ruimte aan de bovenkant voor een lange start-lijn */
-            padding-top: 80vh; 
+            padding-top: 20vh;
         }
 
+        /* De Golvende Lijn */
         .wavy-line-svg {
             position: absolute;
             top: 0;
@@ -55,35 +48,24 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 90%;
+            max-width: 90%; /* Meer ademruimte op mobiel */
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            margin-bottom: 100vh; 
+            /* Afstanden worden nu via classes geregeld */
+            margin-bottom: 120vh; 
         }
 
-        /* Variabele afstanden tussen de punten */
-        .spacing-large { margin-bottom: 140vh; }
-        .spacing-xl { margin-bottom: 200vh; }
+        /* Variabele afstanden */
+        .milestone.spacing-large { margin-bottom: 150vh; }
+        .milestone.spacing-xl { margin-bottom: 210vh; }
 
         .content-box {
             padding: 40px;
             background-color: var(--bg-color); 
             border: none;
             width: 100%;
-        }
-
-        /* Styling voor de foto's */
-        .milestone-img {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            border-radius: 15px;
-            margin-top: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            opacity: 0; /* Wordt later door GSAP geanimeerd */
-            transform: translateY(20px);
         }
 
         .date { 
@@ -97,31 +79,33 @@
         }
 
         h3 { 
-            font-size: clamp(2rem, 8vw, 3.5rem); 
+            font-size: clamp(2rem, 8vw, 4rem); /* Schalt tussen 2rem en 4rem op basis van scherm */
             margin: 0 0 20px 0; 
             font-weight: normal; 
             color: #222;
+            min-height: 1.2em; /* Voorkomt 'springen' van tekst bij typen */
         }
 
         p { 
-            font-size: clamp(1.1rem, 4vw, 1.4rem); 
+            font-size: clamp(1.1rem, 4vw, 1.6rem); 
             line-height: 1.6; 
             max-width: 700px; 
             margin: 0 auto;
+            min-height: 3em;
         }
 
-        .final-screen {
-            height: 100vh; /* Vult het hele scherm aan het eind */
+        .intro-screen {
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: var(--bg-color);
-            z-index: 3;
+            text-align: center;
         }
     </style>
 </head>
 <body>
+
+    <button id="skipBtn">Skip Animatie</button>
 
     <div class="intro-screen">
         <div>
@@ -140,7 +124,6 @@
                 <span class="date">Feb 2018</span>
                 <h3 class="typewriter">De Eerste Ontmoeting</h3>
                 <p class="typewriter-p">Waar de vonk oversloeg in dat kleine cafeetje.</p>
-                <img src="https://picsum.photos/seed/wedding1/800/500" class="milestone-img" alt="Ons moment">
             </div>
         </div>
 
@@ -157,7 +140,6 @@
                 <span class="date">Jan 2019</span>
                 <h3 class="typewriter">Samenwonen</h3>
                 <p class="typewriter-p">Van twee huizen naar één thuis.</p>
-                <img src="https://picsum.photos/seed/home/800/500" class="milestone-img" alt="Ons huis">
             </div>
         </div>
 
@@ -174,7 +156,6 @@
                 <span class="date">Mei 2021</span>
                 <h3 class="typewriter">Gezinsuitbreiding</h3>
                 <p class="typewriter-p">De dag dat onze trouwe viervoeter kwam.</p>
-                <img src="https://picsum.photos/seed/dog/800/500" class="milestone-img" alt="Onze hond">
             </div>
         </div>
 
@@ -209,13 +190,10 @@
                 <p class="typewriter-p">We kunnen niet wachten om dit te vieren!</p>
             </div>
         </div>
+    </div>
 
-        <div class="milestone final-screen">
-            <div class="content-box">
-                <h2 style="font-size: clamp(2.5rem, 8vw, 4rem); color: var(--gold);">Tot snel!</h2>
-                <p>Scroll nu gerust verder door de website.</p>
-            </div>
-        </div>
+    <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <h2 style="font-size: 3rem;">Tot snel!</h2>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -228,12 +206,15 @@
         const container = document.querySelector('.scroll-container');
         const wavyPath = document.getElementById('wavyPath');
         const milestones = document.querySelectorAll('.milestone');
+        const skipBtn = document.getElementById('skipBtn');
 
+        // 1. Teken de lijn op basis van de totale hoogte
         function drawLine() {
             const height = container.offsetHeight;
             let pathData = "M 50 0 "; 
             for (let i = 0; i <= height; i += 10) {
-                let x = 50 + Math.sin(i / 120) * 35; 
+                // Iets hogere frequentie (i/100) voor meer golven op mobiel/desktop
+                let x = 50 + Math.sin(i / 100) * 35; 
                 pathData += `L ${x} ${i} `;
             }
             wavyPath.setAttribute('d', pathData);
@@ -243,9 +224,11 @@
         const pathLength = drawLine();
         gsap.set(wavyPath, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
 
+        // 2. De Animatie
         const tl = gsap.timeline({
             onComplete: () => {
                 document.body.style.overflow = "auto";
+                skipBtn.style.display = "none";
             }
         });
 
@@ -255,41 +238,36 @@
             const title = m.querySelector('.typewriter');
             const text = m.querySelector('.typewriter-p');
             const date = m.querySelector('.date');
-            const img = m.querySelector('.milestone-img');
             
-            // Tekst opslaan en leegmaken (indien aanwezig)
-            const originalTitle = title ? title.innerText : "";
-            const originalText = text ? text.innerText : "";
-            if(title) title.innerText = "";
-            if(text) text.innerText = "";
+            // Onthoud de tekst en maak leeg voor typ-effect
+            const originalTitle = title.innerText;
+            const originalText = text.innerText;
+            title.innerText = "";
+            text.innerText = "";
 
-            const scrollPos = m.offsetTop + (m.offsetHeight / 2) - (window.innerHeight / 2);
-            const relativeDraw = pathLength * ((m.offsetTop + (m.offsetHeight / 2)) / container.offsetHeight);
+            const scrollPos = m.offsetTop + (m.offsetHeight / 2);
+            const relativeDraw = pathLength * (scrollPos / container.offsetHeight);
 
+            // De 'Sequence' per milestone
             tl.to(window, {
                 scrollTo: { y: m, offsetY: 0 },
-                duration: 3,
+                duration: 3, // Iets langer voor de reis
                 ease: "power2.inOut"
             })
             .to(wavyPath, {
                 strokeDashoffset: pathLength - relativeDraw,
-                duration: 2.7,
+                duration: 2.8, // Iets sneller klaar dan de scroll
                 ease: "power1.inOut"
-            }, "-=3");
-
-            if(date) tl.to(date, { opacity: 1, duration: 0.5 });
-            if(title) tl.to(title, { text: originalTitle, duration: 1.2, ease: "none" });
-            if(text) tl.to(text, { text: originalText, duration: 1.5, ease: "none" });
-            
-            // Foto subtiel laten infaden na de tekst
-            if(img) {
-                tl.to(img, { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.5");
-            }
-
-            tl.to({}, { duration: 2 }); // Pauze per moment
+            }, "-=3")
+            .to(date, { opacity: 1, duration: 0.5 })
+            .to(title, { text: originalTitle, duration: 1.5, ease: "none" })
+            .to(text, { text: originalText, duration: 2, ease: "none" })
+            .to({}, { duration: 1.5 }); // Wachttijd na het typen
         });
 
+        // Herbereken lijn bij venster-resize
         window.addEventListener('resize', () => drawLine());
+
     </script>
 </body>
 </html>
