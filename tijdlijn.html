@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onze Reis - Dynamic</title>
+    <title>Onze Reis - Professional</title>
     
     <style>
         :root {
@@ -17,6 +17,7 @@
             font-family: 'optima', 'georgia', serif;
             color: #4a4a4a;
             overflow-x: hidden;
+            /* Scroll wordt door JS uitgezet tijdens intro */
         }
 
         .scroll-container {
@@ -25,7 +26,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50vh 0; /* Ruimte aan begin en eind */
+            padding-top: 20vh;
         }
 
         /* De Golvende Lijn */
@@ -34,12 +35,12 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px; 
+            width: 100px; 
             height: 100%;
             z-index: 1;
             fill: none;
             stroke: var(--gold);
-            stroke-width: 3;
+            stroke-width: 2.5;
             stroke-linecap: round;
         }
 
@@ -47,24 +48,51 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 900px; /* Veel breder */
-            min-height: 80vh; /* Zorgt dat elk punt het scherm vult */
+            max-width: 90%; /* Meer ademruimte op mobiel */
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
+            /* Afstanden worden nu via classes geregeld */
+            margin-bottom: 60vh; 
+        }
+
+        /* Variabele afstanden */
+        .milestone.spacing-large { margin-bottom: 120vh; }
+        .milestone.spacing-xl { margin-bottom: 180vh; }
+
+        .content-box {
+            padding: 40px;
+            background-color: var(--bg-color); 
+            border: none;
+            width: 100%;
+        }
+
+        .date { 
+            font-size: 1rem; 
+            letter-spacing: 4px; 
+            color: var(--gold); 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 15px;
             opacity: 0;
         }
 
-        .content-box {
-            padding: 60px 80px; /* 2.5x groter gevoel */
-            background-color: var(--bg-color); 
-            border: none; /* Geen rand meer */
+        h3 { 
+            font-size: clamp(2rem, 8vw, 4rem); /* Schalt tussen 2rem en 4rem op basis van scherm */
+            margin: 0 0 20px 0; 
+            font-weight: normal; 
+            color: #222;
+            min-height: 1.2em; /* Voorkomt 'springen' van tekst bij typen */
         }
 
-        .date { font-size: 1.2rem; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 20px; }
-        h3 { font-size: 3rem; margin: 0 0 20px 0; font-weight: normal; color: #222; }
-        p { font-size: 1.5rem; line-height: 1.6; max-width: 700px; margin: 0 auto; }
+        p { 
+            font-size: clamp(1.1rem, 4vw, 1.6rem); 
+            line-height: 1.6; 
+            max-width: 700px; 
+            margin: 0 auto;
+            min-height: 3em;
+        }
 
         .intro-screen {
             height: 100vh;
@@ -73,14 +101,33 @@
             align-items: center;
             text-align: center;
         }
+
+        /* Skip knop */
+        #skipBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        #skipBtn:hover { background: var(--gold); color: white; }
     </style>
 </head>
 <body>
 
+    <button id="skipBtn">Skip Animatie</button>
+
     <div class="intro-screen">
         <div>
-            <h1 style="font-size: 4rem;">Onze Reis</h1>
-            <p>Het avontuur van ons leven</p>
+            <h1 style="font-size: clamp(2.5rem, 10vw, 5rem);">Onze Reis</h1>
+            <p>Samen onderweg naar de grote dag</p>
         </div>
     </div>
 
@@ -90,97 +137,158 @@
         </svg>
 
         <div class="milestone">
-            <div class="content-box"><span class="date">Feb 2018</span><h3>De Eerste Ontmoeting</h3><p>Waar de vonk oversloeg in dat kleine cafeetje.</p></div>
+            <div class="content-box">
+                <span class="date">Feb 2018</span>
+                <h3 class="typewriter">De Eerste Ontmoeting</h3>
+                <p class="typewriter-p">Waar de vonk oversloeg in dat kleine cafeetje.</p>
+            </div>
         </div>
-        <div class="milestone">
-            <div class="content-box"><span class="date">Juni 2018</span><h3>Eerste Vakantie</h3><p>Verliefd worden onder de Franse zon.</p></div>
+
+        <div class="milestone spacing-large">
+            <div class="content-box">
+                <span class="date">Juni 2018</span>
+                <h3 class="typewriter">Eerste Vakantie</h3>
+                <p class="typewriter-p">Verliefd worden onder de Franse zon.</p>
+            </div>
         </div>
+
         <div class="milestone">
-            <div class="content-box"><span class="date">Jan 2019</span><h3>Samenwonen</h3><p>Van twee huizen naar één thuis.</p></div>
+            <div class="content-box">
+                <span class="date">Jan 2019</span>
+                <h3 class="typewriter">Samenwonen</h3>
+                <p class="typewriter-p">Van twee huizen naar één thuis.</p>
+            </div>
         </div>
-        <div class="milestone">
-            <div class="content-box"><span class="date">Maart 2020</span><h3>Lockdown Buddy's</h3><p>Als je dit overleeft, overleef je alles.</p></div>
+
+        <div class="milestone spacing-xl">
+            <div class="content-box">
+                <span class="date">Maart 2020</span>
+                <h3 class="typewriter">Lockdown Buddy's</h3>
+                <p class="typewriter-p">Als je dit overleeft, overleef je alles.</p>
+            </div>
         </div>
+
         <div class="milestone">
-            <div class="content-box"><span class="date">Mei 2021</span><h3>Gezinsuitbreiding</h3><p>De dag dat onze trouwe viervoeter kwam.</p></div>
+            <div class="content-box">
+                <span class="date">Mei 2021</span>
+                <h3 class="typewriter">Gezinsuitbreiding</h3>
+                <p class="typewriter-p">De dag dat onze trouwe viervoeter kwam.</p>
+            </div>
         </div>
-        <div class="milestone">
-            <div class="content-box"><span class="date">Okt 2022</span><h3>Droomreis</h3><p>Samen de wereld ontdekken, stap voor stap.</p></div>
+
+        <div class="milestone spacing-large">
+            <div class="content-box">
+                <span class="date">Okt 2022</span>
+                <h3 class="typewriter">Droomreis</h3>
+                <p class="typewriter-p">Samen de wereld ontdekken, stap voor stap.</p>
+            </div>
         </div>
+
         <div class="milestone">
-            <div class="content-box"><span class="date">Dec 2023</span><h3>HET Aanzoek</h3><p>Het makkelijkste 'JA' ooit gegeven.</p></div>
+            <div class="content-box">
+                <span class="date">Dec 2023</span>
+                <h3 class="typewriter">HET Aanzoek</h3>
+                <p class="typewriter-p">Het makkelijkste 'JA' ooit gegeven.</p>
+            </div>
         </div>
+
         <div class="milestone">
-            <div class="content-box"><span class="date">Juli 2024</span><h3>De Locatie</h3><p>We vonden de perfecte plek voor ons ja-woord.</p></div>
+            <div class="content-box">
+                <span class="date">Juli 2024</span>
+                <h3 class="typewriter">De Locatie</h3>
+                <p class="typewriter-p">We vonden de perfecte plek voor ons ja-woord.</p>
+            </div>
         </div>
+
         <div class="milestone">
-            <div class="content-box"><span class="date">Vandaag</span><h3>De Voorpret</h3><p>We kunnen niet wachten om dit met jullie te vieren!</p></div>
+            <div class="content-box">
+                <span class="date">Vandaag</span>
+                <h3 class="typewriter">De Voorpret</h3>
+                <p class="typewriter-p">We kunnen niet wachten om dit te vieren!</p>
+            </div>
         </div>
     </div>
 
     <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-        <h2 style="font-size: 3rem;">Tot snel op de bruiloft!</h2>
+        <h2 style="font-size: 3rem;">Tot snel!</h2>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
 
     <script>
-        gsap.registerPlugin(ScrollToPlugin);
+        gsap.registerPlugin(ScrollToPlugin, TextPlugin);
 
-        // 1. Teken de langere golvende lijn
         const container = document.querySelector('.scroll-container');
         const wavyPath = document.getElementById('wavyPath');
-        const height = container.offsetHeight;
-        
-        let pathData = "M 60 0 "; 
-        for (let i = 0; i <= height; i += 10) {
-            // Delen door 150 maakt de golven veel langer/rustiger
-            let x = 60 + Math.sin(i / 150) * 40; 
-            pathData += `L ${x} ${i} `;
+        const milestones = document.querySelectorAll('.milestone');
+        const skipBtn = document.getElementById('skipBtn');
+
+        // 1. Teken de lijn op basis van de totale hoogte
+        function drawLine() {
+            const height = container.offsetHeight;
+            let pathData = "M 50 0 "; 
+            for (let i = 0; i <= height; i += 10) {
+                // Iets hogere frequentie (i/100) voor meer golven op mobiel/desktop
+                let x = 50 + Math.sin(i / 100) * 35; 
+                pathData += `L ${x} ${i} `;
+            }
+            wavyPath.setAttribute('d', pathData);
+            return wavyPath.getTotalLength();
         }
-        wavyPath.setAttribute('d', pathData);
 
-        // 2. Lijn onzichtbaar maken voor het "drawing" effect
-        const pathLength = wavyPath.getTotalLength();
-        gsap.set(wavyPath, {
-            strokeDasharray: pathLength,
-            strokeDashoffset: pathLength
-        });
+        const pathLength = drawLine();
+        gsap.set(wavyPath, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
 
-        // 3. De Animatie Timeline
+        // 2. De Animatie
         const tl = gsap.timeline({
             onComplete: () => {
                 document.body.style.overflow = "auto";
+                skipBtn.style.display = "none";
             }
         });
 
         document.body.style.overflow = "hidden";
 
-        const milestones = document.querySelectorAll('.milestone');
-
         milestones.forEach((m, index) => {
-            // Bereken hoe ver de lijn moet zijn voor dit punt
-            const scrollPos = m.offsetTop + (m.offsetHeight / 2);
-            const relativeDraw = pathLength * (scrollPos / height);
+            const title = m.querySelector('.typewriter');
+            const text = m.querySelector('.typewriter-p');
+            const date = m.querySelector('.date');
+            
+            // Onthoud de tekst en maak leeg voor typ-effect
+            const originalTitle = title.innerText;
+            const originalText = text.innerText;
+            title.innerText = "";
+            text.innerText = "";
 
+            const scrollPos = m.offsetTop + (m.offsetHeight / 2);
+            const relativeDraw = pathLength * (scrollPos / container.offsetHeight);
+
+            // De 'Sequence' per milestone
             tl.to(window, {
                 scrollTo: { y: m, offsetY: 0 },
-                duration: 2.5,
+                duration: 3, // Iets langer voor de reis
                 ease: "power2.inOut"
             })
-            // De lijn tekent mee met de scroll
             .to(wavyPath, {
                 strokeDashoffset: pathLength - relativeDraw,
-                duration: 2.5,
-                ease: "power2.inOut"
-            }, "-=2.5") 
-            .to(m, {
-                opacity: 1,
-                duration: 1.5
-            }, "-=1")
-            .to({}, { duration: 1.5 }); // Pauze bij elk moment
+                duration: 2.8, // Iets sneller klaar dan de scroll
+                ease: "power1.inOut"
+            }, "-=3")
+            .to(date, { opacity: 1, duration: 0.5 })
+            .to(title, { text: originalTitle, duration: 1.5, ease: "none" })
+            .to(text, { text: originalText, duration: 2, ease: "none" })
+            .to({}, { duration: 1.5 }); // Wachttijd na het typen
         });
+
+        // Skip functie
+        skipBtn.addEventListener('click', () => {
+            tl.progress(1); // Spring direct naar het einde
+        });
+
+        // Herbereken lijn bij venster-resize
+        window.addEventListener('resize', () => drawLine());
 
     </script>
 </body>
