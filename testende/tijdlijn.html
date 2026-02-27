@@ -55,7 +55,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 100vh; /* Lange aanloop zoals gevraagd */
+            /* Lange aanloop naar eerste punt */
+            padding-top: 120vh; 
         }
 
         .wavy-line-svg {
@@ -79,13 +80,12 @@
             max-width: 90%;
             display: flex;
             justify-content: center;
-            align-items: center;
-            text-align: center;
+            /* Geen align-items center meer, zodat we grip hebben op de hoogte */
             margin-bottom: 100vh; 
         }
 
         .content-box {
-            padding: 20px;
+            padding: 10px; /* Minder padding zodat tekst minder ruimte inneemt */
             background-color: var(--bg-color); 
             width: 100%;
         }
@@ -96,29 +96,30 @@
             color: var(--gold); 
             text-transform: uppercase; 
             display: block; 
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             opacity: 0;
         }
 
         h3 { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 8vw, 3.5rem); 
-            margin: 0 0 20px 0; 
+            font-size: clamp(1.8rem, 7vw, 3rem); 
+            margin: 0 0 15px 0; 
             font-weight: 400; 
             color: #222;
         }
 
         p.description { 
-            font-size: clamp(1.1rem, 4vw, 1.4rem); 
-            line-height: 1.6; 
-            max-width: 650px; 
+            font-size: clamp(1rem, 4vw, 1.25rem); 
+            line-height: 1.5; 
+            max-width: 600px; 
             margin: 0 auto;
         }
 
         .final-screen {
             height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Zorgt dat 'Tot Snel' ook hoog begint */
+            padding-top: 20vh;
             justify-content: center;
         }
     </style>
@@ -147,7 +148,7 @@
 
         <div class="milestone final-screen">
             <div class="content-box">
-                <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 10vw, 4rem); color: var(--gold);">Tot snel!</h2>
+                <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4rem); color: var(--gold);">Tot snel!</h2>
                 <p style="text-transform: uppercase; letter-spacing: 3px;">Wij kunnen niet wachten</p>
             </div>
         </div>
@@ -197,12 +198,13 @@
             if(text) text.innerText = "";
 
             const scrollPos = m.offsetTop;
+            // De lijn tekent tot het midden van het blok
             const lineDrawPoint = m.offsetTop + (m.offsetHeight / 2);
             const relativeDraw = pathLength * (lineDrawPoint / container.offsetHeight);
 
             tl.to(window, {
-                // We scrolen naar het punt met een kleine marge van 100px van boven
-                scrollTo: { y: scrollPos, offsetY: 100, autoKill: false },
+                // VERHOOGD naar 300px: Hoe hoger dit getal, hoe hoger de tekst op je scherm komt te staan.
+                scrollTo: { y: scrollPos, offsetY: 300, autoKill: false },
                 duration: 3,
                 ease: "power2.inOut"
             })
@@ -214,7 +216,7 @@
             .to(date, { opacity: 1, duration: 0.5 })
             .to(title, { text: originalTitle, duration: 1.2, ease: "none" })
             .to(text, { text: originalText, duration: 1.5, ease: "none" })
-            .to({}, { duration: 1.5 });
+            .to({}, { duration: 2 });
         });
 
         window.addEventListener('resize', () => drawLine());
