@@ -30,6 +30,8 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
 
         .intro-screen h1 {
@@ -55,8 +57,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Lange aanloop naar eerste punt */
-            padding-top: 120vh; 
+            /* Extra lange aanloop vanaf de start */
+            padding-top: 150vh; 
         }
 
         .wavy-line-svg {
@@ -77,21 +79,25 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 90%;
+            max-width: 800px;
+            /* We geven elk blok een vaste hoogte zodat we precies weten waar we zijn */
+            height: 100vh; 
             display: flex;
-            justify-content: center;
-            /* Geen align-items center meer, zodat we grip hebben op de hoogte */
-            margin-bottom: 100vh; 
+            flex-direction: column;
+            justify-content: flex-start; /* Start bovenaan */
+            padding-top: 15vh; /* Dit bepaalt hoe ver van de bovenkant de tekst staat */
+            text-align: center;
         }
 
         .content-box {
-            padding: 10px; /* Minder padding zodat tekst minder ruimte inneemt */
+            padding: 20px;
             background-color: var(--bg-color); 
-            width: 100%;
+            display: inline-block;
+            margin: 0 auto;
         }
 
         .date { 
-            font-size: 0.9rem; 
+            font-size: 0.85rem; 
             letter-spacing: 4px; 
             color: var(--gold); 
             text-transform: uppercase; 
@@ -102,35 +108,29 @@
 
         h3 { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 7vw, 3rem); 
+            font-size: clamp(1.8rem, 7vw, 2.8rem); 
             margin: 0 0 15px 0; 
             font-weight: 400; 
             color: #222;
         }
 
         p.description { 
-            font-size: clamp(1rem, 4vw, 1.25rem); 
-            line-height: 1.5; 
-            max-width: 600px; 
+            font-size: clamp(1rem, 4vw, 1.2rem); 
+            line-height: 1.6; 
+            max-width: 550px; 
             margin: 0 auto;
         }
 
         .final-screen {
-            height: 100vh;
-            display: flex;
-            align-items: flex-start; /* Zorgt dat 'Tot Snel' ook hoog begint */
-            padding-top: 20vh;
-            justify-content: center;
+            padding-top: 30vh;
         }
     </style>
 </head>
 <body>
 
     <div class="intro-screen">
-        <div>
-            <h1>Anouk & Rik</h1>
-            <p>Gaan Trouwen</p>
-        </div>
+        <h1>Anouk & Rik</h1>
+        <p>Gaan Trouwen</p>
     </div>
 
     <div class="scroll-container">
@@ -140,7 +140,7 @@
 
         <div class="milestone">
             <div class="content-box">
-                <span class="date">Feb 2018</span>
+                <span class="date">Februari 2018</span>
                 <h3 class="typewriter">De Eerste Ontmoeting</h3>
                 <p class="description typewriter-p">Waar de vonk oversloeg in dat kleine cafeetje.</p>
             </div>
@@ -148,7 +148,7 @@
 
         <div class="milestone final-screen">
             <div class="content-box">
-                <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4rem); color: var(--gold);">Tot snel!</h2>
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold);">Tot snel!</h2>
                 <p style="text-transform: uppercase; letter-spacing: 3px;">Wij kunnen niet wachten</p>
             </div>
         </div>
@@ -197,25 +197,28 @@
             if(title) title.innerText = "";
             if(text) text.innerText = "";
 
+            // We scrollen nu EXACT naar de bovenkant van het milestone-blok.
+            // Omdat de tekst binnen dat blok 15vh padding-top heeft, 
+            // staat het altijd op precies 15% van de bovenkant van je scherm.
             const scrollPos = m.offsetTop;
-            // De lijn tekent tot het midden van het blok
-            const lineDrawPoint = m.offsetTop + (m.offsetHeight / 2);
+            
+            // De lijn tekent tot de plek waar de tekst begint
+            const lineDrawPoint = m.offsetTop + (window.innerHeight * 0.15);
             const relativeDraw = pathLength * (lineDrawPoint / container.offsetHeight);
 
             tl.to(window, {
-                // VERHOOGD naar 300px: Hoe hoger dit getal, hoe hoger de tekst op je scherm komt te staan.
-                scrollTo: { y: scrollPos, offsetY: 300, autoKill: false },
-                duration: 3,
+                scrollTo: { y: scrollPos, autoKill: false },
+                duration: 2.5,
                 ease: "power2.inOut"
             })
             .to(wavyPath, {
                 strokeDashoffset: pathLength - relativeDraw,
-                duration: 2.8,
-                ease: "power1.inOut"
-            }, "-=3")
+                duration: 2.2,
+                ease: "none"
+            }, "-=2.5")
             .to(date, { opacity: 1, duration: 0.5 })
-            .to(title, { text: originalTitle, duration: 1.2, ease: "none" })
-            .to(text, { text: originalText, duration: 1.5, ease: "none" })
+            .to(title, { text: originalTitle, duration: 1, ease: "none" })
+            .to(text, { text: originalText, duration: 1.2, ease: "none" })
             .to({}, { duration: 2 });
         });
 
