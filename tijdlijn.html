@@ -3,149 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onze Tijdlijn</title>
+    <title>Onze Reis - Geanimeerd</title>
     
     <style>
+        :root {
+            --bg-color: #fdfaf7; /* De achtergrondkleur */
+            --gold: #d4af37;
+        }
+
         body {
-            font-family: 'Georgia', serif;
-            background-color: #f9f6f2; /* Zacht beige/trouwkleur */
-            color: #333;
             margin: 0;
-            overflow-x: hidden;
+            background-color: var(--bg-color);
+            font-family: 'optima', 'georgia', serif;
+            color: #4a4a4a;
+            /* We verbergen de scrollbar tijdens de intro-animatie via JS */
         }
 
-        .intro {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            flex-direction: column;
-        }
-
-        .timeline-container {
-            position: relative;
-            max-width: 1000px;
-            margin: 100px auto;
-            padding: 40px 20px;
-        }
-
-        /* De verticale gouden lijn */
-        .line {
-            position: absolute;
-            left: 50%;
-            width: 3px;
-            height: 100%;
-            background: #d4af37;
-            transform: translateX(-50%);
-            z-index: 0;
-        }
-
-        .moment {
+        .scroll-container {
             position: relative;
             width: 100%;
-            margin-bottom: 100px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            opacity: 0; /* Belangrijk voor de animatie: start onzichtbaar */
+            padding: 100px 0;
         }
 
-        .content {
-            width: 40%;
-            padding: 25px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        /* De Golvende Lijn */
+        .wavy-line-svg {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px; /* Breedte van de golf */
+            height: 100%;
             z-index: 1;
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-linecap: round;
         }
 
-        /* Styling voor links en rechts */
-        .moment.left { flex-direction: row; }
-        .moment.right { flex-direction: row-reverse; }
+        .milestone {
+            position: relative;
+            z-index: 2; /* Boven de lijn */
+            width: 100%;
+            max-width: 500px;
+            margin: 150px 0; /* Ruimte tussen de punten */
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
 
-        .moment.left .content { transform: translateX(-100px); }
-        .moment.right .content { transform: translateX(100px); }
+        .content-box {
+            display: inline-block;
+            padding: 20px 40px;
+            background-color: var(--bg-color); /* Maskeert de lijn */
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px; /* Ovale/Ronde vormen */
+        }
 
-        h3 { color: #d4af37; margin-top: 0; }
-        span { font-weight: bold; font-size: 0.9em; color: #888; }
+        .date { font-size: 0.8rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+        h3 { margin: 10px 0; font-weight: normal; }
+        p { font-size: 0.95rem; line-height: 1.6; }
 
-        .spacer { height: 50vh; }
+        .intro-screen {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-    <div class="intro">
-        <h1>Onze Reis naar de Grote Dag</h1>
-        <p>Scroll naar beneden om onze momenten te bekijken...</p>
+    <div class="intro-screen">
+        <div>
+            <h1>Onze Reis</h1>
+            <p>Leun even achterover...</p>
+        </div>
     </div>
 
-    <section class="timeline-container">
-        <div class="line"></div>
+    <div class="scroll-container">
+        <svg class="wavy-line-svg" id="wavyPath" preserveAspectRatio="none">
+            <path id="pathElement" d="" />
+        </svg>
 
-        <div class="moment left">
-            <div class="content">
-                <span>14 FEBRUARI 2018</span>
-                <h3>De Eerste Date</h3>
-                <p>Het begon allemaal met die ene ongemakkelijke maar fantastische koffie in Utrecht.</p>
-            </div>
-            <div style="width: 40%;"></div> </div>
-
-        <div class="moment right">
-            <div class="content">
-                <span>AUGUSTUS 2020</span>
-                <h3>Samenwonen</h3>
-                <p>Eindelijk een plekje voor onszelf (en onze veel te grote verzameling planten).</p>
-            </div>
-            <div style="width: 40%;"></div>
+        <div class="milestone" id="m1">
+            <div class="content-box"><span class="date">Feb 2018</span><h3>De Eerste Ontmoeting</h3><p>Waar het allemaal begon...</p></div>
         </div>
-
-        <div class="moment left">
-            <div class="content">
-                <span>MEI 2024</span>
-                <h3>JA gezegd!</h3>
-                <p>Bovenop een berg, in de regen, maar het was perfect.</p>
-            </div>
-            <div style="width: 40%;"></div>
+        <div class="milestone" id="m2">
+            <div class="content-box"><span class="date">Juni 2018</span><h3>Eerste Vakantie</h3><p>Kamperen in de regen, maar toch verliefd.</p></div>
         </div>
+        <div class="milestone" id="m3">
+            <div class="content-box"><span class="date">Jan 2019</span><h3>Sleutel van ons huis</h3><p>Ons eerste eigen plekje samen.</p></div>
+        </div>
+        <div class="milestone" id="m4">
+            <div class="content-box"><span class="date">Maart 2020</span><h3>De Lockdown</h3><p>24/7 samen en we vonden het nog leuk ook.</p></div>
+        </div>
+        <div class="milestone" id="m5">
+            <div class="content-box"><span class="date">Mei 2021</span><h3>Onze Hond</h3><p>Gezinsuitbreiding met vier pootjes.</p></div>
+        </div>
+        <div class="milestone" id="m6">
+            <div class="content-box"><span class="date">Okt 2022</span><h3>Nieuwe Avonturen</h3><p>Een verre reis die we nooit vergeten.</p></div>
+        </div>
+        <div class="milestone" id="m7">
+            <div class="content-box"><span class="date">Dec 2023</span><h3>De Vraag</h3><p>In de sneeuw ging de knie op de grond.</p></div>
+        </div>
+        <div class="milestone" id="m8">
+            <div class="content-box"><span class="date">Juli 2024</span><h3>Locatie Bezoek</h3><p>Verliefd geworden op de trouwplek.</p></div>
+        </div>
+        <div class="milestone" id="m9">
+            <div class="content-box"><span class="date">Vandaag</span><h3>De Laatste Loodjes</h3><p>Wij kunnen niet wachten!</p></div>
+        </div>
+    </div>
 
-    </section>
-
-    <div class="spacer"></div>
+    <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <h2>En nu... het feest!</h2>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
 
     <script>
-        // We activeren de ScrollTrigger plugin
-        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollToPlugin);
 
-        // We pakken alle 'momenten' en animeren ze
-        gsap.utils.toArray(".moment").forEach((moment) => {
-            gsap.to(moment, {
-                scrollTrigger: {
-                    trigger: moment,
-                    start: "top 85%", // Wanneer het moment 85% van het scherm bereikt
-                    end: "top 30%",
-                    toggleActions: "play none none reverse" 
-                },
-                opacity: 1,
-                x: 0, // Dit zorgt dat de transform: translateX van de CSS wordt opgeheven
-                duration: 1.2,
-                ease: "power3.out"
-            });
-            
-            // Extra animatie voor de tekst binnenin het moment
-            gsap.to(moment.querySelector(".content"), {
-                scrollTrigger: {
-                    trigger: moment,
-                    start: "top 85%",
-                },
-                x: 0,
-                duration: 1.5,
-                ease: "back.out(1.7)"
-            });
+        // 1. Teken de golvende lijn dynamisch op basis van de hoogte
+        const container = document.querySelector('.scroll-container');
+        const pathElement = document.getElementById('pathElement');
+        const height = container.offsetHeight;
+        
+        let pathData = "M 40 0 "; // Start in het midden van de 80px breedte
+        for (let i = 0; i <= height; i += 20) {
+            let x = 40 + Math.sin(i / 50) * 30; // 30 is de 'golf-uitslag'
+            pathData += `L ${x} ${i} `;
+        }
+        pathElement.setAttribute('d', pathData);
+
+        // 2. De Automatische Animatie
+        const tl = gsap.timeline({
+            onComplete: () => {
+                // Maak scrollen weer mogelijk na de animatie
+                document.body.style.overflow = "auto";
+                console.log("Animatie klaar, gebruiker mag nu zelf scrollen.");
+            }
         });
+
+        // Start met scrollen geblokkeerd
+        document.body.style.overflow = "hidden";
+
+        const milestones = document.querySelectorAll('.milestone');
+
+        milestones.forEach((m, index) => {
+            tl.to(window, {
+                scrollTo: { y: m, offsetY: 200 },
+                duration: 2,
+                ease: "power2.inOut"
+            })
+            .to(m, {
+                opacity: 1,
+                y: 0,
+                duration: 1
+            }, "-=1") // Begint iets eerder dan het einde van de scroll
+            .to({}, { duration: 1 }); // Wachttijd per moment
+        });
+
     </script>
 </body>
 </html>
