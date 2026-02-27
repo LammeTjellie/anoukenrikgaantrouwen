@@ -54,12 +54,12 @@
             align-items: center;
             text-align: center;
             /* Afstanden worden nu via classes geregeld */
-            margin-bottom: 60vh; 
+            margin-bottom: 120vh; 
         }
 
         /* Variabele afstanden */
-        .milestone.spacing-large { margin-bottom: 120vh; }
-        .milestone.spacing-xl { margin-bottom: 180vh; }
+        .milestone.spacing-large { margin-bottom: 150vh; }
+        .milestone.spacing-xl { margin-bottom: 210vh; }
 
         .content-box {
             padding: 40px;
@@ -101,23 +101,6 @@
             align-items: center;
             text-align: center;
         }
-
-        /* Skip knop */
-        #skipBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(212, 175, 55, 0.2);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            transition: 0.3s;
-        }
-        #skipBtn:hover { background: var(--gold); color: white; }
     </style>
 </head>
 <body>
@@ -280,11 +263,6 @@
             .to(title, { text: originalTitle, duration: 1.5, ease: "none" })
             .to(text, { text: originalText, duration: 2, ease: "none" })
             .to({}, { duration: 1.5 }); // Wachttijd na het typen
-        });
-
-        // Skip functie
-        skipBtn.addEventListener('click', () => {
-            tl.progress(1); // Spring direct naar het einde
         });
 
         // Herbereken lijn bij venster-resize
