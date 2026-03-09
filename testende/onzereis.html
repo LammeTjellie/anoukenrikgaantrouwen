@@ -10,6 +10,7 @@
   <style>
     :root {
       --bg: #efece7;
+      --page: #eee8df;
       --surface: rgba(255,255,255,0.72);
       --surface-strong: rgba(255,255,255,0.88);
       --text: #3d3936;
@@ -25,10 +26,7 @@
     }
 
     * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -53,6 +51,10 @@
         radial-gradient(circle at 78% 30%, rgba(200,162,93,0.16) 0 3px, transparent 4px),
         radial-gradient(circle at 64% 78%, rgba(201,125,77,0.10) 0 2px, transparent 3px);
       z-index: 0;
+    }
+
+    body.auto-playing {
+      cursor: progress;
     }
 
     a { color: inherit; }
@@ -85,9 +87,16 @@
 
     .mist,
     .blob,
+    .leaf,
+    .leaf-float,
+    .parallax {
+      will-change: transform;
+    }
+
+    .mist,
+    .blob,
     .leaf {
       position: absolute;
-      will-change: transform;
     }
 
     .mist {
@@ -98,6 +107,7 @@
       filter: blur(28px);
       opacity: 0.28;
       background: radial-gradient(circle, rgba(208,155,97,0.42), rgba(208,155,97,0));
+      transform: translate3d(0, var(--parallax-y, 0), 0);
     }
 
     .mist.one { top: 7%; left: -6%; }
@@ -111,8 +121,8 @@
       background: linear-gradient(180deg, rgba(201,125,77,0.16), rgba(201,125,77,0.04));
     }
 
-    .blob.one { width: 180px; height: 120px; top: 16%; left: 8%; transform: rotate(-12deg); }
-    .blob.two { width: 140px; height: 90px; top: 60%; right: 12%; transform: rotate(10deg); background: linear-gradient(180deg, rgba(109,132,88,0.16), rgba(109,132,88,0.03)); }
+    .blob.one { width: 180px; height: 120px; top: 16%; left: 8%; transform: translate3d(0, var(--parallax-y, 0), 0) rotate(-12deg); }
+    .blob.two { width: 140px; height: 90px; top: 60%; right: 12%; transform: translate3d(0, var(--parallax-y, 0), 0) rotate(10deg); background: linear-gradient(180deg, rgba(109,132,88,0.16), rgba(109,132,88,0.03)); }
 
     .leaf {
       width: 24px;
@@ -134,11 +144,11 @@
       transform: translateX(-50%);
     }
 
-    .leaf.l1 { top: 12%; left: 14%; background: linear-gradient(180deg, rgba(201,125,77,0.55), rgba(169,100,57,0.38)); transform: rotate(-35deg); }
-    .leaf.l2 { top: 18%; right: 20%; background: linear-gradient(180deg, rgba(112,140,99,0.55), rgba(112,140,99,0.28)); transform: rotate(20deg); }
-    .leaf.l3 { top: 72%; left: 10%; background: linear-gradient(180deg, rgba(200,162,93,0.58), rgba(200,162,93,0.28)); transform: rotate(12deg); }
-    .leaf.l4 { top: 78%; right: 16%; background: linear-gradient(180deg, rgba(194,96,67,0.52), rgba(194,96,67,0.22)); transform: rotate(-18deg); }
-    .leaf.l5 { top: 38%; right: 6%; background: linear-gradient(180deg, rgba(140,125,103,0.52), rgba(140,125,103,0.22)); transform: rotate(26deg); }
+    .leaf.l1 { top: 12%; left: 14%; background: linear-gradient(180deg, rgba(201,125,77,0.55), rgba(169,100,57,0.38)); transform: translate3d(0, var(--parallax-y, 0), 0) rotate(-35deg); }
+    .leaf.l2 { top: 18%; right: 20%; background: linear-gradient(180deg, rgba(112,140,99,0.55), rgba(112,140,99,0.28)); transform: translate3d(0, var(--parallax-y, 0), 0) rotate(20deg); }
+    .leaf.l3 { top: 72%; left: 10%; background: linear-gradient(180deg, rgba(200,162,93,0.58), rgba(200,162,93,0.28)); transform: translate3d(0, var(--parallax-y, 0), 0) rotate(12deg); }
+    .leaf.l4 { top: 78%; right: 16%; background: linear-gradient(180deg, rgba(194,96,67,0.52), rgba(194,96,67,0.22)); transform: translate3d(0, var(--parallax-y, 0), 0) rotate(-18deg); }
+    .leaf.l5 { top: 38%; right: 6%; background: linear-gradient(180deg, rgba(140,125,103,0.52), rgba(140,125,103,0.22)); transform: translate3d(0, var(--parallax-y, 0), 0) rotate(26deg); }
 
     .hero-card {
       position: relative;
@@ -173,6 +183,7 @@
       background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.62));
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.48);
       overflow: hidden;
+      transform: translate3d(0, var(--parallax-y, 0), 0);
     }
 
     .arch-floral::before,
@@ -418,13 +429,13 @@
 
     .story-shell {
       position: relative;
-      padding: 60px 0 120px;
+      padding: 100px 0 120px;
     }
 
     .story-intro {
       text-align: center;
-      max-width: 760px;
-      margin: 0 auto 50px;
+      max-width: 840px;
+      margin: 0 auto 70px;
       padding: 0 18px;
     }
 
@@ -432,10 +443,10 @@
     .closing h2 {
       margin: 0 0 16px;
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(2.6rem, 4vw, 4rem);
+      font-size: clamp(2.8rem, 4.6vw, 4.6rem);
       font-weight: 600;
-      line-height: 1;
-      letter-spacing: -0.02em;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
     }
 
     .story-intro p,
@@ -446,87 +457,138 @@
       font-size: 1.05rem;
     }
 
-    .story-grid {
+    .story-track {
       position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 120px minmax(0, 1fr);
-      gap: 0;
-      align-items: start;
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding-bottom: 40px;
     }
 
     .centerline {
-      position: sticky;
-      top: 14vh;
-      height: 72vh;
-      display: grid;
-      place-items: center;
-      z-index: 1;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 170px;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .line-wrap {
-      position: relative;
-      width: 120px;
-      height: 100%;
-    }
-
-    .line-wrap svg {
+    .centerline svg {
       width: 100%;
       height: 100%;
       overflow: visible;
       filter: drop-shadow(0 8px 16px rgba(157, 106, 68, 0.10));
     }
 
-    .line-base {
-      fill: none;
-      stroke: rgba(201,125,77,0.18);
-      stroke-width: 2.5;
-      stroke-linecap: round;
-    }
-
     .line-progress {
       fill: none;
       stroke: url(#lineGradient);
-      stroke-width: 3.5;
+      stroke-width: 4;
       stroke-linecap: round;
+      stroke-linejoin: round;
       stroke-dasharray: 1;
       stroke-dashoffset: 1;
-      transition: stroke-dashoffset 0.15s linear;
+      transition: stroke-dashoffset 0.12s linear;
     }
 
     .moments {
       position: relative;
-      z-index: 2;
+      z-index: 1;
     }
 
     .moment {
-      min-height: 74vh;
-      display: flex;
+      min-height: 86vh;
+      display: grid;
+      grid-template-columns: 1fr 170px 1fr;
       align-items: center;
       position: relative;
     }
 
-    .moment.left { grid-column: 1 / 2; justify-content: flex-end; padding-right: 32px; }
-    .moment.right { grid-column: 3 / 4; justify-content: flex-start; padding-left: 32px; }
+    .moment.left .moment-card {
+      grid-column: 1;
+      justify-self: end;
+    }
+
+    .moment.right .moment-card {
+      grid-column: 3;
+      justify-self: start;
+    }
+
+    .moment-center {
+      grid-column: 2;
+      justify-self: center;
+      position: relative;
+      z-index: 3;
+      width: 124px;
+      min-height: 136px;
+      padding: 14px 12px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.80));
+      border: 1px solid rgba(224, 213, 201, 0.95);
+      box-shadow: 0 18px 34px rgba(81, 59, 35, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .moment-center::before {
+      content: "";
+      position: absolute;
+      inset: -24px -18px;
+      background: radial-gradient(circle, rgba(239,236,231,0.98) 0 58%, rgba(239,236,231,0) 74%);
+      z-index: -1;
+    }
+
+    .center-index {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .center-copy {
+      font-size: 0.74rem;
+      line-height: 1.45;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9e7a58;
+      font-weight: 600;
+    }
 
     .moment-card {
-      width: min(470px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
-      border: 1px solid rgba(255,255,255,0.55);
+      width: min(460px, calc(100% - 24px));
+      background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.70));
+      border: 1px solid rgba(255,255,255,0.58);
       border-radius: var(--radius-xl);
       padding: 26px 24px 24px;
       box-shadow: 0 18px 45px rgba(85, 59, 34, 0.09);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      transform: translateY(28px);
+      transform: translateY(30px);
       opacity: 0;
       transition: transform 0.85s cubic-bezier(.2,.8,.2,1), opacity 0.85s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .moment.in-view .moment-card {
+    .moment.in-view .moment-card,
+    .moment.in-view .moment-center {
       transform: translateY(0);
       opacity: 1;
+    }
+
+    .moment-center {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.85s cubic-bezier(.2,.8,.2,1), opacity 0.85s ease;
     }
 
     .moment-card::before {
@@ -589,6 +651,7 @@
         radial-gradient(circle at 54% 86%, rgba(114, 142, 98, 0.22), transparent 28%),
         linear-gradient(180deg, #d6c3ad, #bfa88f 60%, #ab9078);
       box-shadow: inset 0 -28px 42px rgba(65, 42, 27, 0.12);
+      transform: translate3d(0, var(--parallax-y, 0), 0);
     }
 
     .moment-photo::before {
@@ -612,18 +675,6 @@
       text-shadow: 0 2px 10px rgba(70, 45, 28, 0.22);
     }
 
-    .connector {
-      position: absolute;
-      top: 50%;
-      width: 54px;
-      height: 2px;
-      background: linear-gradient(90deg, rgba(201,125,77,0.0), rgba(201,125,77,0.46));
-      transform: translateY(-50%);
-    }
-
-    .moment.left .connector { right: -22px; }
-    .moment.right .connector { left: -22px; transform: translateY(-50%) scaleX(-1); }
-
     .leaf-float {
       position: absolute;
       width: 54px;
@@ -634,12 +685,13 @@
       filter: blur(0.2px);
       pointer-events: none;
       z-index: 0;
+      transform: translate3d(0, var(--parallax-y, 0), 0) rotate(-12deg);
     }
 
-    .f1 { top: 11%; left: 12%; transform: rotate(-12deg); }
-    .f2 { top: 33%; right: 9%; width: 40px; background: linear-gradient(180deg, rgba(113,140,99,0.18), rgba(113,140,99,0.03)); transform: rotate(20deg); }
-    .f3 { top: 58%; left: 7%; width: 34px; transform: rotate(24deg); }
-    .f4 { top: 81%; right: 18%; width: 48px; background: linear-gradient(180deg, rgba(200,162,93,0.18), rgba(200,162,93,0.03)); transform: rotate(-18deg); }
+    .f1 { top: 11%; left: 12%; }
+    .f2 { top: 33%; right: 9%; width: 40px; background: linear-gradient(180deg, rgba(113,140,99,0.18), rgba(113,140,99,0.03)); transform: translate3d(0, var(--parallax-y, 0), 0) rotate(20deg); }
+    .f3 { top: 58%; left: 7%; width: 34px; transform: translate3d(0, var(--parallax-y, 0), 0) rotate(24deg); }
+    .f4 { top: 81%; right: 18%; width: 48px; background: linear-gradient(180deg, rgba(200,162,93,0.18), rgba(200,162,93,0.03)); transform: translate3d(0, var(--parallax-y, 0), 0) rotate(-18deg); }
 
     .closing {
       padding: 80px 0 120px;
@@ -694,34 +746,39 @@
     }
 
     @media (max-width: 980px) {
-      .story-grid {
-        grid-template-columns: 1fr;
+      .story-track {
+        width: min(720px, 100%);
       }
 
       .centerline {
-        display: none;
+        left: 34px;
+        transform: none;
+        width: 90px;
       }
 
-      .moment,
-      .moment.left,
-      .moment.right {
-        grid-column: auto;
-        justify-content: center;
+      .moment {
         min-height: auto;
-        padding: 0 0 30px;
+        grid-template-columns: 90px 1fr;
+        row-gap: 18px;
+        padding: 0 0 40px;
       }
 
-      .moment-card {
-        width: 100%;
+      .moment.left .moment-card,
+      .moment.right .moment-card {
+        grid-column: 2;
+        justify-self: stretch;
       }
 
-      .connector {
-        display: none;
+      .moment-center {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        width: 78px;
+        min-height: 92px;
+        padding: 10px 8px;
       }
 
-      .story-shell {
-        padding-top: 30px;
-      }
+      .center-index { font-size: 1.5rem; }
+      .center-copy { font-size: 0.62rem; letter-spacing: 0.14em; }
     }
 
     @media (max-width: 720px) {
@@ -752,11 +809,43 @@
         padding: 14px 8px 12px;
       }
 
-      .story-intro {
-        margin-bottom: 28px;
+      .story-shell {
+        padding-top: 70px;
       }
 
+      .story-intro {
+        margin-bottom: 34px;
+      }
+
+      .story-intro h2,
+      .closing h2 {
+        font-size: clamp(2.5rem, 12vw, 3.5rem);
+      }
+
+      .story-track {
+        width: 100%;
+      }
+
+      .centerline {
+        left: 18px;
+        width: 72px;
+      }
+
+      .moment {
+        grid-template-columns: 58px 1fr;
+        padding-bottom: 28px;
+      }
+
+      .moment-center {
+        width: 56px;
+        min-height: 72px;
+        border-radius: 30px;
+      }
+
+      .center-copy { display: none; }
+
       .moment-card {
+        width: 100%;
         border-radius: 24px;
         padding: 20px 18px;
       }
@@ -851,117 +940,135 @@
           <p class="eyebrow">ons verhaal</p>
           <h2>Van eerste contact tot vandaag</h2>
           <p>
-            Dit ontwerp combineert een sfeervolle hero met countdown en daaronder een verticale, golvende tijdlijn.
-            Elke sectie is een hoofdstuk dat je kunt vervangen door jullie echte momenten, data, foto’s en teksten.
+            Een automatisch afspelend liefdesverhaal voor de eerste kennismaking, met een golvende middenlijn die zich pas vormt terwijl je verdergaat.
+            Elk hoogtepunt onderbreekt die lijn kort, zodat de hoofdstukken echt als mijlpalen voelen.
           </p>
         </div>
 
-        <div class="story-grid">
+        <div class="story-track" id="storyTrack">
           <div class="centerline" aria-hidden="true">
-            <div class="line-wrap">
-              <svg viewBox="0 0 120 900" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#d1ac67"></stop>
-                    <stop offset="45%" stop-color="#c97d4d"></stop>
-                    <stop offset="100%" stop-color="#a96439"></stop>
-                  </linearGradient>
-                </defs>
-                <path id="storyPathBase" class="line-base" d="M60 0 C15 70, 105 120, 60 200 C15 280, 105 330, 60 410 C15 490, 105 540, 60 620 C15 700, 105 760, 60 900"></path>
-                <path id="storyPathProgress" class="line-progress" d="M60 0 C15 70, 105 120, 60 200 C15 280, 105 330, 60 410 C15 490, 105 540, 60 620 C15 700, 105 760, 60 900"></path>
-              </svg>
-            </div>
+            <svg viewBox="0 0 170 1000" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#d1ac67"></stop>
+                  <stop offset="45%" stop-color="#c97d4d"></stop>
+                  <stop offset="100%" stop-color="#a96439"></stop>
+                </linearGradient>
+              </defs>
+              <path id="storyPathProgress" class="line-progress" d="M85 0 C 22 88, 148 146, 85 246 C 22 346, 148 404, 85 504 C 22 604, 148 662, 85 762 C 22 862, 148 922, 85 1000"></path>
+            </svg>
           </div>
 
           <section class="moments">
             <article class="moment left reveal">
-              <div class="connector"></div>
               <div class="moment-card">
                 <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 1 · Het begin</span></div>
                 <h3>Het eerste contact</h3>
                 <p>
-                  Hier kan het eerste bericht, de eerste klik of het eerste moment van herkenning komen. Hou de tekst klein en persoonlijk,
-                  bijvoorbeeld twee of drie korte zinnen die meteen de toon zetten.
+                  Hier kan het eerste bericht, de eerste klik of het eerste kleine moment van herkenning komen.
+                  Hou het compact en persoonlijk, zodat dit echt als de opening van jullie verhaal voelt.
                 </p>
                 <div class="moment-photo parallax" data-speed="0.06" data-caption="waar het begon"></div>
+              </div>
+              <div class="moment-center">
+                <div class="center-index">01</div>
+                <div class="center-copy">het begin</div>
               </div>
             </article>
 
             <article class="moment right reveal">
-              <div class="connector"></div>
+              <div class="moment-center">
+                <div class="center-index">02</div>
+                <div class="center-copy">eerste ontmoeting</div>
+              </div>
               <div class="moment-card">
                 <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 2 · Eerste ontmoeting</span></div>
                 <h3>De eerste date</h3>
                 <p>
-                  Dit blok werkt goed voor een plek, een seizoen, een grappig detail of een eerste indruk. Door links en rechts af te wisselen,
-                  voelt het alsof de bezoeker de lijn echt volgt door de tijd heen.
+                  Een goed moment voor de plek, de sfeer of een grappig detail dat jullie allebei nog weten.
+                  Door het hoogtepunt in het midden te zetten, leest de pagina echt als een onderbroken lijn vol mijlpalen.
                 </p>
                 <div class="moment-photo parallax" data-speed="0.08" data-caption="een nieuw hoofdstuk"></div>
               </div>
             </article>
 
             <article class="moment left reveal">
-              <div class="connector"></div>
               <div class="moment-card">
                 <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 3 · Het groeide verder</span></div>
                 <h3>Toen het echt begon</h3>
                 <p>
-                  Denk aan het moment waarop het serieuzer werd: vaker samen, vaste rituelen, plannen maken of het gevoel dat dit iets bijzonders was.
-                  Je kunt hier ook een jaartal toevoegen of een subtiel citaat gebruiken.
+                  Hier past het moment waarop het serieuzer werd: vaker samen, plannen maken, een vanzelfsprekend gevoel
+                  of juist dat ene besef dat dit iets blijvends kon worden.
                 </p>
                 <div class="moment-photo parallax" data-speed="0.05" data-caption="steeds dichterbij"></div>
+              </div>
+              <div class="moment-center">
+                <div class="center-index">03</div>
+                <div class="center-copy">het groeide</div>
               </div>
             </article>
 
             <article class="moment right reveal">
-              <div class="connector"></div>
+              <div class="moment-center">
+                <div class="center-index">04</div>
+                <div class="center-copy">ons thuis</div>
+              </div>
               <div class="moment-card">
                 <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 4 · Samen bouwen</span></div>
                 <h3>Ons thuis</h3>
                 <p>
-                  Hier past het verhaal van samenwonen, een huis, jullie dagelijkse leven of de kleine dingen die een thuis maken.
-                  Dit is vaak een mooi rustpunt in het midden van de pagina.
+                  Een rustiger middenstuk over samenwonen, jullie huis, routines en de kleine dingen die een thuis maken.
+                  Dit hoofdstuk kan straks ook prachtig werken met een echte foto.
                 </p>
                 <div class="moment-photo parallax" data-speed="0.07" data-caption="ons plekje"></div>
               </div>
             </article>
 
             <article class="moment left reveal">
-              <div class="connector"></div>
               <div class="moment-card">
                 <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 5 · Wat we delen</span></div>
-                <h3>Ons gezin, ons leven</h3>
+                <h3>Ons leven samen</h3>
                 <p>
-                  Een warm hoofdstuk over wie jullie nu zijn. Dit deel kan heel mooi werken met een echte foto, een korte beschrijving van jullie leven samen,
-                  of een paar losse woorden die precies voelen als jullie.
+                  Hier kun je laten voelen wie jullie nu zijn. Niet alleen feiten, maar vooral sfeer: wat typeert jullie,
+                  wat jullie samen hebben opgebouwd en waarom dit verhaal precies naar deze dag toe beweegt.
                 </p>
                 <div class="moment-photo parallax" data-speed="0.06" data-caption="liefde groeit"></div>
+              </div>
+              <div class="moment-center">
+                <div class="center-index">05</div>
+                <div class="center-copy">samen verder</div>
               </div>
             </article>
 
             <article class="moment right reveal">
-              <div class="connector"></div>
+              <div class="moment-center">
+                <div class="center-index">06</div>
+                <div class="center-copy">de vraag</div>
+              </div>
               <div class="moment-card">
                 <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 6 · De vraag</span></div>
                 <h3>Het aanzoek</h3>
                 <p>
-                  Dit is een ideaal moment voor iets net wat dramatischer: een sterkere foto, iets meer witruimte, of een tekst die de nadruk legt op het moment zelf.
-                  Hier mag de lijn voelen als een echte climax.
+                  Dit is de climax van de lijn. Geef dit blok iets meer nadruk met een sterk beeld, iets meer witruimte,
+                  of een tekst die net wat filmischer voelt dan de rest.
                 </p>
                 <div class="moment-photo parallax" data-speed="0.08" data-caption="zij zei ja"></div>
               </div>
             </article>
 
             <article class="moment left reveal">
-              <div class="connector"></div>
               <div class="moment-card">
                 <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 7 · Op weg naar de dag</span></div>
                 <h3>De voorbereidingen</h3>
                 <p>
-                  Eindig met een brug naar de bruiloft zelf: de voorpret, plannen, details en het verlangen naar die ene dag.
-                  Deze sectie kan straks ook doorlinken naar praktische info, RSVP of een aparte detailpagina.
+                  Eindig met de brug naar de trouwdag zelf: voorpret, plannen, details en het gevoel dat alles langzaam samenkomt.
+                  Vanaf hier kun je later makkelijk doorlinken naar RSVP, planning en praktische informatie.
                 </p>
                 <div class="moment-photo parallax" data-speed="0.05" data-caption="bijna zover"></div>
+              </div>
+              <div class="moment-center">
+                <div class="center-index">07</div>
+                <div class="center-copy">30 · 10 · 26</div>
               </div>
             </article>
           </section>
@@ -1035,25 +1142,25 @@
     reveals.forEach(item => revealObserver.observe(item));
 
     const progressPath = document.getElementById('storyPathProgress');
-    const storyShell = document.querySelector('.story-shell');
+    const storyTrack = document.getElementById('storyTrack');
+    const storyShell = document.getElementById('verhaal');
+    const closingSection = document.querySelector('.closing');
+    const moments = [...document.querySelectorAll('.moment')];
 
-    if (progressPath) {
+    function updatePathProgress() {
+      if (!progressPath || !storyTrack) return;
+      const rect = storyTrack.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const raw = (viewport * 0.7 - rect.top) / Math.max(1, rect.height);
+      const progress = Math.max(0, Math.min(1, raw));
       const pathLength = progressPath.getTotalLength();
       progressPath.style.strokeDasharray = pathLength;
-      progressPath.style.strokeDashoffset = pathLength;
-
-      function updatePathProgress() {
-        const rect = storyShell.getBoundingClientRect();
-        const viewport = window.innerHeight;
-        const raw = (viewport - rect.top) / (rect.height + viewport * 0.2);
-        const progress = Math.max(0, Math.min(1, raw));
-        progressPath.style.strokeDashoffset = pathLength * (1 - progress);
-      }
-
-      updatePathProgress();
-      window.addEventListener('scroll', updatePathProgress, { passive: true });
-      window.addEventListener('resize', updatePathProgress);
+      progressPath.style.strokeDashoffset = pathLength * (1 - progress);
     }
+
+    updatePathProgress();
+    window.addEventListener('scroll', updatePathProgress, { passive: true });
+    window.addEventListener('resize', updatePathProgress);
 
     const parallaxEls = document.querySelectorAll('[data-speed]');
     let ticking = false;
@@ -1063,7 +1170,7 @@
       parallaxEls.forEach(el => {
         const speed = parseFloat(el.dataset.speed || '0');
         const offset = scrolled * speed;
-        el.style.transform = `translate3d(0, ${offset}px, 0)`;
+        el.style.setProperty('--parallax-y', `${offset}px`);
       });
       ticking = false;
     }
@@ -1076,6 +1183,52 @@
     }, { passive: true });
 
     handleParallax();
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const autoplaySeen = sessionStorage.getItem('ar_story_autoplay_seen');
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function startAutoplay() {
+      if (prefersReducedMotion || autoplaySeen) return;
+
+      let cancelled = false;
+      const cancelEvents = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+      const cancel = () => {
+        cancelled = true;
+        document.body.classList.remove('auto-playing');
+        cancelEvents.forEach(type => window.removeEventListener(type, cancel, { passive: true }));
+      };
+
+      cancelEvents.forEach(type => window.addEventListener(type, cancel, { passive: true }));
+      document.body.classList.add('auto-playing');
+
+      const targets = [
+        Math.max(0, storyShell.offsetTop - 24),
+        ...moments.map(moment => Math.max(0, moment.offsetTop + storyShell.offsetTop - window.innerHeight * 0.12)),
+        Math.max(0, closingSection.offsetTop - window.innerHeight * 0.08)
+      ];
+
+      await wait(1100);
+
+      for (let i = 0; i < targets.length; i++) {
+        if (cancelled) return;
+        window.scrollTo({ top: targets[i], behavior: 'smooth' });
+        await wait(i === 0 ? 1800 : 2200);
+      }
+
+      sessionStorage.setItem('ar_story_autoplay_seen', '1');
+      document.body.classList.remove('auto-playing');
+      cancelEvents.forEach(type => window.removeEventListener(type, cancel, { passive: true }));
+    }
+
+    window.addEventListener('load', () => {
+      updatePathProgress();
+      handleParallax();
+      startAutoplay();
+    });
   </script>
 </body>
 </html>
