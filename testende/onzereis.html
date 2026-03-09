@@ -1,295 +1,1081 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onze Reis - Professional</title>
-    
-    <style>
-        :root {
-            --bg-color: #fdfaf7; 
-            --gold: #d4af37;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anouk & Rik — Onze reis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #efece7;
+      --surface: rgba(255,255,255,0.72);
+      --surface-strong: rgba(255,255,255,0.88);
+      --text: #3d3936;
+      --muted: #8d8378;
+      --line: rgba(202, 128, 74, 0.35);
+      --accent: #c97d4d;
+      --accent-deep: #a96439;
+      --gold: #c8a25d;
+      --shadow: 0 18px 50px rgba(80, 55, 36, 0.12);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --max: 1180px;
+    }
 
-        body {
-            margin: 0;
-            background-color: var(--bg-color);
-            font-family: 'optima', 'georgia', serif;
-            color: #4a4a4a;
-            overflow-x: hidden;
-            /* Scroll wordt door JS uitgezet tijdens intro */
-        }
+    * { box-sizing: border-box; }
 
-        .scroll-container {
-            position: relative;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20vh;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        /* De Golvende Lijn */
-        .wavy-line-svg {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px; 
-            height: 100%;
-            z-index: 1;
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 2.5;
-            stroke-linecap: round;
-        }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(216, 176, 123, 0.18), transparent 20%),
+        radial-gradient(circle at 85% 20%, rgba(190, 119, 73, 0.12), transparent 18%),
+        radial-gradient(circle at 25% 75%, rgba(117, 138, 99, 0.08), transparent 22%),
+        linear-gradient(180deg, #f4f1ec 0%, #eee9e2 30%, #ece7de 100%);
+      font-family: "Inter", system-ui, sans-serif;
+      overflow-x: hidden;
+    }
 
-        .milestone {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 90%; /* Meer ademruimte op mobiel */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            /* Afstanden worden nu via classes geregeld */
-            margin-bottom: 60vh; 
-        }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.33;
+      background-image:
+        radial-gradient(circle at 20% 16%, rgba(201,125,77,0.12) 0 3px, transparent 4px),
+        radial-gradient(circle at 78% 30%, rgba(200,162,93,0.16) 0 3px, transparent 4px),
+        radial-gradient(circle at 64% 78%, rgba(201,125,77,0.10) 0 2px, transparent 3px);
+      z-index: 0;
+    }
 
-        /* Variabele afstanden */
-        .milestone.spacing-large { margin-bottom: 120vh; }
-        .milestone.spacing-xl { margin-bottom: 180vh; }
+    a { color: inherit; }
 
-        .content-box {
-            padding: 40px;
-            background-color: var(--bg-color); 
-            border: none;
-            width: 100%;
-        }
+    .page {
+      position: relative;
+      z-index: 1;
+    }
 
-        .date { 
-            font-size: 1rem; 
-            letter-spacing: 4px; 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            display: block; 
-            margin-bottom: 15px;
-            opacity: 0;
-        }
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
 
-        h3 { 
-            font-size: clamp(2rem, 8vw, 4rem); /* Schalt tussen 2rem en 4rem op basis van scherm */
-            margin: 0 0 20px 0; 
-            font-weight: normal; 
-            color: #222;
-            min-height: 1.2em; /* Voorkomt 'springen' van tekst bij typen */
-        }
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      padding: 48px 0 72px;
+      overflow: clip;
+    }
 
-        p { 
-            font-size: clamp(1.1rem, 4vw, 1.6rem); 
-            line-height: 1.6; 
-            max-width: 700px; 
-            margin: 0 auto;
-            min-height: 3em;
-        }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
 
-        .intro-screen {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+    .mist,
+    .blob,
+    .leaf {
+      position: absolute;
+      will-change: transform;
+    }
 
-        /* Skip knop */
-        #skipBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(212, 175, 55, 0.2);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            transition: 0.3s;
-        }
-        #skipBtn:hover { background: var(--gold); color: white; }
-    </style>
+    .mist {
+      width: 42vw;
+      max-width: 560px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      filter: blur(28px);
+      opacity: 0.28;
+      background: radial-gradient(circle, rgba(208,155,97,0.42), rgba(208,155,97,0));
+    }
+
+    .mist.one { top: 7%; left: -6%; }
+    .mist.two { top: 24%; right: -10%; background: radial-gradient(circle, rgba(174,103,63,0.28), rgba(174,103,63,0)); }
+    .mist.three { bottom: 10%; left: 18%; background: radial-gradient(circle, rgba(119,140,95,0.18), rgba(119,140,95,0)); }
+
+    .blob {
+      border-radius: 50% 50% 42% 58% / 55% 45% 55% 45%;
+      filter: blur(2px);
+      opacity: 0.28;
+      background: linear-gradient(180deg, rgba(201,125,77,0.16), rgba(201,125,77,0.04));
+    }
+
+    .blob.one { width: 180px; height: 120px; top: 16%; left: 8%; transform: rotate(-12deg); }
+    .blob.two { width: 140px; height: 90px; top: 60%; right: 12%; transform: rotate(10deg); background: linear-gradient(180deg, rgba(109,132,88,0.16), rgba(109,132,88,0.03)); }
+
+    .leaf {
+      width: 24px;
+      height: 40px;
+      border-radius: 80% 0 80% 0;
+      opacity: 0.22;
+      transform-origin: center;
+      filter: blur(0.3px);
+    }
+
+    .leaf::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 4px;
+      bottom: 4px;
+      width: 1px;
+      background: rgba(255,255,255,0.4);
+      transform: translateX(-50%);
+    }
+
+    .leaf.l1 { top: 12%; left: 14%; background: linear-gradient(180deg, rgba(201,125,77,0.55), rgba(169,100,57,0.38)); transform: rotate(-35deg); }
+    .leaf.l2 { top: 18%; right: 20%; background: linear-gradient(180deg, rgba(112,140,99,0.55), rgba(112,140,99,0.28)); transform: rotate(20deg); }
+    .leaf.l3 { top: 72%; left: 10%; background: linear-gradient(180deg, rgba(200,162,93,0.58), rgba(200,162,93,0.28)); transform: rotate(12deg); }
+    .leaf.l4 { top: 78%; right: 16%; background: linear-gradient(180deg, rgba(194,96,67,0.52), rgba(194,96,67,0.22)); transform: rotate(-18deg); }
+    .leaf.l5 { top: 38%; right: 6%; background: linear-gradient(180deg, rgba(140,125,103,0.52), rgba(140,125,103,0.22)); transform: rotate(26deg); }
+
+    .hero-card {
+      position: relative;
+      width: min(880px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.72));
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 44px;
+      padding: 52px 28px 36px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% -10%, rgba(193,122,64,0.18), transparent 22%),
+        radial-gradient(circle at 80% -8%, rgba(93,118,74,0.14), transparent 18%),
+        linear-gradient(180deg, rgba(255,255,255,0.24), transparent 22%);
+      pointer-events: none;
+    }
+
+    .arch-floral {
+      position: relative;
+      width: min(610px, 100%);
+      height: 218px;
+      margin: 0 auto 22px;
+      border-radius: 280px 280px 22px 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.62));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.48);
+      overflow: hidden;
+    }
+
+    .arch-floral::before,
+    .arch-floral::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .arch-floral::before {
+      background:
+        radial-gradient(circle at 22% 22%, rgba(197, 122, 47, 0.92) 0 28px, transparent 29px),
+        radial-gradient(circle at 18% 24%, rgba(220, 156, 74, 0.58) 0 50px, transparent 52px),
+        radial-gradient(circle at 79% 20%, rgba(146, 92, 60, 0.26) 0 24px, transparent 25px),
+        radial-gradient(circle at 79% 17%, rgba(108, 138, 92, 0.26) 0 48px, transparent 49px),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+      opacity: 0.95;
+    }
+
+    .arch-floral::after {
+      background:
+        radial-gradient(ellipse at 20% -6%, rgba(193, 122, 64, 0.28), transparent 32%),
+        radial-gradient(ellipse at 82% -4%, rgba(110, 136, 90, 0.24), transparent 28%);
+    }
+
+    .botanical {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .branch,
+    .petal {
+      position: absolute;
+      opacity: 0.95;
+    }
+
+    .branch {
+      width: 180px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(151,121,96,0), rgba(151,121,96,0.55), rgba(151,121,96,0));
+      transform-origin: left center;
+    }
+
+    .branch.b1 { top: 58px; left: -8px; transform: rotate(22deg); }
+    .branch.b2 { top: 30px; right: -26px; width: 200px; transform: rotate(152deg); }
+    .branch.b3 { top: 98px; right: 60px; width: 122px; transform: rotate(188deg); }
+
+    .petal {
+      width: 34px;
+      height: 18px;
+      border-radius: 20px 0 20px 0;
+    }
+
+    .petal.p1 { top: 58px; left: 46px; background: rgba(178, 191, 162, 0.82); transform: rotate(-26deg); }
+    .petal.p2 { top: 82px; left: 72px; background: rgba(202, 187, 162, 0.92); transform: rotate(14deg); }
+    .petal.p3 { top: 40px; left: 104px; background: rgba(227, 189, 123, 0.72); transform: rotate(24deg); }
+    .petal.p4 { top: 76px; right: 48px; background: rgba(171, 187, 163, 0.86); transform: rotate(28deg); }
+    .petal.p5 { top: 56px; right: 78px; background: rgba(216, 140, 109, 0.82); transform: rotate(-20deg); }
+    .petal.p6 { top: 22px; right: 114px; background: rgba(216, 195, 158, 0.86); transform: rotate(10deg); }
+    .petal.p7 { top: 110px; left: 118px; background: rgba(193, 209, 183, 0.76); transform: rotate(-12deg); }
+    .petal.p8 { top: 112px; right: 96px; background: rgba(197, 180, 151, 0.84); transform: rotate(24deg); }
+
+    .pinecone {
+      position: absolute;
+      right: 112px;
+      top: 28px;
+      width: 22px;
+      height: 48px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(101,70,51,0.6) 0 3px, transparent 4px),
+        radial-gradient(circle at 50% 32%, rgba(101,70,51,0.7) 0 4px, transparent 5px),
+        radial-gradient(circle at 50% 56%, rgba(101,70,51,0.72) 0 4px, transparent 5px),
+        radial-gradient(circle at 50% 78%, rgba(101,70,51,0.7) 0 4px, transparent 5px),
+        linear-gradient(180deg, rgba(121,82,55,0.78), rgba(88,57,35,0.84));
+      transform: rotate(-18deg);
+      opacity: 0.85;
+    }
+
+    .heart {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      opacity: 0.9;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    .heart::before { top: -5px; left: 0; }
+    .heart::after { top: 0; left: -5px; }
+    .heart.h1 { left: 76px; top: 108px; transform: rotate(45deg) scale(0.7); }
+    .heart.h2 { right: 96px; top: 118px; transform: rotate(45deg) scale(0.8); }
+
+    .intro {
+      position: relative;
+      text-align: center;
+      padding: 0 12px 10px;
+    }
+
+    .eyebrow {
+      font-size: 0.95rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    h1 {
+      margin: 10px 0 8px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3rem, 7vw, 5.4rem);
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .script {
+      margin: 16px 0 0;
+      font-family: "Parisienne", cursive;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .divider {
+      width: 68px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 28px auto 24px;
+    }
+
+    .save-the-date {
+      font-size: 1.15rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin: 0 0 10px;
+    }
+
+    .save-the-date strong {
+      display: block;
+      font-size: 1.65rem;
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 700;
+    }
+
+    .countdown-label {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      width: min(560px, 100%);
+      margin: 0 auto 28px;
+    }
+
+    .unit {
+      background: rgba(255,255,255,0.64);
+      border: 1px solid rgba(203, 187, 170, 0.36);
+      border-radius: 18px;
+      padding: 18px 10px 14px;
+      box-shadow: 0 10px 24px rgba(98, 73, 50, 0.05);
+    }
+
+    .unit strong {
+      display: block;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .unit span {
+      display: block;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 0 auto;
+      color: #5b534c;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+
+    .hero-end {
+      margin-top: 26px;
+      color: var(--muted);
+    }
+
+    .scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.58);
+      border: 1px solid rgba(199, 175, 149, 0.36);
+      color: #6b635b;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .scroll-cue:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.72);
+    }
+
+    .scroll-cue .arrow {
+      width: 18px;
+      height: 18px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      animation: bounce 1.8s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translate(0, 0); }
+      50% { transform: rotate(45deg) translate(4px, 4px); }
+    }
+
+    .story-shell {
+      position: relative;
+      padding: 60px 0 120px;
+    }
+
+    .story-intro {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 50px;
+      padding: 0 18px;
+    }
+
+    .story-intro h2,
+    .closing h2 {
+      margin: 0 0 16px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.6rem, 4vw, 4rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .story-intro p,
+    .closing p {
+      margin: 0;
+      color: #6a625a;
+      line-height: 1.85;
+      font-size: 1.05rem;
+    }
+
+    .story-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px minmax(0, 1fr);
+      gap: 0;
+      align-items: start;
+    }
+
+    .centerline {
+      position: sticky;
+      top: 14vh;
+      height: 72vh;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+    }
+
+    .line-wrap {
+      position: relative;
+      width: 120px;
+      height: 100%;
+    }
+
+    .line-wrap svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      filter: drop-shadow(0 8px 16px rgba(157, 106, 68, 0.10));
+    }
+
+    .line-base {
+      fill: none;
+      stroke: rgba(201,125,77,0.18);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+    }
+
+    .line-progress {
+      fill: none;
+      stroke: url(#lineGradient);
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 0.15s linear;
+    }
+
+    .moments {
+      position: relative;
+      z-index: 2;
+    }
+
+    .moment {
+      min-height: 74vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .moment.left { grid-column: 1 / 2; justify-content: flex-end; padding-right: 32px; }
+    .moment.right { grid-column: 3 / 4; justify-content: flex-start; padding-left: 32px; }
+
+    .moment-card {
+      width: min(470px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
+      border: 1px solid rgba(255,255,255,0.55);
+      border-radius: var(--radius-xl);
+      padding: 26px 24px 24px;
+      box-shadow: 0 18px 45px rgba(85, 59, 34, 0.09);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transform: translateY(28px);
+      opacity: 0;
+      transition: transform 0.85s cubic-bezier(.2,.8,.2,1), opacity 0.85s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .moment.in-view .moment-card {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .moment-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 85% 12%, rgba(201,125,77,0.12), transparent 16%),
+        radial-gradient(circle at 10% 90%, rgba(112,140,99,0.09), transparent 18%);
+      pointer-events: none;
+    }
+
+    .moment-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-size: 0.86rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, var(--gold), var(--accent));
+      box-shadow: 0 0 0 6px rgba(201,125,77,0.08);
+    }
+
+    .moment-card h3 {
+      margin: 0 0 10px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2rem, 3vw, 2.7rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .moment-card p {
+      margin: 0;
+      color: #5e574f;
+      line-height: 1.85;
+      font-size: 1.02rem;
+    }
+
+    .moment-photo {
+      margin-top: 18px;
+      height: 200px;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.42);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.04)),
+        radial-gradient(circle at 20% 20%, rgba(227, 179, 109, 0.40), transparent 26%),
+        radial-gradient(circle at 82% 20%, rgba(189, 114, 71, 0.30), transparent 18%),
+        radial-gradient(circle at 54% 86%, rgba(114, 142, 98, 0.22), transparent 28%),
+        linear-gradient(180deg, #d6c3ad, #bfa88f 60%, #ab9078);
+      box-shadow: inset 0 -28px 42px rgba(65, 42, 27, 0.12);
+    }
+
+    .moment-photo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.24), transparent 40%),
+        repeating-linear-gradient(115deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 14px);
+      opacity: 0.35;
+    }
+
+    .moment-photo::after {
+      content: attr(data-caption);
+      position: absolute;
+      left: 18px;
+      bottom: 16px;
+      font-family: "Parisienne", cursive;
+      font-size: 1.8rem;
+      color: rgba(255,255,255,0.82);
+      text-shadow: 0 2px 10px rgba(70, 45, 28, 0.22);
+    }
+
+    .connector {
+      position: absolute;
+      top: 50%;
+      width: 54px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(201,125,77,0.0), rgba(201,125,77,0.46));
+      transform: translateY(-50%);
+    }
+
+    .moment.left .connector { right: -22px; }
+    .moment.right .connector { left: -22px; transform: translateY(-50%) scaleX(-1); }
+
+    .leaf-float {
+      position: absolute;
+      width: 54px;
+      height: 30px;
+      border-radius: 40px 0 40px 0;
+      background: linear-gradient(180deg, rgba(201,125,77,0.16), rgba(201,125,77,0.03));
+      opacity: 0.45;
+      filter: blur(0.2px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .f1 { top: 11%; left: 12%; transform: rotate(-12deg); }
+    .f2 { top: 33%; right: 9%; width: 40px; background: linear-gradient(180deg, rgba(113,140,99,0.18), rgba(113,140,99,0.03)); transform: rotate(20deg); }
+    .f3 { top: 58%; left: 7%; width: 34px; transform: rotate(24deg); }
+    .f4 { top: 81%; right: 18%; width: 48px; background: linear-gradient(180deg, rgba(200,162,93,0.18), rgba(200,162,93,0.03)); transform: rotate(-18deg); }
+
+    .closing {
+      padding: 80px 0 120px;
+      text-align: center;
+    }
+
+    .closing-card {
+      width: min(860px, 100%);
+      margin: 0 auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.7));
+      border: 1px solid rgba(255,255,255,0.52);
+      border-radius: 40px;
+      padding: 46px 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .closing-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(201,125,77,0.15), transparent 18%),
+        radial-gradient(circle at 82% 20%, rgba(113,140,99,0.12), transparent 16%);
+      pointer-events: none;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .pill {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.66);
+      border: 1px solid rgba(201, 184, 164, 0.42);
+      color: #5f564d;
+      font-size: 0.95rem;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    @media (max-width: 980px) {
+      .story-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .centerline {
+        display: none;
+      }
+
+      .moment,
+      .moment.left,
+      .moment.right {
+        grid-column: auto;
+        justify-content: center;
+        min-height: auto;
+        padding: 0 0 30px;
+      }
+
+      .moment-card {
+        width: 100%;
+      }
+
+      .connector {
+        display: none;
+      }
+
+      .story-shell {
+        padding-top: 30px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding-top: 20px;
+      }
+
+      .hero-card {
+        border-radius: 30px;
+        padding: 22px 16px 24px;
+      }
+
+      .arch-floral {
+        height: 164px;
+        margin-bottom: 12px;
+        border-radius: 170px 170px 18px 18px;
+      }
+
+      .save-the-date strong {
+        font-size: 1.45rem;
+      }
+
+      .countdown {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .unit {
+        padding: 14px 8px 12px;
+      }
+
+      .story-intro {
+        margin-bottom: 28px;
+      }
+
+      .moment-card {
+        border-radius: 24px;
+        padding: 20px 18px;
+      }
+
+      .moment-photo {
+        height: 168px;
+        border-radius: 20px;
+      }
+
+      .closing-card {
+        border-radius: 28px;
+        padding: 28px 18px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="mist one" data-speed="0.14"></div>
+        <div class="mist two" data-speed="0.18"></div>
+        <div class="mist three" data-speed="0.10"></div>
+        <div class="blob one" data-speed="0.24"></div>
+        <div class="blob two" data-speed="0.19"></div>
+        <div class="leaf l1" data-speed="0.11"></div>
+        <div class="leaf l2" data-speed="0.16"></div>
+        <div class="leaf l3" data-speed="0.13"></div>
+        <div class="leaf l4" data-speed="0.20"></div>
+        <div class="leaf l5" data-speed="0.18"></div>
+      </div>
 
-    <button id="skipBtn">Skip Animatie</button>
-
-    <div class="intro-screen">
-        <div>
-            <h1 style="font-size: clamp(2.5rem, 10vw, 5rem);">Onze Reis</h1>
-            <p>Samen onderweg naar de grote dag</p>
-        </div>
-    </div>
-
-    <div class="scroll-container">
-        <svg class="wavy-line-svg" id="svgContainer" preserveAspectRatio="none">
-            <path id="wavyPath" d="" />
-        </svg>
-
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Feb 2018</span>
-                <h3 class="typewriter">De Eerste Ontmoeting</h3>
-                <p class="typewriter-p">Waar de vonk oversloeg in dat kleine cafeetje.</p>
+      <div class="container">
+        <div class="hero-card">
+          <div class="arch-floral parallax" data-speed="0.08" aria-hidden="true">
+            <div class="botanical">
+              <div class="branch b1"></div>
+              <div class="branch b2"></div>
+              <div class="branch b3"></div>
+              <div class="petal p1"></div>
+              <div class="petal p2"></div>
+              <div class="petal p3"></div>
+              <div class="petal p4"></div>
+              <div class="petal p5"></div>
+              <div class="petal p6"></div>
+              <div class="petal p7"></div>
+              <div class="petal p8"></div>
+              <div class="pinecone"></div>
+              <div class="heart h1"></div>
+              <div class="heart h2"></div>
             </div>
-        </div>
+          </div>
 
-        <div class="milestone spacing-large">
-            <div class="content-box">
-                <span class="date">Juni 2018</span>
-                <h3 class="typewriter">Eerste Vakantie</h3>
-                <p class="typewriter-p">Verliefd worden onder de Franse zon.</p>
+          <div class="intro">
+            <p class="eyebrow">gaan trouwen</p>
+            <h1>Anouk <span style="color:var(--accent)">&amp;</span> Rik</h1>
+            <p class="script">Onze reis naar 30 oktober 2026</p>
+            <div class="divider"></div>
+            <p class="save-the-date">Save the date <strong>30 oktober 2026</strong></p>
+            <p class="countdown-label">Nog even geduld… maar we nemen je alvast mee door ons verhaal.</p>
+
+            <div class="countdown" aria-label="Countdown tot de bruiloft">
+              <div class="unit"><strong id="days">000</strong><span>Dagen</span></div>
+              <div class="unit"><strong id="hours">00</strong><span>Uren</span></div>
+              <div class="unit"><strong id="minutes">00</strong><span>Min</span></div>
+              <div class="unit"><strong id="seconds">00</strong><span>Sec</span></div>
             </div>
+
+            <p class="hero-copy">
+              Een rustige, warme en verhalende pagina in herfsttinten — van het eerste contact tot alles wat ons hier heeft gebracht.
+              Scroll omlaag en volg de sierlijke lijn door de hoofdstukken van ons verhaal.
+            </p>
+
+            <p class="hero-end">Meer details volgen 💛</p>
+            <a class="scroll-cue" href="#verhaal">
+              <span>Volg ons verhaal</span>
+              <span class="arrow" aria-hidden="true"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="verhaal" class="story-shell">
+      <div class="leaf-float f1" data-speed="0.08"></div>
+      <div class="leaf-float f2" data-speed="0.12"></div>
+      <div class="leaf-float f3" data-speed="0.09"></div>
+      <div class="leaf-float f4" data-speed="0.10"></div>
+
+      <div class="container">
+        <div class="story-intro">
+          <p class="eyebrow">ons verhaal</p>
+          <h2>Van eerste contact tot vandaag</h2>
+          <p>
+            Dit ontwerp combineert een sfeervolle hero met countdown en daaronder een verticale, golvende tijdlijn.
+            Elke sectie is een hoofdstuk dat je kunt vervangen door jullie echte momenten, data, foto’s en teksten.
+          </p>
         </div>
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Jan 2019</span>
-                <h3 class="typewriter">Samenwonen</h3>
-                <p class="typewriter-p">Van twee huizen naar één thuis.</p>
+        <div class="story-grid">
+          <div class="centerline" aria-hidden="true">
+            <div class="line-wrap">
+              <svg viewBox="0 0 120 900" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#d1ac67"></stop>
+                    <stop offset="45%" stop-color="#c97d4d"></stop>
+                    <stop offset="100%" stop-color="#a96439"></stop>
+                  </linearGradient>
+                </defs>
+                <path id="storyPathBase" class="line-base" d="M60 0 C15 70, 105 120, 60 200 C15 280, 105 330, 60 410 C15 490, 105 540, 60 620 C15 700, 105 760, 60 900"></path>
+                <path id="storyPathProgress" class="line-progress" d="M60 0 C15 70, 105 120, 60 200 C15 280, 105 330, 60 410 C15 490, 105 540, 60 620 C15 700, 105 760, 60 900"></path>
+              </svg>
             </div>
+          </div>
+
+          <section class="moments">
+            <article class="moment left reveal">
+              <div class="connector"></div>
+              <div class="moment-card">
+                <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 1 · Het begin</span></div>
+                <h3>Het eerste contact</h3>
+                <p>
+                  Hier kan het eerste bericht, de eerste klik of het eerste moment van herkenning komen. Hou de tekst klein en persoonlijk,
+                  bijvoorbeeld twee of drie korte zinnen die meteen de toon zetten.
+                </p>
+                <div class="moment-photo parallax" data-speed="0.06" data-caption="waar het begon"></div>
+              </div>
+            </article>
+
+            <article class="moment right reveal">
+              <div class="connector"></div>
+              <div class="moment-card">
+                <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 2 · Eerste ontmoeting</span></div>
+                <h3>De eerste date</h3>
+                <p>
+                  Dit blok werkt goed voor een plek, een seizoen, een grappig detail of een eerste indruk. Door links en rechts af te wisselen,
+                  voelt het alsof de bezoeker de lijn echt volgt door de tijd heen.
+                </p>
+                <div class="moment-photo parallax" data-speed="0.08" data-caption="een nieuw hoofdstuk"></div>
+              </div>
+            </article>
+
+            <article class="moment left reveal">
+              <div class="connector"></div>
+              <div class="moment-card">
+                <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 3 · Het groeide verder</span></div>
+                <h3>Toen het echt begon</h3>
+                <p>
+                  Denk aan het moment waarop het serieuzer werd: vaker samen, vaste rituelen, plannen maken of het gevoel dat dit iets bijzonders was.
+                  Je kunt hier ook een jaartal toevoegen of een subtiel citaat gebruiken.
+                </p>
+                <div class="moment-photo parallax" data-speed="0.05" data-caption="steeds dichterbij"></div>
+              </div>
+            </article>
+
+            <article class="moment right reveal">
+              <div class="connector"></div>
+              <div class="moment-card">
+                <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 4 · Samen bouwen</span></div>
+                <h3>Ons thuis</h3>
+                <p>
+                  Hier past het verhaal van samenwonen, een huis, jullie dagelijkse leven of de kleine dingen die een thuis maken.
+                  Dit is vaak een mooi rustpunt in het midden van de pagina.
+                </p>
+                <div class="moment-photo parallax" data-speed="0.07" data-caption="ons plekje"></div>
+              </div>
+            </article>
+
+            <article class="moment left reveal">
+              <div class="connector"></div>
+              <div class="moment-card">
+                <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 5 · Wat we delen</span></div>
+                <h3>Ons gezin, ons leven</h3>
+                <p>
+                  Een warm hoofdstuk over wie jullie nu zijn. Dit deel kan heel mooi werken met een echte foto, een korte beschrijving van jullie leven samen,
+                  of een paar losse woorden die precies voelen als jullie.
+                </p>
+                <div class="moment-photo parallax" data-speed="0.06" data-caption="liefde groeit"></div>
+              </div>
+            </article>
+
+            <article class="moment right reveal">
+              <div class="connector"></div>
+              <div class="moment-card">
+                <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 6 · De vraag</span></div>
+                <h3>Het aanzoek</h3>
+                <p>
+                  Dit is een ideaal moment voor iets net wat dramatischer: een sterkere foto, iets meer witruimte, of een tekst die de nadruk legt op het moment zelf.
+                  Hier mag de lijn voelen als een echte climax.
+                </p>
+                <div class="moment-photo parallax" data-speed="0.08" data-caption="zij zei ja"></div>
+              </div>
+            </article>
+
+            <article class="moment left reveal">
+              <div class="connector"></div>
+              <div class="moment-card">
+                <div class="moment-meta"><span class="dot"></span><span>Hoofdstuk 7 · Op weg naar de dag</span></div>
+                <h3>De voorbereidingen</h3>
+                <p>
+                  Eindig met een brug naar de bruiloft zelf: de voorpret, plannen, details en het verlangen naar die ene dag.
+                  Deze sectie kan straks ook doorlinken naar praktische info, RSVP of een aparte detailpagina.
+                </p>
+                <div class="moment-photo parallax" data-speed="0.05" data-caption="bijna zover"></div>
+              </div>
+            </article>
+          </section>
         </div>
+      </div>
+    </main>
 
-        <div class="milestone spacing-xl">
-            <div class="content-box">
-                <span class="date">Maart 2020</span>
-                <h3 class="typewriter">Lockdown Buddy's</h3>
-                <p class="typewriter-p">Als je dit overleeft, overleef je alles.</p>
-            </div>
+    <section class="closing">
+      <div class="container">
+        <div class="closing-card">
+          <p class="eyebrow">30 · 10 · 2026</p>
+          <h2>Op naar onze trouwdag</h2>
+          <p>
+            Deze laatste sectie sluit weer aan op de save-the-date uitstraling. Je kunt hier straks locatie, tijdschema,
+            dresscode, RSVP of een knop naar meer details plaatsen.
+          </p>
+          <div class="pill-row">
+            <div class="pill">Save the date</div>
+            <div class="pill">Herfst sfeer</div>
+            <div class="pill">Parallax love story</div>
+            <div class="pill">Meer details volgen</div>
+          </div>
+          <div class="footer-note">Vervang de voorbeeldteksten door jullie echte verhaal voor een persoonlijke eindversie.</div>
         </div>
+      </div>
+    </section>
+  </div>
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Mei 2021</span>
-                <h3 class="typewriter">Gezinsuitbreiding</h3>
-                <p class="typewriter-p">De dag dat onze trouwe viervoeter kwam.</p>
-            </div>
-        </div>
+  <script>
+    const weddingDate = new Date("2026-10-30T00:00:00+02:00");
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
 
-        <div class="milestone spacing-large">
-            <div class="content-box">
-                <span class="date">Okt 2022</span>
-                <h3 class="typewriter">Droomreis</h3>
-                <p class="typewriter-p">Samen de wereld ontdekken, stap voor stap.</p>
-            </div>
-        </div>
+    function updateCountdown() {
+      const now = new Date();
+      const diff = weddingDate - now;
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Dec 2023</span>
-                <h3 class="typewriter">HET Aanzoek</h3>
-                <p class="typewriter-p">Het makkelijkste 'JA' ooit gegeven.</p>
-            </div>
-        </div>
+      if (diff <= 0) {
+        daysEl.textContent = "000";
+        hoursEl.textContent = "00";
+        minutesEl.textContent = "00";
+        secondsEl.textContent = "00";
+        return;
+      }
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Juli 2024</span>
-                <h3 class="typewriter">De Locatie</h3>
-                <p class="typewriter-p">We vonden de perfecte plek voor ons ja-woord.</p>
-            </div>
-        </div>
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
 
-        <div class="milestone">
-            <div class="content-box">
-                <span class="date">Vandaag</span>
-                <h3 class="typewriter">De Voorpret</h3>
-                <p class="typewriter-p">We kunnen niet wachten om dit te vieren!</p>
-            </div>
-        </div>
-    </div>
+      daysEl.textContent = String(days).padStart(3, "0");
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
+    }
 
-    <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-        <h2 style="font-size: 3rem;">Tot snel!</h2>
-    </div>
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
-
-    <script>
-        gsap.registerPlugin(ScrollToPlugin, TextPlugin);
-
-        const container = document.querySelector('.scroll-container');
-        const wavyPath = document.getElementById('wavyPath');
-        const milestones = document.querySelectorAll('.milestone');
-        const skipBtn = document.getElementById('skipBtn');
-
-        // 1. Teken de lijn op basis van de totale hoogte
-        function drawLine() {
-            const height = container.offsetHeight;
-            let pathData = "M 50 0 "; 
-            for (let i = 0; i <= height; i += 10) {
-                // Iets hogere frequentie (i/100) voor meer golven op mobiel/desktop
-                let x = 50 + Math.sin(i / 100) * 35; 
-                pathData += `L ${x} ${i} `;
-            }
-            wavyPath.setAttribute('d', pathData);
-            return wavyPath.getTotalLength();
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
         }
+      });
+    }, { threshold: 0.25 });
 
-        const pathLength = drawLine();
-        gsap.set(wavyPath, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+    reveals.forEach(item => revealObserver.observe(item));
 
-        // 2. De Animatie
-        const tl = gsap.timeline({
-            onComplete: () => {
-                document.body.style.overflow = "auto";
-                skipBtn.style.display = "none";
-            }
-        });
+    const progressPath = document.getElementById('storyPathProgress');
+    const storyShell = document.querySelector('.story-shell');
 
-        document.body.style.overflow = "hidden";
+    if (progressPath) {
+      const pathLength = progressPath.getTotalLength();
+      progressPath.style.strokeDasharray = pathLength;
+      progressPath.style.strokeDashoffset = pathLength;
 
-        milestones.forEach((m, index) => {
-            const title = m.querySelector('.typewriter');
-            const text = m.querySelector('.typewriter-p');
-            const date = m.querySelector('.date');
-            
-            // Onthoud de tekst en maak leeg voor typ-effect
-            const originalTitle = title.innerText;
-            const originalText = text.innerText;
-            title.innerText = "";
-            text.innerText = "";
+      function updatePathProgress() {
+        const rect = storyShell.getBoundingClientRect();
+        const viewport = window.innerHeight;
+        const raw = (viewport - rect.top) / (rect.height + viewport * 0.2);
+        const progress = Math.max(0, Math.min(1, raw));
+        progressPath.style.strokeDashoffset = pathLength * (1 - progress);
+      }
 
-            const scrollPos = m.offsetTop + (m.offsetHeight / 2);
-            const relativeDraw = pathLength * (scrollPos / container.offsetHeight);
+      updatePathProgress();
+      window.addEventListener('scroll', updatePathProgress, { passive: true });
+      window.addEventListener('resize', updatePathProgress);
+    }
 
-            // De 'Sequence' per milestone
-            tl.to(window, {
-                scrollTo: { y: m, offsetY: 0 },
-                duration: 3, // Iets langer voor de reis
-                ease: "power2.inOut"
-            })
-            .to(wavyPath, {
-                strokeDashoffset: pathLength - relativeDraw,
-                duration: 2.8, // Iets sneller klaar dan de scroll
-                ease: "power1.inOut"
-            }, "-=3")
-            .to(date, { opacity: 1, duration: 0.5 })
-            .to(title, { text: originalTitle, duration: 1.5, ease: "none" })
-            .to(text, { text: originalText, duration: 2, ease: "none" })
-            .to({}, { duration: 1.5 }); // Wachttijd na het typen
-        });
+    const parallaxEls = document.querySelectorAll('[data-speed]');
+    let ticking = false;
 
-        // Skip functie
-        skipBtn.addEventListener('click', () => {
-            tl.progress(1); // Spring direct naar het einde
-        });
+    function handleParallax() {
+      const scrolled = window.scrollY;
+      parallaxEls.forEach(el => {
+        const speed = parseFloat(el.dataset.speed || '0');
+        const offset = scrolled * speed;
+        el.style.transform = `translate3d(0, ${offset}px, 0)`;
+      });
+      ticking = false;
+    }
 
-        // Herbereken lijn bij venster-resize
-        window.addEventListener('resize', () => drawLine());
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(handleParallax);
+        ticking = true;
+      }
+    }, { passive: true });
 
-    </script>
+    handleParallax();
+  </script>
 </body>
 </html>
